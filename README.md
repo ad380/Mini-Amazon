@@ -32,4 +32,7 @@ Edgardy Reyes:
 
 Ankitha Durvasula:
 
+I discussed the database design and website plan with the team. I also added to the create.sql
+with tables relavent to my role. I also added to our sample database for future testing.
+
 Kyle Tran:
