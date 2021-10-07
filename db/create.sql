@@ -48,3 +48,19 @@ CREATE TABLE Transactions
        END
  )
 );
+
+CREATE TABLE SellerReviews
+(seller_id INTEGER NOT NULL REFERENCES Sellers(seller_id),
+ buyer_id INTEGER NOT NULL REFERENCES Users(uid),
+ rating INTEGER NOT NULL CHECK(rating BETWEEN 0 AND 5),
+ comment VARCHAR(512) NOT NULL,
+ PRIMARY KEY(seller_id, buyer_id)
+);
+
+CREATE TABLE ProductReviews
+(product_id INTEGER NOT NULL REFERENCES Products(product_id),
+ buyer_id INTEGER NOT NULL REFERENCES Users(uid),
+ rating INTEGER NOT NULL CHECK(rating BETWEEN 0 AND 5),
+ comment VARCHAR(512) NOT NULL,
+ PRIMARY KEY(product_id, buyer_id)
+ );
