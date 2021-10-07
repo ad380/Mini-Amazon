@@ -29,6 +29,9 @@ I've also worked on setting up methods of communication between us, such as the 
 Nicki Lee:
 
 Edgardy Reyes:
+I set up the Slack workspace as well as specific channel labels for each component of the project to be discussed separately.
+Met with the team to create preliminary website and database design.
+I created a sample database for testing Carts/Orders.
 
 Ankitha Durvasula:
 
