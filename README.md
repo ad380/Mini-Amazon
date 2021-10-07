@@ -28,6 +28,9 @@ I've also worked on setting up methods of communication between us, such as the 
 
 Nicki Lee:
 
+I drafted initial tables and assumptions for our database design which as a team we edited together.
+I added the products and category tables to create.sql and made some sample product data for testing.
+
 Edgardy Reyes:
 I set up the Slack workspace as well as specific channel labels for each component of the project to be discussed separately.
 Met with the team to create preliminary website and database design.
