@@ -34,11 +34,11 @@ quantity INTEGER NOT NULL
 );
 
 CREATE TABLE Transactions
-(order_id INTEGER NOT NULL PRIMARY KEY,
- buyer_id INTEGER NOT NULL REFERENCES Users(id),
+(id INTEGER NOT NULL PRIMARY KEY,
+ uid INTEGER NOT NULL REFERENCES Users(id),
  seller_id INTEGER NOT NULL REFERENCES Sellers(seller_id),
- date_time TIMESTAMP NOT NULL,
- product_id INTEGER NOT NULL REFERENCES Products(product_id),
+ time_purchased TIMESTAMP without time zone NOT NULL DEFAULT (current_timestamp AT TIME ZONE 'UTC'),
+ pid INTEGER NOT NULL REFERENCES Products(product_id),
  quantity INTEGER NOT NULL,
  total_price FLOAT NOT NULL,
  fulfilled VARCHAR(256)
