@@ -18,7 +18,7 @@ name VARCHAR NOT NULL,
 description VARCHAR NOT NULL,
 category VARCHAR NOT NULL REFERENCES Category(category),
 image BYTEA NOT NULL,
-price NUMERIC NOT NULL,
+price FLOAT NOT NULL,
 available_quantity INTEGER NOT NULL
 );
 
@@ -39,7 +39,7 @@ CREATE TABLE Transactions
  date_time TIMESTAMP NOT NULL,
  product_id INTEGER NOT NULL REFERENCES Products(product_id),
  quantity INTEGER NOT NULL,
- total_price INTEGER NOT NULL,
+ total_price FLOAT NOT NULL,
  status VARCHAR(256)
  CHECK(CASE
 	WHEN grade = 'f' THEN TRUE
