@@ -17,13 +17,14 @@ CREATE TABLE Category
 );
 
 CREATE TABLE Products
-(product_id INTEGER NOT NULL PRIMARY KEY,
+(id INT NOT NULL PRIMARY KEY,
 seller_id INTEGER NOT NULL REFERENCES Sellers(seller_id),
-name VARCHAR NOT NULL,
+name VARCHAR(255) NOT NULL,
 description VARCHAR NOT NULL,
 category VARCHAR NOT NULL REFERENCES Category(category),
 image BYTEA NOT NULL,
 price FLOAT NOT NULL,
+available BOOLEAN DEFAULT TRUE,
 available_quantity INTEGER NOT NULL
 );
 
