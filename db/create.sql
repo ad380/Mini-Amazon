@@ -11,10 +11,25 @@ CREATE TABLE Sellers
 (seller_id INTEGER NOT NULL PRIMARY KEY REFERENCES Users(uid)
 );
 
+CREATE TABLE Products
+(product_id INTEGER NOT NULL PRIMARY KEY,
+seller_id INTEGER NOT NULL REFERENCES Sellers(seller_id),
+name VARCHAR NOT NULL,
+description VARCHAR NOT NULL,
+category VARCHAR NOT NULL REFERENCES Category(category),
+image BYTEA NOT NULL,
+price NUMERIC NOT NULL,
+available_quantity INTEGER NOT NULL
+);
+
 CREATE TABLE Cart
 (buyer_id INTEGER NOT NULL PRIMARY KEY REFERENCES Users(uid),
 product_id INTEGER NOT NULL UNIQUE REFERENCES Products(product_id),
 quantity INTEGER NOT NULL
+);
+
+CREATE TABLE Category
+(category VARCHAR NOT NULL PRIMARY KEY
 );
 
 CREATE TABLE Transactions
