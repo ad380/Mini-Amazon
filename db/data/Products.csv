@@ -1,6 +1,6 @@
-1,2,dino nuggies,dino shaped chicken nuggets,food,12345678,9.99,40
-2,2,dinosaur costume,children's dinosaur halloween costume,clothing,11111111,24.99,10
-3,4,pterodactyl food,feed for your pet pterodactyl,food,12121212,19.99,2
-4,4,dino watcher goggles,the perfect goggles for dinosaur observation,gadgets,33333333,79.50,8
-5,6,Jurassic Park,DVD of 1993 Jurassic Park,media,99999999,7.99,30
-6,6,Jurassic World,DVD of 2015 Jurassic World,media,87654321,7.99,20
+1,2,dino nuggies,dino shaped chicken nuggets,food,12345678,9.99,true,40
+2,2,dinosaur costume,children's dinosaur halloween costume,clothing,11111111,24.99,true,10
+3,4,pterodactyl food,feed for your pet pterodactyl,food,12121212,19.99,true,2
+4,4,dino watcher goggles,the perfect goggles for dinosaur observation,gadgets,33333333,79.50,true,8
+5,6,Jurassic Park,DVD of 1993 Jurassic Park,media,99999999,7.99,true,30
+6,6,Jurassic World,DVD of 2015 Jurassic World,media,87654321,7.99,true,20
