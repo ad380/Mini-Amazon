@@ -12,12 +12,6 @@ Ankitha Durvasula - Sellers Guru: responsible for Inventory / Order Fulfillment
 
 Kyle Tran - Social Guru: responsible for Feedback / Messaging
 
-## How to Access our work
-
-See our GitLab repository here [make hyperlink].
-
-Our code files are as follows:
-
 ## What Everyone Has Done Since Milestone 1:
 
 Tess Noonan:
@@ -42,3 +36,24 @@ I discussed the database design and website plan with the team. I also added to 
 with tables relavent to my role. I also added to our sample database for future testing.
 
 Kyle Tran:
+
+I helped work on the preliminary website plan, created tables for seller/product reviews and data to populate the tables,
+made sure our tables and data work correctly in the `amazon` PostgreSQL database, and checked that our database complies with 
+the website.
+
+
+## Accessing Our Work
+
+See our GitLab repository [here](https://gitlab.oit.duke.edu/data-dinos/mini-amazon-skeleton).
+
+Our code files are as follows:
+
+**/mini-amazon-skeleton-main/db/data**
+* Contains CSV files with data for each table
+
+**/mini-amazon-skeleton-main/db/create.sql**
+* Creates all necessary tables
+
+**/mini-amazon-skeleton-main/db/load.sql**
+* Loads csv data into tables
+
