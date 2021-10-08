@@ -30,7 +30,7 @@ available_quantity INTEGER NOT NULL
 
 CREATE TABLE Cart
 (buyer_id INTEGER NOT NULL PRIMARY KEY REFERENCES Users(id),
-product_id INTEGER NOT NULL UNIQUE REFERENCES Products(product_id),
+product_id INTEGER NOT NULL UNIQUE REFERENCES Products(id),
 quantity INTEGER NOT NULL
 );
 
@@ -39,7 +39,7 @@ CREATE TABLE Transactions
  uid INTEGER NOT NULL REFERENCES Users(id),
  seller_id INTEGER NOT NULL REFERENCES Sellers(seller_id),
  time_purchased TIMESTAMP without time zone NOT NULL DEFAULT (current_timestamp AT TIME ZONE 'UTC'),
- pid INTEGER NOT NULL REFERENCES Products(product_id),
+ pid INTEGER NOT NULL REFERENCES Products(id),
  quantity INTEGER NOT NULL,
  total_price FLOAT NOT NULL,
  fulfilled VARCHAR(256)
@@ -60,7 +60,7 @@ CREATE TABLE SellerReviews
 );
 
 CREATE TABLE ProductReviews
-(product_id INTEGER NOT NULL REFERENCES Products(product_id),
+(product_id INTEGER NOT NULL REFERENCES Products(id),
  buyer_id INTEGER NOT NULL REFERENCES Users(id),
  rating INTEGER NOT NULL CHECK(rating BETWEEN 0 AND 5),
  comment VARCHAR(512) NOT NULL,
