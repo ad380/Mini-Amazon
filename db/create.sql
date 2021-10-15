@@ -34,7 +34,7 @@ product_id INTEGER NOT NULL UNIQUE REFERENCES Products(id),
 quantity INTEGER NOT NULL
 );
 
-CREATE TABLE Transactions
+CREATE TABLE Purchases
 (id INTEGER NOT NULL PRIMARY KEY,
  uid INTEGER NOT NULL REFERENCES Users(id),
  seller_id INTEGER NOT NULL REFERENCES Sellers(seller_id),
