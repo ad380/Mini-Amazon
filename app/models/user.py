@@ -42,8 +42,8 @@ WHERE email = :email
     def register(email, password, firstname, lastname):
         try:
             rows = app.db.execute("""
-INSERT INTO Users(email, password, firstname, lastname)
-VALUES(:email, :password, :firstname, :lastname)
+INSERT INTO Users(email, password, firstname, lastname, address, balance)
+VALUES(:email, :password, :firstname, :lastname, '', 0.0)
 RETURNING id
 """,
                                   email=email,
@@ -55,6 +55,7 @@ RETURNING id
         except Exception:
             # likely email already in use; better error checking and
             # reporting needed
+            print("couldn't register")
             return None
 
     @staticmethod
