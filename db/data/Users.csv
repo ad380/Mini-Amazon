@@ -1,6 +1,6 @@
-1,firstuser@dinos.com,ilovedinos,Dino,Lover,1234 Meteorite Dr.,0
-2,second@data.com,DataDynamite,Data,Dog,5323 Numbers Ln.,0
-3,thirdu@gmail.com,PeanutButter6,Jeff,Bezos,911 Capitalism St.,0
-4,foursquare@hotmail.com,exwhyaxes?!,A B,C,8 Main St.,0
-5,g0fivers@duke.edu,sportsRKool,Marky P.,Zucky,Fake Address Can't Find Me,0
-6,best.forlast6@aoili.com,pwd1,User,Number Six Thousand,Box 00000,0
+1,firstuser@dinos.com,pbkdf2:sha256:260000$zMnv5vnwdobJyuio$74b1aa0479bea3cbd6a2de9cc6af26a0eb860492087f211b352603ab2c6fe039,Dino,Lover,1234 Meteorite Dr.,0
+2,second@data.com,pbkdf2:sha256:260000$GSk9KjmLB6kilMh5$325a99a607be04f8d510c7303c83fa4575a6daab68d720c20ff0cb3033573b45,Data,Dog,5323 Numbers Ln.,0
+3,thirdu@gmail.com,pbkdf2:sha256:260000$JT5J59YEvPgMnli2$a5e64941dea06f0d03843b331438377977904b99399112110421f3adbff881a8,Jeff,Bezos,911 Capitalism St.,0
+4,foursquare@hotmail.com,pbkdf2:sha256:260000$QuuyTZ6rBTuRXjj5$17bff89c5dea709aa60dc2857b6ef14b957bd5b2dca2cac7177a5fdd49644e89,A B,C,8 Main St.,0
+5,g0fivers@duke.edu,pbkdf2:sha256:260000$cmtzulmt4YIgBghj$142f664e14ecc3a90f4ae04c986370c17e3938c7c8c5f364e4c119e38d1ccf5c,Marky P.,Zucky,Fake Address Can't Find Me,0
+6,best.forlast6@aoili.com,pbkdf2:sha256:260000$cM4VHJwmNUuiBlXD$cc80d64df32a1b743ce5e101787f19af9d03ee7aa44e02b357b77b9ae77bd7bc,User,Number Six Thousand,Box 00000,0
