@@ -64,7 +64,7 @@ def register():
         if User.register(form.email.data,
                          form.password.data,
                          form.firstname.data,
-                         form.lastname.data
+                         form.lastname.data,
                          form.address.data):
             flash('Congratulations, you are now a registered user!')
             return redirect(url_for('users.login'))
