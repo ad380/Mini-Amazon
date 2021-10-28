@@ -17,7 +17,7 @@
   </thead>
   <tbody>
     {% for product in avail_products%}
-      {% if current_user.id = product.seller_id %}
+      {% if current_user.id == product.seller_id %}
       <tr>
         <th scope="row">{{product.id}}</th>
         <td>{{product.name}}</td>
