@@ -2,7 +2,7 @@ from flask import current_app as app
 
 
 class Product:
-    def __init__(self, id, seller_id, name, description, category, image,
+    def __init__(self, id, seller_id, name, description, category, image,\
                  price, available, available_quantity):
         self.id = id
         self.name = name
