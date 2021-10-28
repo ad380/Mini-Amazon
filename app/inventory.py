@@ -17,7 +17,7 @@ def index():
     if current_user.is_authenticated:
         purchases = Purchase.get_all_by_seller_id(
             current_user.seller_id)
-        products = 
+        products = Product.get_all_by_seller(current_user.seller_id)
     else:
         purchases = None
         products = None
