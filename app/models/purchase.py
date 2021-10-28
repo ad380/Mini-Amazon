@@ -33,7 +33,7 @@ ORDER BY time_purchased DESC
                               since=since)
         return [Purchase(*row) for row in rows]
 
-     @staticmethod
+    @staticmethod
     def get_all_by_seller_id(seller_id):
         rows = app.db.execute('''
 SELECT id, uid, seller_id, time_purchased, pid, quantity
