@@ -31,14 +31,3 @@ WHERE available = :available
 ''',
                               available=available)
         return [Product(*row) for row in rows]
-
-    @staticmethod
-    def get_all_by_seller(seller_id):
-        rows = app.db.execute('''
-SELECT id, seller_id, name, description, category, image,
-price, available, available_quantity
-FROM Products
-WHERE seller_id = :seller_id
-''',
-                              seller_id=seller_id)
-        return [Product(*row) for row in rows]
