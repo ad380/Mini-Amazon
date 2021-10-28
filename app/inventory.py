@@ -9,7 +9,7 @@ from flask import Blueprint
 bp = Blueprint('inventory', __name__)
 
 
-@bp.route('/')
+@bp.route('/inventory')
 def index():
     # get all available products for sale:
     products = Product.get_all(True)
