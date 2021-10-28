@@ -15,9 +15,12 @@ def index():
     products = Product.get_all(True)
     # find the products current user has bought:
     if current_user.is_authenticated:
-        purchases = Purchases.get_all(True)
+        purchases = Purchase.get_all_by_seller_id(
+            current_user.seller_id)
+        products = 
     else:
         purchases = None
+        products = None
     # render the page by adding information to the index.html file
     return render_template('inventory.html',
                            avail_products=products,
