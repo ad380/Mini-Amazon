@@ -2,16 +2,18 @@ from flask import current_app as app
 
 
 class Purchase:
-    def __init__(self, id, uid, pid, time_purchased):
+    def __init__(self, id, uid, seller_id, time_purchased, pid, quantity):
         self.id = id
         self.uid = uid
         self.pid = pid
         self.time_purchased = time_purchased
+        self.seller_id = seller_id
+        self.quantity = quantity
 
     @staticmethod
     def get(id):
         rows = app.db.execute('''
-SELECT id, uid, pid, time_purchased
+SELECT id, uid, seller_id, time_purchased, pid, quantity
 FROM Purchases
 WHERE id = :id
 ''',
@@ -21,7 +23,7 @@ WHERE id = :id
     @staticmethod
     def get_all_by_uid_since(uid, since):
         rows = app.db.execute('''
-SELECT id, uid, pid, time_purchased
+SELECT id, uid, seller_id, time_purchased, pid, quantity
 FROM Purchases
 WHERE uid = :uid
 AND time_purchased >= :since
