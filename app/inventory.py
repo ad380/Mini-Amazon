@@ -13,7 +13,6 @@ bp = Blueprint('inventory', __name__)
 def index():
     # get all available products for sale:
     products = Product.get_all(True)
-    sellers = Products.get_sellers()
     # find the products and purchases with the current user as the seller:
     if current_user.is_authenticated:
         purchases = Purchase.get_all_by_seller_id(current_user.id)
@@ -24,4 +23,4 @@ def index():
     # render the page by adding information to the inventory.html file
     return render_template('inventory.html',
                            sold_products=products,
-                           purchase_history=purchases,sellers=sellers)
+                           purchase_history=purchases)
