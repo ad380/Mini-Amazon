@@ -1,9 +1,8 @@
 {% extends "base.html" %}
 
 {% block content %}
-<p>"the value for user is: " + current_user</p>
-{% if current_user.is_authenticated and current_user in sellers %}
 
+{% if current_user.is_authenticated and current_user.id in sellers %}
 <p><a href="{{ url_for('inventory.index') }}" type="button" class="btn btn-light">Seller Inventory</a></p>
 {% endif %}
 
