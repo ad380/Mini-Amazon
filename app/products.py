@@ -9,7 +9,7 @@ from flask import Blueprint
 bp = Blueprint('products', __name__)
 
 
-@bp.route('/products')
-def detailed_product(pid):
+@bp.route('/products/<pid>')
+def products(pid):
 
     return render_template('detailed_product.html', pid=pid)

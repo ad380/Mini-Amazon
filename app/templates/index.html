@@ -21,7 +21,7 @@
     {% for product in avail_products%}
       <tr>
         <th scope="row">{{product.id}}</th>
-        <td><a href="{{ url_for('products.detailed_product', pid=product.id) }}" type="button" class="btn btn-light">{{product.name}}</a></td>
+        <td><a href="{{ url_for('products.products', pid=product.id) }}" type="button" class="btn btn-light">{{product.name}}</a></td>
         <td>{{product.price}}</td>
       </tr>
     {% endfor %}
