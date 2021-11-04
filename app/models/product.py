@@ -47,3 +47,12 @@ WHERE seller_id = :seller_id
                               seller_id=seller_id)
         return [Product(*row) for row in rows]
 
+    @staticmethod
+    def get_sellers():
+        rows = app.db.execute('''
+SELECT seller_id
+FROM Products
+''',
+                              )
+        return [Product(*row) for row in rows]
+
