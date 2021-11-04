@@ -52,12 +52,8 @@ def gen_products(num_products):
             #TODO: CHANGE IMAGE
             image = "IMAGE"
             price = f'{str(fake.random_int(max=500))}.{fake.random_int(max=99):02}'
-            print(price)
-            available = fake.random_element(elements=('true', 'false'))
-            if available == 'true':
-                available_pids.append(pid)
-                available_quantity = fake.random_int(min=1, max=500)
-            writer.writerow([pid, seller_id, name, description, category, image, price, available, available_quantity])
+            available_quantity = fake.random_int(min=0, max=500)
+            writer.writerow([pid, seller_id, name, description, category, image, price, available_quantity])
         print(f'{num_products} generated; {len(available_pids)} available')
     return available_pids
 
@@ -76,20 +72,6 @@ def gen_purchases(num_purchases, available_pids):
         print(f'{num_purchases} generated')
     return
 
-def gen_sellers(num_sellers):
-    #First 25 users are sellers
-    with open('Sellers.csv', 'w') as f:
-        writer = get_csv_writer(f)
-        print('Sellers...', end=' ', flush=True)
-        for uid in range(num_sellers):
-            if uid % 5== 0:
-                print(f'{uid}', end=' ', flush=True)
-            writer.writerow([uid])
-        print(f'{num_sellers} generated')
-    return
-
-
 # gen_users(num_users)
-# gen_sellers(num_sellers)
 available_pids = gen_products(num_products)
 # gen_purchases(num_purchases, available_pids)
