@@ -4,6 +4,7 @@ import datetime
 
 from .models.product import Product
 from .models.purchase import Purchase
+from .models.user import User
 
 from flask import Blueprint
 bp = Blueprint('inventory', __name__)
@@ -13,6 +14,7 @@ bp = Blueprint('inventory', __name__)
 def index():
     # get all available products for sale:
     products = Product.get_all(True)
+    users = User.get_info()
     # find the products and purchases with the current user as the seller:
     if current_user.is_authenticated:
         purchases = Purchase.get_all_by_seller_id(current_user.id)
@@ -20,7 +22,8 @@ def index():
     else:
         purchases = None
         products = None
-    # render the page by adding information to the index.html file
+    # render the page by adding information to the inventory.html file
     return render_template('inventory.html',
-                           avail_products=products,
-                           purchase_history=purchases)
+                           sold_products=products,
+                           purchase_history=purchases,
+                           users = users)

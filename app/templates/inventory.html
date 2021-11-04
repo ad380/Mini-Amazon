@@ -16,15 +16,41 @@
     </tr>
   </thead>
   <tbody>
-    {% for product in avail_products%}
-      {% if current_user.id == product.seller_id %}
+    {% for product in sold_products%}
       <tr>
         <th scope="row">{{product.id}}</th>
         <td>{{product.name}}</td>
         <td>{{product.price}}</td>
         <td>{{product.available_quantity}}</td>
       </tr>
-      {% endif %}
+    {% endfor %}
+  </tbody>
+</table>
+
+<h2>Order History:</h2>
+<table class='table table-hover table-bordered container'>
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">Buyer Name</th>
+      <th scope="col">Buyer Address</th>
+      <th scope="col">Date Ordered</th>
+      <th scope="col">Product ID</th>
+      <th scope="col">Product Name</th>
+      <th scope="col">Quantity</th>
+      <th scope="col">Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for purchase in purchase_history%}
+      <tr>
+        <th scope="row">{{purchase.uid}}</th>
+        <td>{{purchase.uid}}</td>
+        <td>{{purchase.time_purchased}}</td>
+        <td>{{purchase.pid}}</td>
+        <td>{{purchase.pid}}</td>
+        <td>{{purchase.quantity}}</td>
+        <td>{{purchase.fulfilled}}</td>
+      </tr>
     {% endfor %}
   </tbody>
 </table>
