@@ -43,7 +43,7 @@
   <tbody>
     {% for product in sold_products%}
       <tr>
-        <th scope="row">{{User.get(purchase_history.uid)}}</th>
+        <th scope="row">{{purchase_history.uid}}</th>
         <td>{{product.name}}</td>
         <td>{{product.price}}</td>
         <td>{{product.available_quantity}}</td>
