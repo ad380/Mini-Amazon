@@ -54,6 +54,5 @@ SELECT seller_id
 FROM Products
 '''
                               )
-        print(rows)
-        return rows
+        return [row[0] for row in rows]
 
