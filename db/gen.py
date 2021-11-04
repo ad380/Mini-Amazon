@@ -45,13 +45,14 @@ def gen_products(num_products):
             available_quantity = 0
             if pid % 100 == 0:
                 print(f'{pid}', end=' ', flush=True)
-            seller_id = fake.random_int(min=0, max=num_sellers)
+            seller_id = fake.random_int(min=0, max=num_sellers-1)
             name = fake.sentence(nb_words=4)[:-1]
             description = fake.bs()
             category = categories[fake.random_int(min=0, max=len(categories)-1)]
             #TODO: CHANGE IMAGE
             image = "IMAGE"
-            price = f'{str(fake.random_int(500))}.{fake.random_int(max=99):02}'
+            price = f'{str(fake.random_int(max=500))}.{fake.random_int(max=99):02}'
+            print(price)
             available = fake.random_element(elements=('true', 'false'))
             if available == 'true':
                 available_pids.append(pid)
@@ -90,5 +91,5 @@ def gen_sellers(num_sellers):
 
 # gen_users(num_users)
 # gen_sellers(num_sellers)
-# available_pids = gen_products(num_products)
+available_pids = gen_products(num_products)
 # gen_purchases(num_purchases, available_pids)
