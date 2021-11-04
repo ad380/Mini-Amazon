@@ -20,7 +20,7 @@ description VARCHAR NOT NULL,
 category VARCHAR NOT NULL REFERENCES Category(category),
 image BYTEA NOT NULL,
 price DECIMAL(12,2) NOT NULL,
-available BOOLEAN DEFAULT TRUE,
+available BOOLEAN,
 available_quantity INTEGER NOT NULL
 );
 
