@@ -11,7 +11,10 @@ bp = Blueprint('products', __name__)
 
 @bp.route('/products/<pid>')
 def products(pid):
-    products = Product.get_all(True)
+    product = Product.get(pid)
     return render_template('detailed_product.html', 
                             pid=pid,
-                            avail_products=products)
+                            prod_desc=product.description,
+                            prod_name=product.name,
+                            prod_price=product.price,
+                            prod_quant=product.available_quantity)

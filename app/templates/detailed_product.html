@@ -16,16 +16,12 @@
     </tr>
   </thead>
   <tbody>
-    {% for product in avail_products%}
-      {% if product.id == pid %} 
       <tr>
-        <th scope="row">{{product.name}}</th>
-        <td>{{product.description}}</td>
-        <td>{{product.price}}</td>
-        <td>{{product.available_quantity}}</td>
+        <th scope="row">{{prod_name}}</th>
+        <td>{{prod_description}}</td>
+        <td>{{prod_price}}</td>
+        <td>{{prod_quant}}</td>
       </tr>
-      {% endif %}
-    {% endfor %}
   </tbody>
 </table>
 
