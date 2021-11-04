@@ -78,4 +78,4 @@ WHERE id = :id
 SELECT id, firstname, lastname, address
 FROM Users
 ''')
-        return [User(*row) for row in rows]
+        return rows
