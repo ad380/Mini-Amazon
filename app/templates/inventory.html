@@ -41,12 +41,15 @@
     </tr>
   </thead>
   <tbody>
-    {% for product in sold_products%}
+    {% for purchase in purchase_history%}
       <tr>
         <th scope="row">{{purchase_history.uid}}</th>
-        <td>{{product.name}}</td>
-        <td>{{product.price}}</td>
-        <td>{{product.available_quantity}}</td>
+        <td>{{purchase_history.uid}}</td>
+        <td>{{purchase_history.time_purchased}}</td>
+        <td>{{purchase_history.pid}}</td>
+        <td>{{purchase_history.pid}}</td>
+        <td>{{purchase_history.quantity}}</td>
+        <td>{{purchase_history.fulfilled}}</td>
       </tr>
     {% endfor %}
   </tbody>
