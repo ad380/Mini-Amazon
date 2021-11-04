@@ -71,3 +71,11 @@ WHERE id = :id
 """,
                               id=id)
         return User(*(rows[0])) if rows else None
+
+    @staticmethod
+    def get_info():
+        rows = app.db.execute('''
+SELECT id, firstname, lastname, address
+FROM Users
+''')
+        return [User(*row) for row in rows]

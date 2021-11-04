@@ -27,4 +27,29 @@
   </tbody>
 </table>
 
+<h2>Order History:</h2>
+<table class='table table-hover table-bordered container'>
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">Buyer Name</th>
+      <th scope="col">Buyer Address</th>
+      <th scope="col">Date Ordered</th>
+      <th scope="col">Product ID</th>
+      <th scope="col">Product Name</th>
+      <th scope="col">Quantity</th>
+      <th scope="col">Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for product in sold_products%}
+      <tr>
+        <th scope="row">{{User.get(purchase_history.uid)}}</th>
+        <td>{{product.name}}</td>
+        <td>{{product.price}}</td>
+        <td>{{product.available_quantity}}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
 {% endblock %}
