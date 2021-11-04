@@ -8,17 +8,13 @@ CREATE TABLE Users
  balance DECIMAL(12,2) NOT NULL
 );
 
-CREATE TABLE Sellers
-(seller_id INTEGER NOT NULL PRIMARY KEY REFERENCES Users(id)
-);
-
 CREATE TABLE Category
 (category VARCHAR NOT NULL PRIMARY KEY
 );
 
 CREATE TABLE Products
 (id INT NOT NULL PRIMARY KEY,
-seller_id INTEGER NOT NULL REFERENCES Sellers(seller_id),
+seller_id INTEGER NOT NULL REFERENCES Users(id),
 name VARCHAR(255) NOT NULL,
 description VARCHAR NOT NULL,
 category VARCHAR NOT NULL REFERENCES Category(category),
@@ -29,15 +25,16 @@ available_quantity INTEGER NOT NULL
 );
 
 CREATE TABLE Cart
-(buyer_id INTEGER NOT NULL PRIMARY KEY REFERENCES Users(id),
-product_id INTEGER NOT NULL UNIQUE REFERENCES Products(id),
+(buyer_id INTEGER NOT NULL REFERENCES Users(id),
+product_id INTEGER NOT NULL REFERENCES Products(id),
+PRIMARY KEY(buyer_id, product_id),
 quantity INTEGER NOT NULL
 );
 
 CREATE TABLE Purchases
 (id INTEGER NOT NULL PRIMARY KEY,
  uid INTEGER NOT NULL REFERENCES Users(id),
- seller_id INTEGER NOT NULL REFERENCES Sellers(seller_id),
+ seller_id INTEGER NOT NULL REFERENCES Users(id),
  time_purchased TIMESTAMP without time zone NOT NULL DEFAULT (current_timestamp AT TIME ZONE 'UTC'),
  pid INTEGER NOT NULL REFERENCES Products(id),
  quantity INTEGER NOT NULL,
@@ -52,7 +49,7 @@ CREATE TABLE Purchases
 );
 
 CREATE TABLE SellerReviews
-(seller_id INTEGER NOT NULL REFERENCES Sellers(seller_id),
+(seller_id INTEGER NOT NULL REFERENCES Users(id),
  buyer_id INTEGER NOT NULL REFERENCES Users(id),
  rating INTEGER NOT NULL CHECK(rating BETWEEN 0 AND 5),
  comment VARCHAR(512) NOT NULL,
