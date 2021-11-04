@@ -13,7 +13,7 @@ bp = Blueprint('inventory', __name__)
 def index():
     # get all available products for sale:
     products = Product.get_all(True)
-    # find the products current user has bought:
+    # find the products and purchases with the current user as the seller:
     if current_user.is_authenticated:
         purchases = Purchase.get_all_by_seller_id(current_user.id)
         products = Product.get_all_by_seller(current_user.id)

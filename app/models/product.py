@@ -9,6 +9,10 @@ class Product:
         self.price = price
         self.available = available
         self.seller_id = seller_id
+        self.description = description
+        self.category = category
+        self.image = image
+        self.available_quantity = available_quantity
 
     @staticmethod
     def get(id):
