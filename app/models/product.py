@@ -50,10 +50,10 @@ WHERE seller_id = :seller_id
     @staticmethod
     def get_sellers():
         rows = app.db.execute('''
-SELECT id, seller_id, name, description, category, image,
-price, available, available_quantity
+SELECT seller_id
 FROM Products
-''',
+'''
                               )
-        return [Product(*row) for row in rows]
+        print(rows)
+        return rows
 
