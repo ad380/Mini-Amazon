@@ -18,10 +18,10 @@
   <tbody>
     {% for product in sold_products%}
       <tr>
-        <th scope="row">{{sold_products.id}}</th>
-        <td>{{sold_products.name}}</td>
-        <td>{{sold_products.price}}</td>
-        <td>{{sold_products.available_quantity}}</td>
+        <th scope="row">{{product.id}}</th>
+        <td>{{product.name}}</td>
+        <td>{{product.price}}</td>
+        <td>{{product.available_quantity}}</td>
       </tr>
     {% endfor %}
   </tbody>
