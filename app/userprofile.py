@@ -10,7 +10,7 @@ from flask import Blueprint
 bp = Blueprint('userprofile', __name__)
 
 
-@bp.route('/userprofile')
+@bp.route('/index')
 def index():
     # find the products and purchases with the current user as the buyer:
     if current_user.is_authenticated:
