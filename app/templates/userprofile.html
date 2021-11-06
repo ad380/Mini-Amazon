@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% if current_user.is_authenticated and current_user.id in sellers %}
+<p><a href="{{ url_for('inventory.index') }}" type="button" class="btn btn-light">Seller Inventory</a></p>
+{% endif %}
+
+<br><br>
+
+<h2>User: {{current_user.firstname}} {{current_user.lastname}}</h2>
+
+<h2>Account number: {{current_user.id}}</h2>
+
+{% if current_user.is_authenticated %}
+<h2>Email: {{current_user.email}}</h2>
+
+<h2>Address: {{current_user.address}}</h2>
+
+<h2>Balance: {{current_user.balance}}</h2>
+
+<h2>Your recent purchases:</h2>
+<table class='table table-hover table-bordered container'>
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">Purchase ID</th>
+      <th scope="col">Product Name</th>
+      <th scope="col">Time Purchased</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for purchase in purchase_history%}
+      <tr>
+        <th scope="row">{{purchase.id}}</th>
+        <td>{{purchase.pid}}</td>
+        <td>{{purchase.time_purchased}}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p><a href="{{ url_for('users.login') }}">Log in</a> to see your purchase history!</p>
+{% endif %}
+
+{% endblock %}
