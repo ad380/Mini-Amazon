@@ -10,13 +10,19 @@ from flask import Blueprint
 bp = Blueprint('userprofile', __name__)
 
 
-@bp.route('/index')
-def index():
+@bp.route('/profile')
+def profile():
+    # get all available products for sale:
+    products = Product.get_all(True)
+    sellers = Product.get_sellers()
     # find the products and purchases with the current user as the buyer:
     if current_user.is_authenticated:
-        purchases = Purchase.get(current_user.id)
+        purchases = Purchase.get_all_by_uid_since(
+            current_user.id, datetime.datetime(1980, 9, 14, 0, 0, 0))
     else:
         purchases = None
     # render the page by adding information to the userprofile.html file
     return render_template('userprofile.html',
-                           purchase_history=purchases)
+                           avail_products=products,
+                           purchase_history=purchases,
+                           sellers=sellers)

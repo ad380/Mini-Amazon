@@ -55,6 +55,7 @@
         {% else %}
           <a href="{{ url_for('users.login') }}" type="button" class="btn btn-light">Log in</a>
         {% endif %}
+        <p><a href="{{ url_for('userprofile.profile') }}" type="button" class="btn btn-light">User Profile</a></p>
       </div>
     {% endblock %}
   </div>
@@ -63,6 +64,5 @@
   </div>
 </body>
 
-<p><a href="{{ url_for('userprofile.index') }}" type="button" class="btn btn-light">User Profile</a></p>
 
 </html>
