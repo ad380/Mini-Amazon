@@ -1,3 +1,5 @@
+<!-- This is the private user profile (not the public view) -->
+
 {% extends "base.html" %}
 
 {% block content %}
@@ -8,16 +10,22 @@
 
 <br><br>
 
-<h2>User: {{current_user.firstname}} {{current_user.lastname}}</h2>
-
-<h2>Account number: {{current_user.id}}</h2>
-
 {% if current_user.is_authenticated %}
-<h2>Email: {{current_user.email}}</h2>
+<h2 style="text-align: center">Private User Profile</h2>
 
-<h2>Address: {{current_user.address}}</h2>
+<div>First Name: {{current_user.firstname}}</div>
 
-<h2>Balance: {{current_user.balance}}</h2>
+<div>Last Name: {{current_user.lastname}}</div>
+
+<div>Account number: {{current_user.id}}</div>
+
+<div>Email: {{current_user.email}}</div>
+
+<div>Address: {{current_user.address}}</div>
+
+<div>Balance: {{current_user.balance}}</div>
+
+<br><br>
 
 <h2>Your recent purchases:</h2>
 <table class='table table-hover table-bordered container'>
