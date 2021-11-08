@@ -48,11 +48,11 @@ class RegistrationForm(FlaskForm):
     firstname = StringField(_l('First Name'), validators=[DataRequired()])
     lastname = StringField(_l('Last Name'), validators=[DataRequired()])
     email = StringField(_l('Email'), validators=[DataRequired(), Email()])
-    address = StringField(_l('Address'), validators=[DataRequired()])
     password = PasswordField(_l('Password'), validators=[DataRequired()])
     password2 = PasswordField(
         _l('Repeat Password'), validators=[DataRequired(),
                                            EqualTo('password')])
+    address = StringField(_l('Address'), validators=[DataRequired()])
     submit = SubmitField(_l('Register'))
 
     def validate_email(self, email):
@@ -101,21 +101,6 @@ def profile():
                            purchase_history=purchases,
                            sellers=sellers)
 
-@bp.route('/edituser', methods=['GET', 'POST'])
-def edituser():
-    if current_user.is_authenticated:
-        form = EditUserForm()
-        if form.validate_on_submit():
-            if User.edituser(form.email.data,
-                            form.password.data,
-                            form.firstname.data,
-                            form.lastname.data,
-                            form.address.data,
-                            form.balance.data):
-                flash('Congratulations, your information has been updated!')
-                return redirect(url_for('userprofile.profile'))
-        return render_template('edituser.html', title='Edit User', form=form)
-
 # make the edit user form
 class EditUserForm(FlaskForm):
     firstname = StringField(_l('First Name'), validators=[DataRequired()])
@@ -133,3 +118,18 @@ class EditUserForm(FlaskForm):
     def validate_email(self, email):
         if User.email_exists(email.data) and email != self.email:
             raise ValidationError(_('Already a user with this email.'))
+
+@bp.route('/edituser', methods=['GET', 'POST'])
+def edituser():
+    if current_user.is_authenticated:
+        form = EditUserForm()
+        if form.validate_on_submit():
+            if User.edituser(form.email.data,
+                            form.password.data,
+                            form.firstname.data,
+                            form.lastname.data,
+                            form.address.data,
+                            form.balance.data):
+                flash('Congratulations, your information has been updated!')
+                return redirect(url_for('userprofile.profile'))
+        return render_template('edituser.html', title='Edit User', form=form)
