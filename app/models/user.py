@@ -81,8 +81,25 @@ FROM Users
         return rows
 
 
-# # Methods added to alter user information
+# Alter user information
 
-# # Change first name
-#     def set_firstname(self, newname):
-#         self.firstname = newname
+    @staticmethod
+    def edituser(email, password, firstname, lastname, address, balance):
+        try:
+            rows = app.db.execute("""
+UPDATE Users
+SET VALUES(:email, :password, :firstname, :lastname, :address, :balance)
+WHERE id = :id
+""",
+                                  email=email,
+                                  password=generate_password_hash(password),
+                                  firstname=firstname,
+                                  lastname=lastname,
+                                  address=address,
+                                  balance=balance)
+            return
+        except Exception:
+            # likely email already in use; better error checking and
+            # reporting needed
+            print("couldn't register")
+            return None
