@@ -19,7 +19,7 @@
 
     .sidenav {
         height: 100%;
-        background-color: #000;
+        background-color: rgb(31, 65, 23);
         overflow-x: hidden;
         padding-top: 20px;
     }
@@ -48,10 +48,12 @@
 <body>
   <div class="sidenav">
     {% block msg %}
-      <h1 style="color:aliceblue">Welcome to CompSci 316 Mini Amazon!</h1>
+      <h1 style="color:aliceblue">Welcome to Dinazon!
+       <p><a href="{{ url_for('index.index') }}" type="button" class="btn btn-light">Home</a></p>
+      </h1>
       <div style="color: aliceblue; text-align: right; margin-bottom: 25px">
         {% if current_user.is_authenticated %}
-          Hello {{current_user.firstname}}! <a href="{{ url_for('users.logout') }}" type="button" class="btn btn-light">Log out</a>
+          Hello <a href="{{ url_for('users.profile') }}" type="button" class="btn btn-light">{{current_user.firstname}}</a>! <a href="{{ url_for('users.logout') }}" type="button" class="btn btn-light">Log out</a>
         {% else %}
           <a href="{{ url_for('users.login') }}" type="button" class="btn btn-light">Log in</a>
         {% endif %}
@@ -62,5 +64,6 @@
     {% block content %}{% endblock %}
   </div>
 </body>
+
 
 </html>
