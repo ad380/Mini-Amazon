@@ -8,6 +8,11 @@ from flask_babel import _, lazy_gettext as _l
 
 from .models.user import User
 
+# imports I've added
+from .models.product import Product
+from .models.purchase import Purchase
+import datetime
+
 
 from flask import Blueprint
 bp = Blueprint('users', __name__)
@@ -70,8 +75,43 @@ def register():
             return redirect(url_for('users.login'))
     return render_template('register.html', title='Register', form=form)
 
+@bp.route('/edituser', methods=['GET', 'POST'])
+def edituser():
+    if current_user.is_authenticated:
+        form = RegistrationForm()
+        if form.validate_on_submit():
+            if User.edituser(form.email.data,
+                            form.password.data,
+                            form.firstname.data,
+                            form.lastname.data,
+                            form.address.data,
+                            form.balance.data):
+                flash('Congratulations, your information has been updated!')
+                return redirect(url_for('userprofile.profile'))
+        return render_template('edituser.html', title='Edit User', form=form)
+
 
 @bp.route('/logout')
 def logout():
     logout_user()
     return redirect(url_for('index.index'))
+
+# stuff I've added:
+
+# make the user profile
+@bp.route('/profile')
+def profile():
+    # get all available products for sale:
+    products = Product.get_all(True)
+    sellers = Product.get_sellers()
+    # find the products and purchases with the current user as the buyer:
+    if current_user.is_authenticated:
+        purchases = Purchase.get_all_by_uid_since(
+            current_user.id, datetime.datetime(1980, 9, 14, 0, 0, 0))
+    else:
+        purchases = None
+    # render the page by adding information to the userprofile.html file
+    return render_template('userprofile.html',
+                           avail_products=products,
+                           purchase_history=purchases,
+                           sellers=sellers)

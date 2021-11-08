@@ -79,3 +79,10 @@ SELECT id, firstname, lastname, address
 FROM Users
 ''')
         return rows
+
+
+# # Methods added to alter user information
+
+# # Change first name
+#     def set_firstname(self, newname):
+#         self.firstname = newname

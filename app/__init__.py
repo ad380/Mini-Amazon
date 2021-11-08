@@ -30,7 +30,4 @@ def create_app():
     from .products import bp as products_bp
     app.register_blueprint(products_bp)
 
-    from .userprofile import bp as userprofile_bp
-    app.register_blueprint(userprofile_bp)
-
     return app

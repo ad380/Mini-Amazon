@@ -25,6 +25,9 @@
 
 <div>Balance: {{current_user.balance}}</div>
 
+<p></p>
+<div><a href="{{ url_for('users.edituser') }}">Edit User</a></div>
+
 <br><br>
 
 <h2>Your recent purchases:</h2>
@@ -46,8 +49,7 @@
     {% endfor %}
   </tbody>
 </table>
-{% else %}
-<p><a href="{{ url_for('users.login') }}">Log in</a> to see your purchase history!</p>
+
 {% endif %}
 
 {% endblock %}
