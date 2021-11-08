@@ -13,9 +13,7 @@
 {% if current_user.is_authenticated %}
 <h2 style="text-align: center">Private User Profile</h2>
 
-<div>First Name: {{current_user.firstname}}</div>
-
-<div>Last Name: {{current_user.lastname}}</div>
+<div>Name: {{current_user.firstname}} {{current_user.lastname}}</div>
 
 <div>Account number: {{current_user.id}}</div>
 
@@ -23,7 +21,7 @@
 
 <div>Address: {{current_user.address}}</div>
 
-<div>Balance: {{current_user.balance}}</div>
+<div>Balance: ${{current_user.balance}}</div>
 
 <p></p>
 <div><a href="{{ url_for('users.edituser') }}">Edit User</a></div>
