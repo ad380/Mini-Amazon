@@ -3,7 +3,7 @@ from werkzeug.urls import url_parse
 from flask_login import login_user, logout_user, current_user
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, DecimalField
-from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
+from wtforms.validators import ValidationError, DataRequired, Email, EqualTo, InputRequired
 from flask_babel import _, lazy_gettext as _l
 
 from .models.user import User
@@ -111,7 +111,7 @@ class EditUserForm(FlaskForm):
     password2 = PasswordField(
         _l('Repeat Password'), validators=[DataRequired(),
                                            EqualTo('password')])
-    balance = DecimalField(_l('Balance'), validators=[DataRequired()])
+    balance = DecimalField(_l('Balance'), validators=[InputRequired()])
     submit = SubmitField(_l('Update'))
 
     #can either be a new email that is not taken by someone else or your current email
@@ -119,17 +119,19 @@ class EditUserForm(FlaskForm):
         if User.email_exists(email.data) and email != self.email:
             raise ValidationError(_('Already a user with this email.'))
 
+# run the edit user form
 @bp.route('/edituser', methods=['GET', 'POST'])
 def edituser():
     if current_user.is_authenticated:
         form = EditUserForm()
         if form.validate_on_submit():
-            if User.edituser(form.email.data,
+            if User.edituser(current_user.id,
+                            form.email.data,
                             form.password.data,
                             form.firstname.data,
                             form.lastname.data,
                             form.address.data,
                             form.balance.data):
                 flash('Congratulations, your information has been updated!')
-                return redirect(url_for('userprofile.profile'))
+                return redirect(url_for('users.profile'))
         return render_template('edituser.html', title='Edit User', form=form)

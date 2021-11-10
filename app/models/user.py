@@ -84,22 +84,22 @@ FROM Users
 # Alter user information
 
     @staticmethod
-    def edituser(email, password, firstname, lastname, address, balance):
+    def edituser(id, email, password, firstname, lastname, address, balance):
         try:
             rows = app.db.execute("""
 UPDATE Users
-SET VALUES(:email, :password, :firstname, :lastname, :address, :balance)
-WHERE id = :id
-""",
-                                  email=email,
-                                  password=generate_password_hash(password),
-                                  firstname=firstname,
-                                  lastname=lastname,
-                                  address=address,
-                                  balance=balance)
-            return
+SET email = '{}', password = '{}', firstname = '{}', lastname = '{}', address = '{}', balance ={}
+WHERE id = {}
+RETURNING *
+""".format(
+                                  email,
+                                  generate_password_hash(password),
+                                  firstname,
+                                  lastname,
+                                  address,
+                                  balance,
+                                  id))
+            return rows
         except Exception:
-            # likely email already in use; better error checking and
-            # reporting needed
-            print("couldn't register")
+            print("couldn't update user")
             return None
