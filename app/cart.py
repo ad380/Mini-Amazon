@@ -11,7 +11,6 @@ from flask import Blueprint
 bp = Blueprint('cart', __name__)
 
 @bp.route('/cart')
-def cart():
-    if True:
-  #  if current_user.is_authenticated:
-        return render_template('cart.html', title='Cart')
+#def cart():
+
+#    return render_template('cart.html', title='Cart')
