@@ -83,41 +83,6 @@ FROM Users
 
 # Alter user information
 
-# # edituser attempt #4 (doesn't return rows):
-
-#     @staticmethod
-#     def edituser(id, email, password, firstname, lastname, address, balance):
-#         app.db.execute("""
-# UPDATE Users
-# SET email = '{}', password = '{}', firstname = '{}', lastname = '{}', address = '{}', balance ={}
-# WHERE id = {}
-# """.format(
-#                                   email,
-#                                   generate_password_hash(password),
-#                                   firstname,
-#                                   lastname,
-#                                   address,
-#                                   balance,
-#                                   id))
-#         return
-
-# # edituser attempt #3 using sqlalchemy
-#     @staticmethod
-#     def edituser(id, email, password, firstname, lastname, address, balance):
-#         try:
-#             session.query().\
-#             filter(User.id == id).\
-#             update({"email": email}, {"password": password}, {"firstname": firstname},
-#             {"lastname": lastname}, {"address": address}, {"balance": balance})
-#             session.commit()
-        
-#         except Exception:
-#             print("couldn't update user")
-#             return None
-
-
-# edituser attempt #2 (user is being updated! But the exception is still popping up):
-
     @staticmethod
     def edituser(id, email, password, firstname, lastname, address, balance):
         try:
@@ -138,24 +103,3 @@ RETURNING *
         except Exception:
             print("couldn't update user")
             return None
-
-# # edituser attempt #1 (user is not being updated):
-
-#     @staticmethod
-#     def edituser(id, email, password, firstname, lastname, address, balance):
-#         try:
-#             app.db.execute("""
-# UPDATE Users
-# SET VALUES(:email, :password, :firstname, :lastname, :address, :balance)
-# WHERE id = id
-# """,
-#                                   email=email,
-#                                   password=generate_password_hash(password),
-#                                   firstname=firstname,
-#                                   lastname=lastname,
-#                                   address=address,
-#                                   balance=balance)
-#             return
-#         except Exception:
-#             print("couldn't update user")
-#             return None
