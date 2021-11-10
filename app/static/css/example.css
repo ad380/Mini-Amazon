@@ -21,3 +21,20 @@ position: absolute;
 right: 0px;
 width: 50%;
 }
+
+ /* #login-btn{
+    display: flex;
+    float: left;
+}  */
+#cart-btn {
+    background-image: url("https://icons-for-free.com/iconfiles/png/512/cart-131964784999299812.png");
+    height: 50px;
+    width: 50px;
+    background-size: 100%;
+}
+
+#cart-btn-wrap{
+    display: flex;
+    float: right;
+    justify-content: space-between;
+}
