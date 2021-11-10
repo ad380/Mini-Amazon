@@ -119,37 +119,36 @@ class EditUserForm(FlaskForm):
         if User.email_exists(email.data) and email != self.email:
             raise ValidationError(_('Already a user with this email.'))
 
-# ignore exceptions
-@bp.route('/edituser', methods=['GET', 'POST'])
-def edituser():
-    if current_user.is_authenticated:
-        form = EditUserForm()
-        if form.validate_on_submit():
-            User.edituser(current_user.id,
-                          form.email.data,
-                          form.password.data,
-                          form.firstname.data,
-                          form.lastname.data,
-                          form.address.data,
-                          form.balance.data)
-            flash('Congratulations, your information has been updated!')
-            return redirect(url_for('users.profile'))
-        return render_template('edituser.html', title='Edit User', form=form)
-
-
-# normal function
+# # ignore exceptions
 # @bp.route('/edituser', methods=['GET', 'POST'])
 # def edituser():
 #     if current_user.is_authenticated:
 #         form = EditUserForm()
 #         if form.validate_on_submit():
-#             if User.edituser(current_user.id,
-#                             form.email.data,
-#                             form.password.data,
-#                             form.firstname.data,
-#                             form.lastname.data,
-#                             form.address.data,
-#                             form.balance.data):
-#                 flash('Congratulations, your information has been updated!')
-#                 return redirect(url_for('users.profile'))
+#             User.edituser(current_user.id,
+#                           form.email.data,
+#                           form.password.data,
+#                           form.firstname.data,
+#                           form.lastname.data,
+#                           form.address.data,
+#                           form.balance.data)
+#             flash('Congratulations, your information has been updated!')
+#             return redirect(url_for('users.profile'))
 #         return render_template('edituser.html', title='Edit User', form=form)
+
+# normal function
+@bp.route('/edituser', methods=['GET', 'POST'])
+def edituser():
+    if current_user.is_authenticated:
+        form = EditUserForm()
+        if form.validate_on_submit():
+            if User.edituser(current_user.id,
+                            form.email.data,
+                            form.password.data,
+                            form.firstname.data,
+                            form.lastname.data,
+                            form.address.data,
+                            form.balance.data):
+                flash('Congratulations, your information has been updated!')
+                return redirect(url_for('users.profile'))
+        return render_template('edituser.html', title='Edit User', form=form)

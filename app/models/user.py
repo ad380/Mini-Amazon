@@ -121,10 +121,11 @@ FROM Users
     @staticmethod
     def edituser(id, email, password, firstname, lastname, address, balance):
         try:
-            app.db.execute("""
+            rows = app.db.execute("""
 UPDATE Users
 SET email = '{}', password = '{}', firstname = '{}', lastname = '{}', address = '{}', balance ={}
 WHERE id = {}
+RETURNING *
 """.format(
                                   email,
                                   generate_password_hash(password),
@@ -133,7 +134,7 @@ WHERE id = {}
                                   address,
                                   balance,
                                   id))
-            return
+            return rows
         except Exception:
             print("couldn't update user")
             return None
