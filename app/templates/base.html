@@ -51,7 +51,7 @@
       <h1 style="color:aliceblue">Welcome to Dinazon!
        <p><a href="{{ url_for('index.index') }}" type="button" class="btn btn-light">Home</a></p>
       </h1>
-      <a id="cart-btn-wrap" href="google.com" type="button">
+      <a id="cart-btn-wrap" href="{{ url_for('users.cart') }}" type="button">
       <div id="cart-btn"></div>
       </a>
       <div id="login-btn" style="color: aliceblue; text-align: right; margin-bottom: 25px; position:static">
