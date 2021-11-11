@@ -100,7 +100,7 @@ def gen_purchases(num_purchases, available_pids):
 
 
 def get_random_purchases_ratings():
-    ratings = []
+    ratings = dict()
     __location__ = os.path.realpath(
     os.path.join(os.getcwd(), os.path.dirname(__file__)))
     f = open(os.path.join(__location__, 'data/Purchases.csv'))
@@ -114,7 +114,8 @@ def get_random_purchases_ratings():
                 review_ratio = .5 # review_ratio % of purchases actually contain a review
                 if random.random() <= review_ratio:
                     rating = random.choice(RATING_VALS)
-                    ratings.append((pid, uid, rating))
+                    # ratings.append((pid, uid, rating))
+                    ratings[(pid, uid)] = rating
     return ratings
 
 
@@ -124,8 +125,9 @@ def gen_product_reviews():
     # product_id, buyer_id, rating, comment
     with open('ProductReviews.csv', 'w') as f:
         writer = get_csv_writer(f)
-        for r in ratings:
-            product_id, buyer_id, rating = r
+        for r in ratings.keys():
+            product_id, buyer_id = r
+            rating = ratings[product_id, buyer_id]
             comment = ""
             comment_ratio = .5 # comment_ratio % of ratings actually contain a comment
             if random.random() <= comment_ratio:
