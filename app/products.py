@@ -17,10 +17,14 @@ bp = Blueprint('products', __name__)
 def products(pid):
     product = Product.get(pid)
     reviews = ProductReview.get(pid)
+    review_count = ProductReview.get_count(pid)
+    review_avg = round(ProductReview.get_avg(pid), 1)
     return render_template('detailed_product.html', 
                             pid=pid,
                             prod_desc=product.description,
                             prod_name=product.name,
                             prod_price=product.price,
                             prod_quant=product.available_quantity,
-                            reviews=reviews)
+                            reviews=reviews,
+                            review_count=review_count,
+                            review_avg=review_avg)
