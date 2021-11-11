@@ -10,7 +10,7 @@ num_users = 500
 num_sellers = 100
 num_products = 500
 num_purchases = 10000
-RATINGS = [0, 0.5, 1.0, 1.5, 2.0, 2.5,
+RATING_VALS = [0, 0.5, 1.0, 1.5, 2.0, 2.5,
             3.0, 3.5, 4.0, 4.5, 5.0]
 
 Faker.seed(0)
@@ -100,30 +100,47 @@ def gen_purchases(num_purchases, available_pids):
 
 
 def get_random_purchases_ratings():
+    ratings = []
     __location__ = os.path.realpath(
     os.path.join(os.getcwd(), os.path.dirname(__file__)))
     f = open(os.path.join(__location__, 'data/Purchases.csv'))
     with f as csvfile:
-        category = csv.reader(csvfile)
-        for c in category:
-            print(c)
-            id, uid, seller_id, time_purchased, pid, quantity, total_price, fulfilled = c
-            # print(id)
-    return 
+        purchases = csv.reader(csvfile)
+        for purchase in purchases:
+            # First check if purchase fulfilled
+            id, uid, seller_id, time_purchased, pid, \
+                quantity, total_price, fulfilled = purchase
+            if fulfilled == 'f':
+                review_ratio = .5 # review_ratio % of purchases actually contain a review
+                if random.random() <= review_ratio:
+                    rating = random.choice(RATING_VALS)
+                    ratings.append((pid, uid, rating))
+    return ratings
 
 
 def gen_product_reviews():
+    ratings = get_random_purchases_ratings()
+
     # product_id, buyer_id, rating, comment
-    pass
+    with open('ProductReviews.csv', 'w') as f:
+        writer = get_csv_writer(f)
+        for r in ratings:
+            product_id, buyer_id, rating = r
+            comment = ""
+            comment_ratio = .5 # comment_ratio % of ratings actually contain a comment
+            if random.random() <= comment_ratio:
+                comment = fake.paragraph(nb_sentences=6, variable_nb_sentences=True)
+            writer.writerow([product_id, buyer_id, rating, comment[:512], 0])
+    return
 
 def gen_seller_reviews():
     for i in range(num_sellers):
         print(i)    
 
 # gen_users(num_users)
-available_pids = gen_products(num_products)
-gen_purchases(num_purchases, available_pids)
-
+# available_pids = gen_products(num_products)
+# gen_purchases(num_purchases, available_pids)
+# print(get_random_purchases_ratings())
 gen_product_reviews()
 # gen_seller_reviews()
-print(random.choice(RATINGS))
+# print(random.choice(RATINGS))
