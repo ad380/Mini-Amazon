@@ -95,6 +95,30 @@ def gen_purchases(num_purchases, available_pids):
         print(f'{num_purchases} generated')
     return
 
+
+def get_purchases():
+    __location__ = os.path.realpath(
+    os.path.join(os.getcwd(), os.path.dirname(__file__)))
+    f = open(os.path.join(__location__, 'data/Purchases.csv'))
+    with f as csvfile:
+        category = csv.reader(csvfile)
+        for c in category:
+            print(c)
+            id, uid, seller_id, time_purchased, pid, quantity, total_price, fulfilled = c
+            # print(id)
+    return 
+
+
+def gen_product_reviews():
+    pass
+
+def gen_seller_reviews():
+    for i in range(num_sellers):
+        print(i)    
+
 # gen_users(num_users)
-available_pids = gen_products(num_products)
-gen_purchases(num_purchases, available_pids)
+# available_pids = gen_products(num_products)
+# gen_purchases(num_purchases, available_pids)
+get_purchases()
+gen_product_reviews()
+# gen_seller_reviews()
