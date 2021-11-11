@@ -1,7 +1,7 @@
 from flask import render_template
 from flask_login import current_user
 import datetime
-
+from flask_wtf import FlaskForm
 from .models.product import Product
 from .models.purchase import Purchase
 from .models.user import User
@@ -10,7 +10,7 @@ from flask import Blueprint
 bp = Blueprint('inventory', __name__)
 
 
-@bp.route('/inventory')
+@bp.route('/inventory',methods=["POST", "GET"])
 def index():
     # get all available products for sale:
     products = Product.get_all(True)
