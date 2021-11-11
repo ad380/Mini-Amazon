@@ -9,7 +9,9 @@
 <br><br>
 
 <h2>Products for sale:</h2>
-<p><a href="{{ url_for('index.sortedindex') }}" type="button" class="btn btn-light">Sort by Price</a></p>
+<div id="sort-btn" style="color: aliceblue; text-align: right; margin-bottom: 25px; position:static">
+  <a href="{{ url_for('index.sortedindex') }}" type="button" class="btn btn-light">Sort by Price</a>
+</div>
 <table class='table table-hover table-bordered container'>
   <thead class="thead-dark">
     <tr>
