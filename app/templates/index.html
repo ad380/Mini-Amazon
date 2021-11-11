@@ -18,6 +18,7 @@
       <th scope="col">Product ID</th>
       <th scope="col">Product Name</th>
       <th scope="col">Price</th>
+      <th scope="col">Avg Rating</th>
     </tr>
   </thead>
   <tbody>
@@ -26,6 +27,7 @@
         <th scope="row">{{product.id}}</th>
         <td><a href="{{ url_for('products.products', pid=product.id) }}" type="button" class="btn btn-light">{{product.name}}</a></td>
         <td>{{product.price}}</td>
+        <td>{{ round(ProductReview.get_avg(product.id), 1) }}</td>
       </tr>
     {% endfor %}
   </tbody>
