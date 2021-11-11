@@ -93,4 +93,22 @@ ORDER BY price DESC
         return rows[0][0]
 
 
-    
+
+    @staticmethod
+    def addProduct( name, description, price, available_quantity):
+        try:
+            rows = app.db.execute("""
+INSERT INTO Products(name, description, category, image,
+price, available, available_quantity)
+VALUES(:name, :description, misc, None, :price, True, :available_quantity)
+RETURNING id
+""",
+                                  name = name,
+                                  description = description,
+                                  price=price,
+                                  available_quantity=available_quantity)
+            id = rows[0][0]
+            return Product.get(id)
+        except Exception:
+            print("Couldn't add product")
+            return None

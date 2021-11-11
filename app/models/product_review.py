@@ -18,6 +18,7 @@ class ProductReview:
     SELECT *
     FROM ProductReviews
     WHERE product_id = :product_id
+    ORDER BY rating DESC
     ''',
                     product_id=product_id)
         return [ProductReview(*row) for row in rows]
