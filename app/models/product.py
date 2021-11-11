@@ -56,4 +56,18 @@ FROM Products
                               )
         return [row[0] for row in rows]
 
+
+    @staticmethod
+    def get_by_price(available=True):
+        rows = app.db.execute('''
+SELECT id, seller_id, name, description, category, image,
+price, available, available_quantity
+FROM Products
+WHERE available = :available
+ORDER BY price ASC
+''', 
+                            available=available)
+        return [Product(*row) for row in rows]
+
+
     

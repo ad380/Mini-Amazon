@@ -25,3 +25,21 @@ def index():
                            avail_products=products,
                            purchase_history=purchases,
                            sellers=sellers)
+
+@bp.route('/sortedindex')
+def sortedindex():
+    # get all available products for sale and sort them by price
+    products = Product.get_by_price(True)
+    sellers = Product.get_sellers()
+    # find the products current user has bought:
+    if current_user.is_authenticated:
+        purchases = Purchase.get_all_by_uid_since(
+            current_user.id, datetime.datetime(1980, 9, 14, 0, 0, 0))
+    else:
+        purchases = None
+    # render the page by adding information to the index.html file
+    return render_template('index.html',
+                           avail_products=products,
+                           purchase_history=purchases,
+                           sellers=sellers)
+
