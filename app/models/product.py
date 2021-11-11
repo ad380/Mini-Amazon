@@ -70,13 +70,13 @@ ORDER BY price ASC
         return [Product(*row) for row in rows]
 
     @staticmethod
-    def get_by_price_dsc(available=True):
+    def get_by_price_desc(available=True):
         rows = app.db.execute('''
 SELECT id, seller_id, name, description, category, image,
 price, available, available_quantity
 FROM Products
 WHERE available = :available
-ORDER BY price DSC
+ORDER BY price DESC
 ''', 
                             available=available)
         return [Product(*row) for row in rows]

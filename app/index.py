@@ -28,10 +28,10 @@ def index():
 
 @bp.route('/sortedindex/<sortoption>')
 def sortedindex(sortoption):
-    if sortoption == 1:
+    if sortoption == '1':
         products = Product.get_by_price_asc(True)
     else:
-        products = Product.get_by_price_dsc(True)
+        products = Product.get_by_price_desc(True)
 
     sellers = Product.get_sellers()
     
