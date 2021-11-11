@@ -35,8 +35,6 @@
       <th scope="col">Purchase ID</th>
       <th scope="col">Product Name</th>
       <th scope="col">Rating</th>
-      <th scope="col">Review</th>
-      <th scope="col">Time Purchased</th>
     </tr>
   </thead>
   <tbody>
@@ -50,25 +48,29 @@
   </tbody>
 </table>
 
-<!-- <h2>Your ratings/reviews:</h2>
+<h2>Your product ratings/reviews:</h2>
 <table class='table table-hover table-bordered container'>
   <thead class="thead-dark">
     <tr>
       <th scope="col">Product ID</th>
       <th scope="col">Product Name</th>
+      <th scope="col">Rating</th>
+      <th scope="col">Review</th>
       <th scope="col">Time Purchased</th>
     </tr>
   </thead>
   <tbody>
-    {% for purchase in purchase_history%}
+    {% for r in reviews%}
       <tr>
-        <th scope="row">{{purchase.id}}</th>
-        <td>{{purchase.pid}}</td>
-        <td>{{purchase.time_purchased}}</td>
+        <td>{{r.product_id}}</td>
+        <td>{{r.product_id}}</td>
+        <td>{{r.rating}}</td>
+        <td>{{r.comment}}</td>
+        <td>{{r.date}}</td>
       </tr>
     {% endfor %}
   </tbody>
-</table> -->
+</table>
 
 {% endif %}
 

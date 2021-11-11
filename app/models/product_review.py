@@ -54,7 +54,7 @@ class ProductReview:
     SELECT *
     FROM ProductReviews
     WHERE buyer_id = :uid    
-    ORDER BY date
+    ORDER BY date DESC
     ''',
                     uid=uid)
         return [ProductReview(*row) for row in rows]

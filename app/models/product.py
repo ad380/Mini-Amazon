@@ -81,5 +81,16 @@ ORDER BY price DESC
                             available=available)
         return [Product(*row) for row in rows]
 
+    @staticmethod
+    def get_names(pid):
+        #pids is list of pids
+        rows = app.db.execute('''
+    SELECT name
+    FROM Products
+    WHERE id = :pid
+    ''', 
+                            pid=pid)
+        return rows[0][0]
+
 
     
