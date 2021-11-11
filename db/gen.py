@@ -89,12 +89,12 @@ def gen_purchases(num_purchases, available_pids):
             seller_id = available_pids[pid][0]
             time_purchased = fake.date_time()
             quantity = fake.random_int(min=0, max=100)
-            total_price = quantity * float(available_pids[pid][1])
+
             fulfilled = fake.random_element(elements=('f', 'nf'))
             
             # writer.writerow([id, uid, pid, time_purchased])
             writer.writerow([id, uid, seller_id, time_purchased, pid, 
-                    quantity, total_price, fulfilled])
+                    quantity, fulfilled])
         print(f'{num_purchases} generated')
     return
 
@@ -141,8 +141,8 @@ def gen_seller_reviews():
         print(i)    
 
 # gen_users(num_users)
-# available_pids = gen_products(num_products)
-# gen_purchases(num_purchases, available_pids)
+available_pids = gen_products(num_products)
+gen_purchases(num_purchases, available_pids)
 # print(get_random_purchases_ratings())
 gen_product_reviews()
 # gen_seller_reviews()
