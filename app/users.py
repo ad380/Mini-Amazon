@@ -6,6 +6,8 @@ from wtforms import StringField, PasswordField, BooleanField, SubmitField, Decim
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo, InputRequired
 from flask_babel import _, lazy_gettext as _l
 
+from app.models.product_review import ProductReview
+
 from .models.user import User
 
 # imports I've added
@@ -89,6 +91,8 @@ def profile():
     # get all available products for sale:
     products = Product.get_all(True)
     sellers = Product.get_sellers()
+    uid = current_user.id
+    reviews = ProductReview.get_user_reviews(uid)
     # find the products and purchases with the current user as the buyer:
     if current_user.is_authenticated:
         purchases = Purchase.get_all_by_uid_since(
@@ -99,7 +103,8 @@ def profile():
     return render_template('userprofile.html',
                            avail_products=products,
                            purchase_history=purchases,
-                           sellers=sellers)
+                           sellers=sellers,
+                           reviews=reviews)
 
 # make the edit user form
 class EditUserForm(FlaskForm):

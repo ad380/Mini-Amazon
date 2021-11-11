@@ -132,7 +132,8 @@ def gen_product_reviews():
             comment_ratio = .5 # comment_ratio % of ratings actually contain a comment
             if random.random() <= comment_ratio:
                 comment = fake.paragraph(nb_sentences=6, variable_nb_sentences=True)
-            writer.writerow([product_id, buyer_id, rating, comment[:512], 0])
+            date = fake.date_time()
+            writer.writerow([product_id, buyer_id, rating, comment[:512], date, 0])
     return
 
 def gen_seller_reviews():
