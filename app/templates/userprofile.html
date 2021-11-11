@@ -63,7 +63,7 @@
     {% for r in reviews%}
       <tr>
         <td>{{r.product_id}}</td>
-        <td>{{r.product_id}}</td>
+        <td>{{prod_names[loop.index-1]}}</td>
         <td>{{r.rating}}</td>
         <td>{{r.comment}}</td>
         <td>{{r.date}}</td>
