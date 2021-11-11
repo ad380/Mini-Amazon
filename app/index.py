@@ -26,11 +26,15 @@ def index():
                            purchase_history=purchases,
                            sellers=sellers)
 
-@bp.route('/sortedindex')
-def sortedindex():
-    # get all available products for sale and sort them by price
-    products = Product.get_by_price(True)
+@bp.route('/sortedindex/<sortoption>')
+def sortedindex(sortoption):
+    if sortoption == 1:
+        products = Product.get_by_price_asc(True)
+    else:
+        products = Product.get_by_price_dsc(True)
+
     sellers = Product.get_sellers()
+    
     # find the products current user has bought:
     if current_user.is_authenticated:
         purchases = Purchase.get_all_by_uid_since(

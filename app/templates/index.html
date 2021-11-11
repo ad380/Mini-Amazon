@@ -9,9 +9,16 @@
 <br><br>
 
 <h2>Products for sale:</h2>
-<div id="sort-btn" style="color: aliceblue; text-align: right; margin-bottom: 25px; position:static">
-  <a href="{{ url_for('index.sortedindex') }}" type="button" class="btn btn-light">Sort by Price</a>
+
+<div class="dropdown" style="color: aliceblue; text-align: right; margin-bottom: 25px; position:static">
+  <button class="dropbtn">Sort By</button>
+  <div class="dropdown-content">
+    <a href="{{ url_for('index.sortedindex', sortoption=1) }}" type="button" class="btn btn-light">Price Asc</a>
+    <a href="{{ url_for('index.sortedindex', sortoption=2) }}" type="button" class="btn btn-light">Price Dsc</a>
+    <a href="{{ url_for('index.index') }}" type="button" class="btn btn-light">Product ID</a>
+  </div>
 </div>
+
 <table class='table table-hover table-bordered container'>
   <thead class="thead-dark">
     <tr>

@@ -58,13 +58,25 @@ FROM Products
 
 
     @staticmethod
-    def get_by_price(available=True):
+    def get_by_price_asc(available=True):
         rows = app.db.execute('''
 SELECT id, seller_id, name, description, category, image,
 price, available, available_quantity
 FROM Products
 WHERE available = :available
 ORDER BY price ASC
+''', 
+                            available=available)
+        return [Product(*row) for row in rows]
+
+    @staticmethod
+    def get_by_price_dsc(available=True):
+        rows = app.db.execute('''
+SELECT id, seller_id, name, description, category, image,
+price, available, available_quantity
+FROM Products
+WHERE available = :available
+ORDER BY price DSC
 ''', 
                             available=available)
         return [Product(*row) for row in rows]
