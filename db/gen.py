@@ -3,12 +3,15 @@ import csv
 from faker import Faker
 import os
 from flask import current_app as app
+import random
 
 
 num_users = 500
 num_sellers = 100
-num_products = 2000
-num_purchases = 2500
+num_products = 500
+num_purchases = 10000
+RATINGS = [0, 0.5, 1.0, 1.5, 2.0, 2.5,
+            3.0, 3.5, 4.0, 4.5, 5.0]
 
 Faker.seed(0)
 fake = Faker()
@@ -96,7 +99,7 @@ def gen_purchases(num_purchases, available_pids):
     return
 
 
-def get_purchases():
+def get_random_purchases_ratings():
     __location__ = os.path.realpath(
     os.path.join(os.getcwd(), os.path.dirname(__file__)))
     f = open(os.path.join(__location__, 'data/Purchases.csv'))
@@ -110,6 +113,7 @@ def get_purchases():
 
 
 def gen_product_reviews():
+    # product_id, buyer_id, rating, comment
     pass
 
 def gen_seller_reviews():
@@ -117,8 +121,9 @@ def gen_seller_reviews():
         print(i)    
 
 # gen_users(num_users)
-# available_pids = gen_products(num_products)
-# gen_purchases(num_purchases, available_pids)
-get_purchases()
+available_pids = gen_products(num_products)
+gen_purchases(num_purchases, available_pids)
+
 gen_product_reviews()
 # gen_seller_reviews()
+print(random.choice(RATINGS))

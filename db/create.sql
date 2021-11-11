@@ -53,6 +53,7 @@ CREATE TABLE SellerReviews
  buyer_id INTEGER NOT NULL REFERENCES Users(id),
  rating INTEGER NOT NULL CHECK(rating BETWEEN 0 AND 5),
  comment VARCHAR(512),
+ upvotes INTEGER NOT NULL,
  PRIMARY KEY(seller_id, buyer_id)
 );
 
@@ -61,5 +62,6 @@ CREATE TABLE ProductReviews
  buyer_id INTEGER NOT NULL REFERENCES Users(id),
  rating INTEGER NOT NULL CHECK(rating BETWEEN 0 AND 5),
  comment VARCHAR(512),
+ upvotes INTEGER NOT NULL,
  PRIMARY KEY(product_id, buyer_id)
  );
