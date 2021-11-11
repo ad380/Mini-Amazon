@@ -25,6 +25,7 @@ def products(pid):
                             prod_name=product.name,
                             prod_price=product.price,
                             prod_quant=product.available_quantity,
+                            prod_seller=product.seller_id
                             reviews=reviews,
                             review_count=review_count,
                             review_avg=review_avg)
