@@ -56,3 +56,12 @@ FROM Products
                               )
         return [row[0] for row in rows]
 
+    @staticmethod
+    def get_product_sller(id):
+        rows = app.db.execute('''
+SELECT seller_id
+FROM Products
+WHERE id = :id
+''',
+                              id=id)
+        return Product(*(rows[0])) if rows is not None else None

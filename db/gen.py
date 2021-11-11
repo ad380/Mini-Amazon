@@ -1,12 +1,14 @@
 from werkzeug.security import generate_password_hash
 import csv
 from faker import Faker
+import os
+from flask import current_app as app
 
-num_users = 100
-num_sellers = 25
+
+num_users = 500
+num_sellers = 100
 num_products = 2000
 num_purchases = 2500
-categories = ['food', 'clothing', 'gadgets', 'media', 'misc']
 
 Faker.seed(0)
 fake = Faker()
@@ -15,6 +17,16 @@ fake = Faker()
 def get_csv_writer(f):
     return csv.writer(f, dialect='unix')
 
+def get_categories():
+    category_list = []
+    __location__ = os.path.realpath(
+    os.path.join(os.getcwd(), os.path.dirname(__file__)))
+    f = open(os.path.join(__location__, 'data/Category.csv'))
+    with f as csvfile:
+        category = csv.reader(csvfile)
+        for c in category:
+            category_list.append(c[0])
+    return category_list
 
 def gen_users(num_users):
     with open('Users.csv', 'w') as f:
@@ -37,7 +49,7 @@ def gen_users(num_users):
 
 
 def gen_products(num_products):
-    available_pids = []
+    available_pids = dict()
     with open('Products.csv', 'w') as f:
         writer = get_csv_writer(f)
         print('Products...', end=' ', flush=True)
@@ -48,13 +60,14 @@ def gen_products(num_products):
             seller_id = fake.random_int(min=0, max=num_sellers-1)
             name = fake.sentence(nb_words=4)[:-1]
             description = fake.bs()
+            categories = get_categories()
             category = categories[fake.random_int(min=0, max=len(categories)-1)]
             #TODO: CHANGE IMAGE
             image = "IMAGE"
             price = f'{str(fake.random_int(max=500))}.{fake.random_int(max=99):02}'
             available = fake.random_element(elements=('true', 'false'))
             if available == 'true':
-                available_pids.append(pid)
+                available_pids[pid] = (seller_id, price)
                 available_quantity = fake.random_int(min=1, max=500)
             writer.writerow([pid, seller_id, name, description, category, image, price, available, available_quantity])
         print(f'{num_products} generated; {len(available_pids)} available')
@@ -69,12 +82,19 @@ def gen_purchases(num_purchases, available_pids):
             if id % 100 == 0:
                 print(f'{id}', end=' ', flush=True)
             uid = fake.random_int(min=0, max=num_users-1)
-            pid = fake.random_element(elements=available_pids)
+            pid = fake.random_element(elements=available_pids.keys())
+            seller_id = available_pids[pid][0]
             time_purchased = fake.date_time()
-            writer.writerow([id, uid, pid, time_purchased])
+            quantity = fake.random_int(min=0, max=100)
+            total_price = quantity * float(available_pids[pid][1])
+            fulfilled = fake.random_element(elements=('f', 'nf'))
+            
+            # writer.writerow([id, uid, pid, time_purchased])
+            writer.writerow([id, uid, seller_id, time_purchased, pid, 
+                    quantity, total_price, fulfilled])
         print(f'{num_purchases} generated')
     return
 
 # gen_users(num_users)
 available_pids = gen_products(num_products)
-# gen_purchases(num_purchases, available_pids)
+gen_purchases(num_purchases, available_pids)
