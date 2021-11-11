@@ -3,6 +3,12 @@ from flask.templating import render_template_string
 from flask_login import current_user
 import datetime
 
+
+from flask_wtf import FlaskForm
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, DecimalField, IntegerField
+from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
+from flask_babel import _, lazy_gettext as _l
+
 from app.models.product_review import ProductReview
 
 from .models.product import Product
@@ -29,3 +35,27 @@ def products(pid):
                             reviews=reviews,
                             review_count=review_count,
                             review_avg=review_avg)
+
+class ProductForm(FlaskForm):
+    name = StringField(_l('Product Name'), validators=[DataRequired()])
+    price = DecimalField(_l('Price'), validators=[DataRequired()])
+    description = StringField(_l('Product Description'), validators=[DataRequired()])
+    quantity = IntegerField(_l('Quantity'),validators=[DataRequired()] )
+    submit = SubmitField(_l('Add to Inventory'))
+
+
+@bp.route('/products/add', methods=['GET', 'POST'])
+def addProduct():
+    if current_user.is_authenticated:
+        form = ProductForm()
+        if form.validate_on_submit():
+            if Product.addProduct(
+                                  form.name.data,
+                                  form.description.data,
+                                  form.price.data,
+                                  form.quantity.data):
+                flash('Congratualtions, your product has been added')
+                return redirect(url_for('inventory.index'))
+            return render_template('addproduct.html', title='Add Product', form=form)
+        return render_template('addproduct.html', title='Add Product', form=form)
+    return render_template('addproduct.html', title='Add Product', form=form)

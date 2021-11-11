@@ -38,7 +38,6 @@ CREATE TABLE Purchases
  time_purchased TIMESTAMP without time zone NOT NULL DEFAULT (current_timestamp AT TIME ZONE 'UTC'),
  pid INTEGER NOT NULL REFERENCES Products(id),
  quantity INTEGER NOT NULL,
- total_price DECIMAL(12,2) NOT NULL,
  fulfilled VARCHAR(256)
  CHECK(CASE
 	WHEN fulfilled = 'f' THEN TRUE
