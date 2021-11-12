@@ -1,10 +1,15 @@
 # Team Data Dinos
 ## Members and Roles:
 Tess Noonan - Users Guru: responsible for Account / Purchases
+
 Nicki Lee - Products Guru: responsible for Products
+
 Edgardy Reyes - Carts Guru: responsible for Cart / Order
+
 Ankitha Durvasula - Sellers Guru: responsible for Inventory / Order Fulfillment
+
 Kyle Tran - Social Guru: responsible for Feedback / Messaging
+
 ## What Everyone Has Done Since Milestone 2:
 Tess Noonan:
 * Added address field to registering a new user
