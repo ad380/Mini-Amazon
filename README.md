@@ -27,10 +27,7 @@ Edgardy Reyes:
 * Added cart view with subtotal
 
 Ankitha Durvasula:
-* Added sellers only page with:
-Seller Inventory
-Ability to add products
-Order History
+* Added sellers only page with: Seller Inventory; Ability to add products; Order History
 * Updated database design to remove seller’s table and instead find sellers from products
 
 Kyle Tran:
