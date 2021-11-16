@@ -26,6 +26,9 @@
 <p></p>
 <div><a href="{{ url_for('users.edituser') }}">Edit User</a></div>
 
+<p></p>
+<div><a href="{{ url_for('users.privateprofile', uid=current_user.id) }}">View Your Public Profile</a></div>
+
 <br><br>
 
 <h2>Your recent purchases:</h2>

@@ -85,8 +85,8 @@ def logout():
 
 # stuff I've added:
 
-# make the user profile
-@bp.route('/profile')
+# make the private user profile
+@bp.route('/privateprofile')
 def profile():
     # get all available products for sale:
     products = Product.get_all(True)
@@ -109,6 +109,30 @@ def profile():
                            sellers=sellers,
                            reviews=reviews,
                            prod_names=prod_names)
+
+# make the public user profile
+@bp.route('/publicprofile/<uid>')
+def privateprofile(uid):
+    # get all available products for sale:
+    products = Product.get(uid)
+    user = User.get(uid)
+    sellers = Product.get_sellers()
+
+    # right now, we lack seller review functionality. plug in later.
+    # reviews = SellerReview.get(uid)
+    reviews = ProductReview.get(0)
+    reviews_pids = [r.product_id for r in reviews]
+    prod_names = [Product.get_names(pid) for pid in reviews_pids]
+    
+    
+    print(f"names = {prod_names}")
+    # render the page by adding information to the publicprofile.html file
+    return render_template('publicprofile.html',
+                           avail_products=products,
+                           sellers=sellers,
+                           reviews=reviews,
+                           prod_names=prod_names,
+                           user=user)
 
 # make the edit user form
 class EditUserForm(FlaskForm):
