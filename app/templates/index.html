@@ -46,6 +46,7 @@
     <tr>
       <th scope="col">Purchase ID</th>
       <th scope="col">Product ID</th>
+      <th scope="col">Seller ID</th>
       <th scope="col">Time Purchased</th>
     </tr>
   </thead>
@@ -54,6 +55,7 @@
       <tr>
         <th scope="row">{{purchase.id}}</th>
         <td>{{purchase.pid}}</td>
+        <td>{{purchase.seller_id}}</td>
         <td>{{purchase.time_purchased}}</td>
       </tr>
     {% endfor %}
