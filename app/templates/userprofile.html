@@ -32,12 +32,25 @@
 <br><br>
 
 <h2>Your recent purchases:</h2>
+
+<div class="dropdown" style="color: aliceblue; text-align: right; margin-bottom: 25px; position:static">
+  <button class="dropbtn">Sort By</button>
+  <div class="dropdown-content">
+    <a href="{{ url_for('users.profile') }}" type="button" class="btn btn-light">Time Desc</a>
+    <a href="{{ url_for('users.sortedprofile', sortoption=1) }}" type="button" class="btn btn-light">Time Asc</a>
+    <a href="{{ url_for('users.sortedprofile', sortoption=2) }}" type="button" class="btn btn-light">Purchase ID</a>
+    <a href="{{ url_for('users.sortedprofile', sortoption=3) }}" type="button" class="btn btn-light">Product ID</a>
+    <a href="{{ url_for('users.sortedprofile', sortoption=4) }}" type="button" class="btn btn-light">Seller ID</a>
+  </div>
+</div>
+
 <table class='table table-hover table-bordered container'>
   <thead class="thead-dark">
     <tr>
       <th scope="col">Purchase ID</th>
-      <th scope="col">Product Name</th>
-      <th scope="col">Rating</th>
+      <th scope="col">Product ID</th>
+      <th scope="col">Seller ID</th>
+      <th scope="col">Time Purchased</th>
     </tr>
   </thead>
   <tbody>
@@ -45,6 +58,7 @@
       <tr>
         <th scope="row">{{purchase.id}}</th>
         <td>{{purchase.pid}}</td>
+        <td>{{purchase.seller_id}}</td>
         <td>{{purchase.time_purchased}}</td>
       </tr>
     {% endfor %}

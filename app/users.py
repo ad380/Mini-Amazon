@@ -110,6 +110,44 @@ def profile():
                            reviews=reviews,
                            prod_names=prod_names)
 
+# make the private user profile --but sorted
+@bp.route('/sortedprofile/<sortoption>')
+def sortedprofile(sortoption):
+    # get all available products for sale:
+    products = Product.get_all(True)
+    sellers = Product.get_sellers()
+    uid = current_user.id
+    reviews = ProductReview.get_user_reviews(uid)
+    reviews_pids = [r.product_id for r in reviews]
+    prod_names = [Product.get_names(pid) for pid in reviews_pids]
+    print(f"names = {prod_names}")
+    # find the products and purchases with the current user as the buyer:
+    if current_user.is_authenticated:
+        if sortoption == '1':
+            purchases = Purchase.get_all_by_uid_since_asc(
+                current_user.id, datetime.datetime(1980, 9, 14, 0, 0, 0))
+        elif sortoption == '2':
+            purchases = Purchase.get_all_by_uid_since_by_id(
+                current_user.id, datetime.datetime(1980, 9, 14, 0, 0, 0))
+        elif sortoption == '3':
+            purchases = Purchase.get_all_by_uid_since_by_pid(
+                current_user.id, datetime.datetime(1980, 9, 14, 0, 0, 0))
+        elif sortoption == '4':
+            purchases = Purchase.get_all_by_uid_since_by_seller_id(
+                current_user.id, datetime.datetime(1980, 9, 14, 0, 0, 0))
+        else:
+            purchases = Purchase.get_all_by_uid_since(
+                current_user.id, datetime.datetime(1980, 9, 14, 0, 0, 0))
+    else:
+        purchases = None
+    # render the page by adding information to the userprofile.html file
+    return render_template('userprofile.html',
+                           avail_products=products,
+                           purchase_history=purchases,
+                           sellers=sellers,
+                           reviews=reviews,
+                           prod_names=prod_names)
+
 # make the public user profile
 @bp.route('/publicprofile/<uid>')
 def privateprofile(uid):

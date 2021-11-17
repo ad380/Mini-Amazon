@@ -51,3 +51,61 @@ ORDER BY time_purchased DESC
 ''',
                               seller_id=seller_id)
         return [Purchase(*row) for row in rows]
+
+# methods Tess has added
+
+# get all purchases by time ascending (chronological)
+    @staticmethod
+    def get_all_by_uid_since_asc(uid, since):
+        rows = app.db.execute('''
+SELECT id, uid, seller_id, time_purchased, pid, quantity, fulfilled
+FROM Purchases
+WHERE uid = :uid
+AND time_purchased >= :since
+ORDER BY time_purchased
+''',
+                              uid=uid,
+                              since=since)
+        return [Purchase(*row) for row in rows]
+
+# get all purchases by purchase id
+    @staticmethod
+    def get_all_by_uid_since_by_id(uid, since):
+        rows = app.db.execute('''
+SELECT id, uid, seller_id, time_purchased, pid, quantity, fulfilled
+FROM Purchases
+WHERE uid = :uid
+AND time_purchased >= :since
+ORDER BY id
+''',
+                              uid=uid,
+                              since=since)
+        return [Purchase(*row) for row in rows]
+
+# get all purchases by product id
+    @staticmethod
+    def get_all_by_uid_since_by_pid(uid, since):
+        rows = app.db.execute('''
+SELECT id, uid, seller_id, time_purchased, pid, quantity, fulfilled
+FROM Purchases
+WHERE uid = :uid
+AND time_purchased >= :since
+ORDER BY pid
+''',
+                              uid=uid,
+                              since=since)
+        return [Purchase(*row) for row in rows]
+
+# get all purchases by seller_id
+    @staticmethod
+    def get_all_by_uid_since_by_seller_id(uid, since):
+        rows = app.db.execute('''
+SELECT id, uid, seller_id, time_purchased, pid, quantity, fulfilled
+FROM Purchases
+WHERE uid = :uid
+AND time_purchased >= :since
+ORDER BY seller_id
+''',
+                              uid=uid,
+                              since=since)
+        return [Purchase(*row) for row in rows]
