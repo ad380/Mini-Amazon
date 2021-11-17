@@ -1,0 +1,49 @@
+<!-- This is the public user profile (not the private view) -->
+
+{% extends "base.html" %}
+
+{% block content %}
+
+<br><br>
+
+<h2 style="text-align: center">Public User Profile</h2>
+
+<div>Name: {{user.firstname}} {{user.lastname}}</div>
+
+<div>Account number: {{user.id}}</div>
+
+{% if user.id in sellers %}
+
+<div>Email: {{user.email}}</div>
+
+<div>Address: {{user.address}}</div>
+
+<br><br>
+
+<h2>Seller ratings/reviews:</h2>
+<table class='table table-hover table-bordered container'>
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">Product ID</th>
+      <th scope="col">Product Name</th>
+      <th scope="col">Rating</th>
+      <th scope="col">Review</th>
+      <th scope="col">Time Purchased</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for r in reviews%}
+      <tr>
+        <td>{{r.product_id}}</td>
+        <td>{{prod_names[loop.index-1]}}</td>
+        <td>{{r.rating}}</td>
+        <td>{{r.comment}}</td>
+        <td>{{r.date}}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% endif %}
+
+{% endblock %}

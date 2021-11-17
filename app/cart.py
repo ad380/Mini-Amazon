@@ -3,6 +3,7 @@ from flask_login import current_user
 from flask import Blueprint
 import psycopg2
 import psycopg2.extras
+import os
 
 bp = Blueprint('cart', __name__)
 
@@ -11,9 +12,9 @@ bp = Blueprint('cart', __name__)
 #     return render_template('cart.html', title='Cart')
 
 DB_HOST = "localhost"
-DB_NAME = "amazon"
-DB_USER = "edgardy17"
-DB_PASS = "dbpasswd"
+DB_NAME = os.environ.get('DB_NAME')
+DB_USER = os.environ.get('DB_USER')
+DB_PASS = os.environ.get('DB_PASSWORD')
  
 conn = psycopg2.connect(dbname=DB_NAME, user=DB_USER, password=DB_PASS, host=DB_HOST)
  

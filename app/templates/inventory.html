@@ -44,7 +44,8 @@
   <tbody>
     {% for purchase in purchase_history%}
       <tr>
-        <th scope="row">{{purchase.bfname+' '+purchase.blname}}</th>
+        <!-- <th scope="row">{{purchase.bfname+' '+purchase.blname}}</th> -->
+        <td><a href="{{ url_for('users.privateprofile', uid=purchase.uid) }}" type="button" class="btn btn-light">{{purchase.bfname+' '+purchase.blname}}</a></td>
         <td>{{purchase.baddress}}</td>
         <td>{{purchase.time_purchased}}</td>
         <td>{{purchase.pid}}</td>
