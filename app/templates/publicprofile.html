@@ -20,22 +20,20 @@
 
 <br><br>
 
-<h2>Seller ratings/reviews:</h2>
+<h2>Seller Reviews: {{review_avg}}/5.0 ({{review_count}})</h2>
 <table class='table table-hover table-bordered container'>
   <thead class="thead-dark">
     <tr>
-      <th scope="col">Product ID</th>
-      <th scope="col">Product Name</th>
-      <th scope="col">Rating</th>
-      <th scope="col">Review</th>
-      <th scope="col">Time Purchased</th>
+      <th scope="col">uid</th>
+      <th scope="col">rating</th>
+      <th scope="col">comment</th>
+      <th scope="col">date</th>
     </tr>
   </thead>
   <tbody>
     {% for r in reviews%}
       <tr>
-        <td>{{r.product_id}}</td>
-        <td>{{prod_names[loop.index-1]}}</td>
+        <td>{{r.buyer_id}}</td>
         <td>{{r.rating}}</td>
         <td>{{r.comment}}</td>
         <td>{{r.date}}</td>
