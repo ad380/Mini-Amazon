@@ -91,7 +91,7 @@ def gen_purchases(num_purchases, available_pids):
             while uid == seller_id: # make sure a user doesn't buy product from themself
                 uid = fake.random_int(min=0, max=num_users-1)
 
-            time_purchased = fake.date_time()
+            time_purchased = fake.date_time_ad(start_datetime=datetime(1980, 9, 14, 0, 0, 0))
             quantity = fake.random_int(min=0, max=100)
 
             fulfilled = fake.random_element(elements=('f', 'nf'))
@@ -182,7 +182,7 @@ def gen_seller_reviews():
 # gen_users(num_users)
 # available_pids = gen_products(num_products)
 # gen_purchases(num_purchases, available_pids)
-# gen_product_reviews()
+gen_product_reviews()
 gen_seller_reviews()
 # print(random.choice(RATINGS))
 # print(get_random_seller_ratings())
