@@ -85,9 +85,12 @@ def gen_purchases(num_purchases, available_pids):
         for id in range(num_purchases):
             if id % 100 == 0:
                 print(f'{id}', end=' ', flush=True)
-            uid = fake.random_int(min=0, max=num_users-1)
             pid = fake.random_element(elements=available_pids.keys())
             seller_id = available_pids[pid][0]
+            uid = fake.random_int(min=0, max=num_users-1)
+            while uid == seller_id: # make sure a user doesn't buy product from themself
+                uid = fake.random_int(min=0, max=num_users-1)
+
             time_purchased = fake.date_time()
             quantity = fake.random_int(min=0, max=100)
 
@@ -172,14 +175,13 @@ def gen_seller_reviews():
             if random.random() <= comment_ratio:
                 comment = fake.paragraph(nb_sentences=6, variable_nb_sentences=True)
             # make sure time of seller review happens after product is purchased from that seller
-            date = fake.date_between(datetime.fromisoformat(time_purchased))
+            date = fake.date_time_ad(start_datetime=datetime.fromisoformat(time_purchased))
             writer.writerow([seller_id, buyer_id, rating, comment[:512], date, 0])
     return
 
 # gen_users(num_users)
 # available_pids = gen_products(num_products)
 # gen_purchases(num_purchases, available_pids)
-# print(get_random_purchases_ratings())
 # gen_product_reviews()
 gen_seller_reviews()
 # print(random.choice(RATINGS))
