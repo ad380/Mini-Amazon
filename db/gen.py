@@ -109,7 +109,7 @@ def get_random_purchases_ratings():
         for purchase in purchases:
             # First check if purchase fulfilled
             id, uid, seller_id, time_purchased, pid, \
-                quantity, total_price, fulfilled = purchase
+                quantity, fulfilled = purchase
             if fulfilled == 'f':
                 review_ratio = .5 # review_ratio % of purchases actually contain a review
                 if random.random() <= review_ratio:
@@ -127,7 +127,7 @@ def gen_product_reviews():
         writer = get_csv_writer(f)
         for r in ratings.keys():
             product_id, buyer_id = r
-            rating = ratings[product_id, buyer_id]
+            rating = ratings[r]
             comment = ""
             comment_ratio = .5 # comment_ratio % of ratings actually contain a comment
             if random.random() <= comment_ratio:
@@ -136,14 +136,47 @@ def gen_product_reviews():
             writer.writerow([product_id, buyer_id, rating, comment[:512], date, 0])
     return
 
+def get_random_seller_ratings():
+    ratings = dict()
+    __location__ = os.path.realpath(
+    os.path.join(os.getcwd(), os.path.dirname(__file__)))
+    f = open(os.path.join(__location__, 'data/Purchases.csv'))
+    with f as csvfile:
+        purchases = csv.reader(csvfile)
+        for purchase in purchases:
+            # First check if purchase fulfilled
+            id, uid, seller_id, time_purchased, pid, quantity, fulfilled = purchase
+            if fulfilled == 'f':
+                review_ratio = .25 # review_ratio % of purchases actually contain a review
+                if random.random() <= review_ratio:
+                    rating = random.choice(RATING_VALS)
+                    # ratings.append((pid, uid, rating))
+                    ratings[(seller_id, uid)] = rating
+    return ratings   
+
+
 def gen_seller_reviews():
-    for i in range(num_sellers):
-        print(i)    
+    ratings = get_random_seller_ratings()
+
+    # product_id, buyer_id, rating, comment
+    with open('SellerReviews.csv', 'w') as f:
+        writer = get_csv_writer(f)
+        for r in ratings.keys():
+            seller_id, buyer_id = r
+            rating = ratings[r]
+            comment = ""
+            comment_ratio = .75 # comment_ratio % of ratings actually contain a comment
+            if random.random() <= comment_ratio:
+                comment = fake.paragraph(nb_sentences=6, variable_nb_sentences=True)
+            date = fake.date_time()
+            writer.writerow([seller_id, buyer_id, rating, comment[:512], date, 0])
+    return
 
 # gen_users(num_users)
-available_pids = gen_products(num_products)
-gen_purchases(num_purchases, available_pids)
+# available_pids = gen_products(num_products)
+# gen_purchases(num_purchases, available_pids)
 # print(get_random_purchases_ratings())
-gen_product_reviews()
-# gen_seller_reviews()
+# gen_product_reviews()
+gen_seller_reviews()
 # print(random.choice(RATINGS))
+# print(get_random_seller_ratings())
