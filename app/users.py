@@ -93,10 +93,14 @@ def profile():
     products = Product.get_all(True)
     sellers = Product.get_sellers()
     uid = current_user.id
-    reviews = ProductReview.get_user_reviews(uid)
-    reviews_pids = [r.product_id for r in reviews]
+    prod_reviews = ProductReview.get_user_reviews(uid)
+    reviews_pids = [r.product_id for r in prod_reviews]
     prod_names = [Product.get_names(pid) for pid in reviews_pids]
-    print(f"names = {prod_names}")
+   
+    seller_reviews = SellerReview.get_user_reviews(uid)
+    seller_ids = [r.seller_id for r in seller_reviews]
+    seller_names = [User.get_name(id) for id in seller_ids]
+
     # find the products and purchases with the current user as the buyer:
     if current_user.is_authenticated:
         purchases = Purchase.get_all_by_uid_since(
@@ -108,8 +112,10 @@ def profile():
                            avail_products=products,
                            purchase_history=purchases,
                            sellers=sellers,
-                           reviews=reviews,
-                           prod_names=prod_names)
+                           prod_reviews=prod_reviews,
+                           prod_names=prod_names,
+                           seller_reviews=seller_reviews,
+                           seller_names=seller_names)
 
 # make the private user profile --but sorted
 @bp.route('/sortedprofile/<sortoption>')
