@@ -103,3 +103,14 @@ RETURNING *
         except Exception:
             print("couldn't update user")
             return None
+
+    @staticmethod
+    def get_name(uid):
+        # Returns uid's first and last name
+        rows = app.db.execute('''
+    SELECT firstname, lastname
+    FROM Users
+    WHERE id=:uid
+    ''', 
+                            uid=uid)
+        return f"{rows[0][0]} {rows[0][1]}"

@@ -4,6 +4,7 @@ from faker import Faker
 import os
 from flask import current_app as app
 import random
+from datetime import datetime
 
 
 num_users = 500
@@ -84,10 +85,13 @@ def gen_purchases(num_purchases, available_pids):
         for id in range(num_purchases):
             if id % 100 == 0:
                 print(f'{id}', end=' ', flush=True)
-            uid = fake.random_int(min=0, max=num_users-1)
             pid = fake.random_element(elements=available_pids.keys())
             seller_id = available_pids[pid][0]
-            time_purchased = fake.date_time()
+            uid = fake.random_int(min=0, max=num_users-1)
+            while uid == seller_id: # make sure a user doesn't buy product from themself
+                uid = fake.random_int(min=0, max=num_users-1)
+
+            time_purchased = fake.date_time_ad(start_datetime=datetime(1980, 9, 14, 0, 0, 0))
             quantity = fake.random_int(min=0, max=100)
 
             fulfilled = fake.random_element(elements=('f', 'nf'))
@@ -109,7 +113,7 @@ def get_random_purchases_ratings():
         for purchase in purchases:
             # First check if purchase fulfilled
             id, uid, seller_id, time_purchased, pid, \
-                quantity, total_price, fulfilled = purchase
+                quantity, fulfilled = purchase
             if fulfilled == 'f':
                 review_ratio = .5 # review_ratio % of purchases actually contain a review
                 if random.random() <= review_ratio:
@@ -127,7 +131,7 @@ def gen_product_reviews():
         writer = get_csv_writer(f)
         for r in ratings.keys():
             product_id, buyer_id = r
-            rating = ratings[product_id, buyer_id]
+            rating = ratings[r]
             comment = ""
             comment_ratio = .5 # comment_ratio % of ratings actually contain a comment
             if random.random() <= comment_ratio:
@@ -136,14 +140,49 @@ def gen_product_reviews():
             writer.writerow([product_id, buyer_id, rating, comment[:512], date, 0])
     return
 
+def get_random_seller_ratings():
+    ratings = dict()
+    __location__ = os.path.realpath(
+    os.path.join(os.getcwd(), os.path.dirname(__file__)))
+    f = open(os.path.join(__location__, 'data/Purchases.csv'))
+    with f as csvfile:
+        purchases = csv.reader(csvfile)
+        for purchase in purchases:
+            # First check if purchase fulfilled
+            id, uid, seller_id, time_purchased, pid, quantity, fulfilled = purchase
+            if fulfilled == 'f':
+                review_ratio = .7 # review_ratio % of purchases actually contain a review
+                if random.random() <= review_ratio:
+                    rating = random.choice(RATING_VALS)
+                    # ratings.append((pid, uid, rating))
+                    #dictionary enforces key value constraint
+                    ratings[(seller_id, uid)] = (rating, time_purchased)
+    return ratings   
+
+
 def gen_seller_reviews():
-    for i in range(num_sellers):
-        print(i)    
+    ratings = get_random_seller_ratings()
+
+    # product_id, buyer_id, rating, comment
+    with open('SellerReviews.csv', 'w') as f:
+        writer = get_csv_writer(f)
+        for r in ratings.keys():
+            seller_id, buyer_id, = r
+            rating = ratings[r][0]
+            time_purchased = ratings[r][1]
+            comment = ""
+            comment_ratio = .75 # comment_ratio % of ratings actually contain a comment
+            if random.random() <= comment_ratio:
+                comment = fake.paragraph(nb_sentences=6, variable_nb_sentences=True)
+            # make sure time of seller review happens after product is purchased from that seller
+            date = fake.date_time_ad(start_datetime=datetime.fromisoformat(time_purchased))
+            writer.writerow([seller_id, buyer_id, rating, comment[:512], date, 0])
+    return
 
 # gen_users(num_users)
-available_pids = gen_products(num_products)
-gen_purchases(num_purchases, available_pids)
-# print(get_random_purchases_ratings())
+# available_pids = gen_products(num_products)
+# gen_purchases(num_purchases, available_pids)
 gen_product_reviews()
-# gen_seller_reviews()
+gen_seller_reviews()
 # print(random.choice(RATINGS))
+# print(get_random_seller_ratings())

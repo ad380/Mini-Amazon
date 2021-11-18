@@ -7,6 +7,7 @@ from wtforms.validators import ValidationError, DataRequired, Email, EqualTo, In
 from flask_babel import _, lazy_gettext as _l
 
 from app.models.product_review import ProductReview
+from app.models.seller_review import SellerReview
 
 from .models.user import User
 
@@ -92,10 +93,14 @@ def profile():
     products = Product.get_all(True)
     sellers = Product.get_sellers()
     uid = current_user.id
-    reviews = ProductReview.get_user_reviews(uid)
-    reviews_pids = [r.product_id for r in reviews]
+    prod_reviews = ProductReview.get_user_reviews(uid)
+    reviews_pids = [r.product_id for r in prod_reviews]
     prod_names = [Product.get_names(pid) for pid in reviews_pids]
-    print(f"names = {prod_names}")
+   
+    seller_reviews = SellerReview.get_user_reviews(uid)
+    seller_ids = [r.seller_id for r in seller_reviews]
+    seller_names = [User.get_name(id) for id in seller_ids]
+
     # find the products and purchases with the current user as the buyer:
     if current_user.is_authenticated:
         purchases = Purchase.get_all_by_uid_since(
@@ -107,8 +112,10 @@ def profile():
                            avail_products=products,
                            purchase_history=purchases,
                            sellers=sellers,
-                           reviews=reviews,
-                           prod_names=prod_names)
+                           prod_reviews=prod_reviews,
+                           prod_names=prod_names,
+                           seller_reviews=seller_reviews,
+                           seller_names=seller_names)
 
 # make the private user profile --but sorted
 @bp.route('/sortedprofile/<sortoption>')
@@ -117,10 +124,15 @@ def sortedprofile(sortoption):
     products = Product.get_all(True)
     sellers = Product.get_sellers()
     uid = current_user.id
-    reviews = ProductReview.get_user_reviews(uid)
-    reviews_pids = [r.product_id for r in reviews]
+
+    prod_reviews = ProductReview.get_user_reviews(uid)
+    reviews_pids = [r.product_id for r in prod_reviews]
     prod_names = [Product.get_names(pid) for pid in reviews_pids]
-    print(f"names = {prod_names}")
+   
+    seller_reviews = SellerReview.get_user_reviews(uid)
+    seller_ids = [r.seller_id for r in seller_reviews]
+    seller_names = [User.get_name(id) for id in seller_ids]
+
     # find the products and purchases with the current user as the buyer:
     if current_user.is_authenticated:
         if sortoption == '1':
@@ -145,8 +157,10 @@ def sortedprofile(sortoption):
                            avail_products=products,
                            purchase_history=purchases,
                            sellers=sellers,
-                           reviews=reviews,
-                           prod_names=prod_names)
+                           prod_reviews=prod_reviews,
+                           prod_names=prod_names,
+                           seller_reviews=seller_reviews,
+                           seller_names=seller_names)
 
 # make the public user profile
 @bp.route('/publicprofile/<uid>')
@@ -156,20 +170,25 @@ def privateprofile(uid):
     user = User.get(uid)
     sellers = Product.get_sellers()
 
-    # right now, we lack seller review functionality. plug in later.
-    # reviews = SellerReview.get(uid)
-    reviews = ProductReview.get(0)
-    reviews_pids = [r.product_id for r in reviews]
-    prod_names = [Product.get_names(pid) for pid in reviews_pids]
-    
-    
-    print(f"names = {prod_names}")
+    reviews = SellerReview.get(uid)
+    print(f"reviews = {reviews}")
+    reviews_count = SellerReview.get_count(uid)
+    # review_avg = round(SellerReview.get_avg(uid), 1)
+    avg = SellerReview.get_avg(uid)
+    review_avg = 0
+    if avg is not None:
+        review_avg = round(avg, 1)
+    # reviews = ProductReview.get(0)
+    # reviews_pids = [r.product_id for r in reviews]
+    # prod_names = [Product.get_names(pid) for pid in reviews_pids]
+
     # render the page by adding information to the publicprofile.html file
     return render_template('publicprofile.html',
                            avail_products=products,
                            sellers=sellers,
                            reviews=reviews,
-                           prod_names=prod_names,
+                           review_count=reviews_count,
+                           review_avg=review_avg,
                            user=user)
 
 # make the edit user form
