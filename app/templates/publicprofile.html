@@ -8,9 +8,13 @@
 
 <h2 style="text-align: center">Public User Profile</h2>
 
+<!-- Display publically revalent user information -->
+
 <div>Name: {{user.firstname}} {{user.lastname}}</div>
 
 <div>Account number: {{user.id}}</div>
+
+<!-- if seller, also display email, address, and reviews -->
 
 {% if user.id in sellers %}
 
@@ -20,11 +24,13 @@
 
 <br><br>
 
+<!-- these are reviews of this user/seller by other users -->
+
 <h2>Seller Reviews: {{review_avg}}/5.0 ({{review_count}})</h2>
 <table class='table table-hover table-bordered container'>
   <thead class="thead-dark">
     <tr>
-      <th scope="col">uid</th>
+      <th scope="col">buyer id</th>
       <th scope="col">rating</th>
       <th scope="col">comment</th>
       <th scope="col">date</th>
