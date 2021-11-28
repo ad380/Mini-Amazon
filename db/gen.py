@@ -32,6 +32,7 @@ def get_categories():
             category_list.append(c[0])
     return category_list
 
+# randomly generate users
 def gen_users(num_users):
     with open('Users.csv', 'w') as f:
         writer = get_csv_writer(f)

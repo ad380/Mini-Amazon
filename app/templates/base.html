@@ -55,8 +55,10 @@
       <div id="cart-btn"></div>
       </a>
       <div id="login-btn" style="color: aliceblue; text-align: right; margin-bottom: 25px; position:static">
+        <!-- display user name, link to their private profile, or offer logout -->
         {% if current_user.is_authenticated %}
-          Hello <a href="{{ url_for('users.profile') }}" type="button" class="btn btn-light">{{current_user.firstname}}</a>! <a href="{{ url_for('users.logout') }}" type="button" class="btn btn-light">Log out</a>
+          Hello <a href="{{ url_for('users.sortedprofile', sortoption=0) }}" type="button" class="btn btn-light">{{current_user.firstname}}</a>! <a href="{{ url_for('users.logout') }}" type="button" class="btn btn-light">Log out</a>
+        <!-- display log in button -->
         {% else %}
           <a href="{{ url_for('users.login') }}" type="button" class="btn btn-light">Log in</a>
         {% endif %}

@@ -81,8 +81,7 @@ FROM Users
         return rows
 
 
-# Alter user information
-
+    # update user info with the passed values, but id is same as before to find table entry
     @staticmethod
     def edituser(id, email, password, firstname, lastname, address, balance):
         try:

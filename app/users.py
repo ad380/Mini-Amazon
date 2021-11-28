@@ -11,7 +11,7 @@ from app.models.seller_review import SellerReview
 
 from .models.user import User
 
-# imports I've added
+# imports I've added beyond the skeleton
 from .models.product import Product
 from .models.purchase import Purchase
 import datetime
@@ -84,40 +84,9 @@ def logout():
     logout_user()
     return redirect(url_for('index.index'))
 
-# stuff I've added:
+# code I've added beyond the skeleton
 
-# make the private user profile
-@bp.route('/privateprofile')
-def profile():
-    # get all available products for sale:
-    products = Product.get_all(True)
-    sellers = Product.get_sellers()
-    uid = current_user.id
-    prod_reviews = ProductReview.get_user_reviews(uid)
-    reviews_pids = [r.product_id for r in prod_reviews]
-    prod_names = [Product.get_names(pid) for pid in reviews_pids]
-   
-    seller_reviews = SellerReview.get_user_reviews(uid)
-    seller_ids = [r.seller_id for r in seller_reviews]
-    seller_names = [User.get_name(id) for id in seller_ids]
-
-    # find the products and purchases with the current user as the buyer:
-    if current_user.is_authenticated:
-        purchases = Purchase.get_all_by_uid_since(
-            current_user.id, datetime.datetime(1980, 9, 14, 0, 0, 0))
-    else:
-        purchases = None
-    # render the page by adding information to the userprofile.html file
-    return render_template('userprofile.html',
-                           avail_products=products,
-                           purchase_history=purchases,
-                           sellers=sellers,
-                           prod_reviews=prod_reviews,
-                           prod_names=prod_names,
-                           seller_reviews=seller_reviews,
-                           seller_names=seller_names)
-
-# make the private user profile --but sorted
+# make the private user profile with ability to sort purchases
 @bp.route('/sortedprofile/<sortoption>')
 def sortedprofile(sortoption):
     # get all available products for sale:
@@ -135,19 +104,22 @@ def sortedprofile(sortoption):
 
     # find the products and purchases with the current user as the buyer:
     if current_user.is_authenticated:
-        if sortoption == '1':
+        if sortoption == '0':       # sort by date purchased, descending
+            purchases = Purchase.get_all_by_uid_since(
+                current_user.id, datetime.datetime(1980, 9, 14, 0, 0, 0))
+        elif sortoption == '1':     # sort by date purchased, ascending
             purchases = Purchase.get_all_by_uid_since_asc(
                 current_user.id, datetime.datetime(1980, 9, 14, 0, 0, 0))
-        elif sortoption == '2':
+        elif sortoption == '2':     # sort by purchase id
             purchases = Purchase.get_all_by_uid_since_by_id(
                 current_user.id, datetime.datetime(1980, 9, 14, 0, 0, 0))
-        elif sortoption == '3':
+        elif sortoption == '3':     # sort by product id
             purchases = Purchase.get_all_by_uid_since_by_pid(
                 current_user.id, datetime.datetime(1980, 9, 14, 0, 0, 0))
-        elif sortoption == '4':
+        elif sortoption == '4':     # sort by seller id
             purchases = Purchase.get_all_by_uid_since_by_seller_id(
                 current_user.id, datetime.datetime(1980, 9, 14, 0, 0, 0))
-        else:
+        else: # if an invalid sortoption is passed, sort by date purchased, descending
             purchases = Purchase.get_all_by_uid_since(
                 current_user.id, datetime.datetime(1980, 9, 14, 0, 0, 0))
     else:
@@ -222,6 +194,5 @@ def edituser():
                             form.lastname.data,
                             form.address.data,
                             form.balance.data):
-                flash('Congratulations, your information has been updated!')
                 return redirect(url_for('users.profile'))
         return render_template('edituser.html', title='Edit User', form=form)
