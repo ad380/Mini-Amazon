@@ -59,3 +59,31 @@ class ProductReview:
     ''',
                     uid=uid)
         return [ProductReview(*row) for row in rows]
+
+    @staticmethod
+    def get_stars(avg, half=False):
+        """Return list of size 5 representing how many stars
+        should be shown for review
+        -1 = empty, 0 = half, 1 = full
+        """
+        dec = avg % 1 #number after decimal
+        full = int(avg) #number before decimal
+        tail = [-1 for i in range(4 - full)] #for padding rest of list with 0s
+
+        if 0.25 < dec and dec <= 0.75:
+            # When decimal value in this range, we have half star
+            half = True
+
+        stars = [1 for i in range(int(avg))]
+        if half:
+            stars.append(0)
+        elif dec < 0.25:
+            stars.append(-1)
+        else:
+            stars.append(1)
+        stars += tail
+
+        return stars
+        
+        
+        
