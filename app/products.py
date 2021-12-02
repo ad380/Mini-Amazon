@@ -43,7 +43,7 @@ class ProductForm(FlaskForm):
     name = StringField(_l('Product Name'), validators=[DataRequired()])
     price = DecimalField(_l('Price'), validators=[DataRequired()])
     description = StringField(_l('Product Description'), validators=[DataRequired()])
-    category = SelectField(u'Category', choices = categories, validators = [Required()])
+    category = SelectField(u'Category', choices = categories, validators = [DataRequired()])
     quantity = IntegerField(_l('Quantity'),validators=[DataRequired()] )
     submit = SubmitField(_l('Add to Inventory'))
 
