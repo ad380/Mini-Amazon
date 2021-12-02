@@ -28,12 +28,11 @@ def index():
 
 @bp.route('/sortedindex/<sortoption>/<page_num>')
 def sortedindex(sortoption, page_num=1):
+    offset = (int(page_num) - 1) * 50
     if sortoption == '1':
-        products = Product.get_by_price_asc(True)
+        products = Product.get_by_price_asc(True, offset)
     else:
-        # products = Product.get_by_price_desc(True)
-        offset = (int(page_num) - 1) * 50
-        products = Product.get_some(offset=offset)
+        products = Product.get_by_price_desc(True, offset)
 
     sellers = Product.get_sellers()
     
@@ -49,20 +48,21 @@ def sortedindex(sortoption, page_num=1):
                            purchase_history=purchases,
                            sellers=sellers)
 
-@bp.route('/categorizedindex/<category>')
-def categorizedindex(category):
+@bp.route('/categorizedindex/<category>/<page_num>')
+def categorizedindex(category, page_num):
+    offset = (int(page_num) - 1) * 50
     if category == '1':
-        products = Product.get_by_category(category='clothing')
+        products = Product.get_by_category(category='clothing', offset=offset)
     elif category == '2':
-        products = Product.get_by_category(category='food')
+        products = Product.get_by_category(category='food', offset=offset)
     elif category == '3':
-        products = Product.get_by_category(category='gadgets')
+        products = Product.get_by_category(category='gadgets', offset=offset)
     elif category == '4':
-        products = Product.get_by_category(category='media')
+        products = Product.get_by_category(category='media', offset=offset)
     elif category == '5':
-        products = Product.get_by_category(category='misc')
+        products = Product.get_by_category(category='misc', offset=offset)
     else:
-        products = Product.get_all(True)
+        products = Product.get_some()
 
     sellers = Product.get_sellers()
     

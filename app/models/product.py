@@ -38,17 +38,16 @@ WHERE available = :available
 
     #this gets 100 products with the given offset for pagination
     @staticmethod
-    def get_some(available=True, limit=50, offset=0):
+    def get_some(available=True, offset=0):
         rows = app.db.execute('''
 SELECT id, seller_id, name, description, category, image,
 price, available, available_quantity
 FROM Products
 WHERE available = :available
-LIMIT :limit
+LIMIT 50
 OFFSET :offset
 ''',
                               available=available,
-                              limit=limit,
                               offset=offset)
         return [Product(*row) for row in rows]
 
@@ -74,38 +73,47 @@ FROM Products
 
 
     @staticmethod
-    def get_by_price_asc(available=True):
+    def get_by_price_asc(available=True, offset=0):
         rows = app.db.execute('''
 SELECT id, seller_id, name, description, category, image,
 price, available, available_quantity
 FROM Products
 WHERE available = :available
 ORDER BY price ASC
+LIMIT 50
+OFFSET :offset
 ''', 
-                            available=available)
+                            available=available,
+                            offset=offset)
         return [Product(*row) for row in rows]
 
     @staticmethod
-    def get_by_price_desc(available=True):
+    def get_by_price_desc(available=True, offset=0):
         rows = app.db.execute('''
 SELECT id, seller_id, name, description, category, image,
 price, available, available_quantity
 FROM Products
 WHERE available = :available
 ORDER BY price DESC
+LIMIT 50
+OFFSET :offset
 ''', 
-                            available=available)
+                            available=available,
+                            offset=offset)
         return [Product(*row) for row in rows]
 
     @staticmethod
-    def get_by_category(category):
+    def get_by_category(category, offset=0):
         rows = app.db.execute('''
 SELECT id, seller_id, name, description, category, image,
 price, available, available_quantity
 FROM Products
 WHERE category = :category
+LIMIT 50
+OFFSET :offset
 ''', 
-                            category=category)
+                            category=category,
+                            offset=offset)
         return [Product(*row) for row in rows]
 
 

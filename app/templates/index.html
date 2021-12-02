@@ -22,11 +22,11 @@
   <div class="dropdown" style="color: aliceblue; text-align: right; margin-bottom: 25px; position:static">
     <button class="dropbtn">Filter By Category</button>
     <div class="dropdown-content">
-      <a href="{{ url_for('index.categorizedindex', category=1) }}" type="button" class="btn btn-light">Clothing</a>
-      <a href="{{ url_for('index.categorizedindex', category=2) }}" type="button" class="btn btn-light">Food</a>
-      <a href="{{ url_for('index.categorizedindex', category=3) }}" type="button" class="btn btn-light">Gadgets</a>
-      <a href="{{ url_for('index.categorizedindex', category=4) }}" type="button" class="btn btn-light">Media</a>
-      <a href="{{ url_for('index.categorizedindex', category=5) }}" type="button" class="btn btn-light">Misc</a>
+      <a href="{{ url_for('index.categorizedindex', category=1, page_num=1) }}" type="button" class="btn btn-light">Clothing</a>
+      <a href="{{ url_for('index.categorizedindex', category=2, page_num=1) }}" type="button" class="btn btn-light">Food</a>
+      <a href="{{ url_for('index.categorizedindex', category=3, page_num=1) }}" type="button" class="btn btn-light">Gadgets</a>
+      <a href="{{ url_for('index.categorizedindex', category=4, page_num=1) }}" type="button" class="btn btn-light">Media</a>
+      <a href="{{ url_for('index.categorizedindex', category=5, page_num=1) }}" type="button" class="btn btn-light">Misc</a>
     </div>
   </div>
   <form action="" method="get">
