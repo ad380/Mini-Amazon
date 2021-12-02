@@ -89,6 +89,7 @@ def deleteProduct(pid):
         if Product.deleteProduct(pid):
             flash('Your product has been removed')
             return redirect(url_for('inventory.index'))
+        return redirect(url_for('inventory.index'))
     return render_template('deleteproduct.html', title='Delete Product',
                            form=form, product = Product.get(pid))
 
