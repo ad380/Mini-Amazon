@@ -36,6 +36,22 @@ WHERE available = :available
                               available=available)
         return [Product(*row) for row in rows]
 
+    #this gets 100 products with the given offset for pagination
+    @staticmethod
+    def get_some(available=True, limit=50, offset=0):
+        rows = app.db.execute('''
+SELECT id, seller_id, name, description, category, image,
+price, available, available_quantity
+FROM Products
+WHERE available = :available
+LIMIT :limit
+OFFSET :offset
+''',
+                              available=available,
+                              limit=limit,
+                              offset=offset)
+        return [Product(*row) for row in rows]
+
     @staticmethod
     def get_all_by_seller(seller_id):
         rows = app.db.execute('''

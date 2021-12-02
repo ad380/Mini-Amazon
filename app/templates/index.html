@@ -16,7 +16,7 @@
     <div class="dropdown-content">
       <a href="{{ url_for('index.sortedindex', sortoption=1) }}" type="button" class="btn btn-light">Price Asc</a>
       <a href="{{ url_for('index.sortedindex', sortoption=2) }}" type="button" class="btn btn-light">Price Desc</a>
-      <a href="{{ url_for('index.index') }}" type="button" class="btn btn-light">Product ID</a>
+      <a href="{{ url_for('index.index', page_num=1) }}" type="button" class="btn btn-light">Product ID</a>
     </div>
   </div>
   <div class="dropdown" style="color: aliceblue; text-align: right; margin-bottom: 25px; position:static">
@@ -53,5 +53,9 @@
     {% endfor %}
   </tbody>
 </table>
+
+
+<a href="{{ url_for('index.index', page_num=1) }}" type="button" class="btn btn-light">prev</a>
+<a href="{{ url_for('index.index', page_num=2) }}" type="button" class="btn btn-light">next</a>
 
 {% endblock %}

@@ -9,10 +9,11 @@ from flask import Blueprint
 bp = Blueprint('index', __name__)
 
 
-@bp.route('/')
-def index():
+@bp.route('/<page_num>')
+def index(page_num):
     # get all available products for sale:
-    products = Product.get_all(True)
+    # products = Product.get_all(True)
+    products = Product.get_some(offset=((page_num-1)*50))
     sellers = Product.get_sellers()
     # find the products current user has bought:
     if current_user.is_authenticated:
