@@ -3,7 +3,6 @@
 {% block content %}
 
 <h1>Add Product</h1>
-git pull
 <form action="" method="post">
   {{ form.hidden_tag() }}
   <p>
@@ -22,6 +21,7 @@ git pull
   </p>
   <p>
     {{ form.category.label }}<br/>
+    {{ form.category(size=1) }}<br/>
     {% for error in form.category.errors %}
     <span style="color: red;">[{{ error }}]</span>
     {% endfor %}
