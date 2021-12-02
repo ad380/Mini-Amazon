@@ -39,7 +39,7 @@ def products(pid):
                             review_avg=review_avg)
 
 class ProductForm(FlaskForm):
-    categories = Category.get()
+    categories = ['food','clothing','gadgets','media','misc']
     name = StringField(_l('Product Name'), validators=[DataRequired()])
     price = DecimalField(_l('Price'), validators=[DataRequired()])
     description = StringField(_l('Product Description'), validators=[DataRequired()])
