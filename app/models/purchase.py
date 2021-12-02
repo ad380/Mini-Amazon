@@ -126,3 +126,6 @@ WHERE id = :id
                               id=id,
                               fulfilled=fulfilled)
         return id
+    except Exception:
+            print("couldn't update purchase status")
+            return None
