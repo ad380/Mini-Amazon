@@ -53,7 +53,7 @@ def addProduct():
     if current_user.is_authenticated:
         form = ProductForm()
         if form.validate_on_submit():
-            if Product.addProduct(
+            if Product.addProduct(current_user.id,
                                   form.name.data,
                                   form.description.data,
                                   form.category.data,
