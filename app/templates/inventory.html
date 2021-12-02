@@ -54,7 +54,7 @@
         {% if purchase.fulfilled == 'f'%}
         <td>Fulfilled <a href="{{ url_for('inventory.editStatus', pid=purchase.id) }}">Edit</a></td>
         {% else %}
-        <td>Not Fulfilled</td>
+        <td>Not Fulfilled <a href="{{ url_for('inventory.editStatus', pid=purchase.id) }}">Edit</a></td>
         {%endif%}
       </tr>
     {% endfor %}

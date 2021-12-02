@@ -39,7 +39,6 @@ class StatusForm(FlaskForm):
 @bp.route('/editstatus/<pid>',methods=["POST", "GET"])
 def editStatus(pid):
     status = Purchase.get(pid).fulfilled
-    print(status)
     if status == 'f':
         status = 'Fulfilled'
     else:
