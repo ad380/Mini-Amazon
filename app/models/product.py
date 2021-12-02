@@ -108,7 +108,6 @@ WHERE category = :category
 
     @staticmethod
     def addProduct(seller_id, name, description, category, price, available_quantity):
-        print(seller_id, name, description,category,price)
         try:
             rows = app.db.execute("""
 INSERT INTO Products(seller_id, name, description, category, image,
