@@ -41,10 +41,10 @@ def products(pid):
 class ProductForm(FlaskForm):
     categories = ['food','clothing','gadgets','media','misc']
     name = StringField(_l('Product Name'), validators=[DataRequired()])
-    price = DecimalField(_l('Price'))
+    price = DecimalField(_l('Price', validators=[InputRequired()]))
     description = StringField(_l('Product Description'), validators=[DataRequired()])
     category = SelectField(u'Category', choices = categories, validators = [DataRequired()])
-    quantity = IntegerField(_l('Quantity'))
+    quantity = IntegerField(_l('Quantity',validators=[InputRequired()]))
     submit = SubmitField(_l('Add to Inventory'))
 
 
@@ -61,6 +61,4 @@ def addProduct():
                                   form.quantity.data):
                 flash('Congratualtions, your product has been added')
                 return redirect(url_for('inventory.index'))
-            return render_template('addproduct.html', title='Add Product', form=form)
-        return render_template('addproduct.html', title='Add Product', form=form)
     return render_template('addproduct.html', title='Add Product', form=form)
