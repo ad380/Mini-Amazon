@@ -105,7 +105,7 @@ WHERE category = :category
         return rows[0][0]
 
 
-
+#add new product
     @staticmethod
     def addProduct(seller_id, name, description, category, price, available_quantity):
         try:
@@ -126,3 +126,34 @@ RETURNING id
         except Exception:
             print("Couldn't add product")
             return None
+
+# update purchase status for given product id
+    @staticmethod
+    def editQuantity(id, quantity):
+        try:
+            rows = app.db.execute('''
+UPDATE Products
+SET available_quantity = :quantity
+WHERE id = :id
+''',
+                              id=id,
+                              quantity=quantity)
+            return id
+        except Exception:
+            print("couldn't update product quantity")
+            return None
+
+# delete product with given product id
+    @staticmethod
+    def deleteProduct(id):
+        try:
+            rows = app.db.execute('''
+DELETE FROM Products
+WHERE id = :id
+''',
+                              id=id)
+            return id
+        except Exception:
+            print("couldn't delete product")
+            return None
+

@@ -1,4 +1,4 @@
-from flask import render_template
+from flask import render_template, redirect, url_for, flash, request
 from flask.templating import render_template_string
 from flask_login import current_user
 import datetime
@@ -62,3 +62,34 @@ def addProduct():
                 flash('Congratualtions, your product has been added')
                 return redirect(url_for('inventory.index'))
     return render_template('addproduct.html', title='Add Product', form=form)
+
+class QuantityForm(FlaskForm):
+    newQuantity = IntegerField(_l('Quantity',validators=[InputRequired()]))
+    submit = SubmitField(_l('Update Quantity'))
+
+@bp.route('/products/edit/<pid>',methods=["POST", "GET"])
+def editQuantity(pid):
+    quantity = Product.get(pid).available_quantity
+    form = QuantityForm()
+    form.newQuantity.data = quantity
+    if form.validate_on_submit():
+        if Product.editQuantity(pid, form.newQuantity.data):
+            flash('Congratualtions, your product quantity has been updated')
+            return redirect(url_for('inventory.index'))
+    return render_template('editquantity.html', title='Edit Product Quantity',
+                           form=form, product = Product.get(pid))
+
+class DeleteForm(FlaskForm):
+    submit = SubmitField(_l('Delete Product'))
+    
+@bp.route('/products/delete/<pid>',methods=["POST", "GET"])
+def deleteProduct(pid):
+    form = DeleteForm()
+    if form.validate_on_submit():
+        if Product.deleteProduct(pid):
+            flash('Your product has been removed')
+            return redirect(url_for('inventory.index'))
+        return redirect(url_for('inventory.index'))
+    return render_template('deleteproduct.html', title='Delete Product',
+                           form=form, product = Product.get(pid))
+
