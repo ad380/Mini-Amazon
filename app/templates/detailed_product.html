@@ -44,9 +44,7 @@
   <tbody>
       {% for review in reviews %}
       <tr>
-        <!-- <th scope="row">{{uid}}</th> -->
-        <!-- <td>{{review.buyer_id}}</td> -->
-        <td><a href="{{ url_for('users.privateprofile', uid=review.buyer_id) }}" type="button" class="btn btn-light">{{review.buyer_id}}</a></td>
+        <td><a href="{{ url_for('users.privateprofile', uid=review.buyer_id) }}" type="button" class="btn btn-light">{{reviewer_names[loop.index-1]}}</a></td>
         <td>{{review.rating}}</td>
         <td>{{review.comment}}</td>
       </tr>
