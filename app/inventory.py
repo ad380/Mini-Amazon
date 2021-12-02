@@ -49,4 +49,5 @@ def editStatus(pid):
         if Purchase.editStatus(pid, form.newStatus.data):
             flash('Congratualtions, your purchase status has been updated')
             return redirect(url_for('inventory.index'))
-    return render_template('editstatus.html', title='Edit Purchase Status', form=form)
+    return render_template('editstatus.html', title='Edit Purchase Status',
+                           form=form, purchase = Purchase.get(pid))
