@@ -117,6 +117,7 @@ ORDER BY seller_id
             fulfilled = 'f'
         else:
             fulfilled = 'nf'
+        print(fulfilled)
         try:
             rows = app.db.execute('''
 UPDATE Purchases
