@@ -12,4 +12,4 @@ class Category:
 SELECT *
 FROM Category
 ''')
-        return Category(*row) for row in rows
+        return rows
