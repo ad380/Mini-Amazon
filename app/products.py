@@ -13,6 +13,7 @@ from app.models.product_review import ProductReview
 
 from .models.product import Product
 from .models.purchase import Purchase
+from .models.category import Category
 from .models.product_review import ProductReview
 
 from flask import Blueprint
@@ -38,9 +39,11 @@ def products(pid):
                             review_avg=review_avg)
 
 class ProductForm(FlaskForm):
+    categories = Category.get()
     name = StringField(_l('Product Name'), validators=[DataRequired()])
     price = DecimalField(_l('Price'), validators=[DataRequired()])
     description = StringField(_l('Product Description'), validators=[DataRequired()])
+    category = SelectField(u'Category', choices = categories, validators = [Required()])
     quantity = IntegerField(_l('Quantity'),validators=[DataRequired()] )
     submit = SubmitField(_l('Add to Inventory'))
 
@@ -53,6 +56,7 @@ def addProduct():
             if Product.addProduct(
                                   form.name.data,
                                   form.description.data,
+                                  form.category.data,
                                   form.price.data,
                                   form.quantity.data):
                 flash('Congratualtions, your product has been added')
