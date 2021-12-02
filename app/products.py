@@ -9,12 +9,13 @@ from wtforms import SelectField, StringField, PasswordField, BooleanField, Submi
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo, InputRequired
 from flask_babel import _, lazy_gettext as _l
 
-from app.models.product_review import ProductReview
+# from app.models.product_review import ProductReview
 
 from .models.product import Product
 from .models.purchase import Purchase
 from .models.category import Category
 from .models.product_review import ProductReview
+from .models.user import User
 
 from flask import Blueprint
 bp = Blueprint('products', __name__)
@@ -24,6 +25,8 @@ bp = Blueprint('products', __name__)
 def products(pid):
     product = Product.get(pid)
     reviews = ProductReview.get(pid)
+    reviewer_ids = [r.buyer_id for r in reviews]
+    reviewer_names = [User.get_name(id) for id in reviewer_ids]
     review_count = ProductReview.get_count(pid)
     review_avg = round(ProductReview.get_avg(pid), 1)
     return render_template('detailed_product.html', 
@@ -35,6 +38,7 @@ def products(pid):
                             prod_quant=product.available_quantity,
                             prod_seller=product.seller_id,
                             reviews=reviews,
+                            reviewer_names=reviewer_names,
                             review_count=review_count,
                             review_avg=review_avg)
 
