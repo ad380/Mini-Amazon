@@ -41,10 +41,10 @@ def products(pid):
 class ProductForm(FlaskForm):
     categories = ['food','clothing','gadgets','media','misc']
     name = StringField(_l('Product Name'), validators=[DataRequired()])
-    price = DecimalField(_l('Price'), validators=[DataRequired()])
+    price = DecimalField(_l('Price'))
     description = StringField(_l('Product Description'), validators=[DataRequired()])
     category = SelectField(u'Category', choices = categories, validators = [DataRequired()])
-    quantity = IntegerField(_l('Quantity'),validators=[DataRequired()] )
+    quantity = IntegerField(_l('Quantity'))
     submit = SubmitField(_l('Add to Inventory'))
 
 
