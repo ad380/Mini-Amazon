@@ -9,7 +9,7 @@ class Category:
     @staticmethod
     def get():
         rows = app.db.execute('''
-SELECT *
+SELECT category
 FROM Category
 ''')
-        return rows
+        return [row[0] for row in rows]
