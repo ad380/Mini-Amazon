@@ -6,7 +6,7 @@ import datetime
 
 from flask_wtf import FlaskForm
 from wtforms import SelectField, StringField, PasswordField, BooleanField, SubmitField, DecimalField, IntegerField
-from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
+from wtforms.validators import ValidationError, DataRequired, Email, EqualTo, InputRequired
 from flask_babel import _, lazy_gettext as _l
 
 from app.models.product_review import ProductReview
