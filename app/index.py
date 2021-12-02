@@ -9,11 +9,10 @@ from flask import Blueprint
 bp = Blueprint('index', __name__)
 
 
-@bp.route('/<page_num>')
-def index(page_num):
+@bp.route('/')
+def index():
     # get all available products for sale:
-    # products = Product.get_all(True)
-    products = Product.get_some(offset=((page_num-1)*50))
+    products = Product.get_some()
     sellers = Product.get_sellers()
     # find the products current user has bought:
     if current_user.is_authenticated:
@@ -27,12 +26,14 @@ def index(page_num):
                            purchase_history=purchases,
                            sellers=sellers)
 
-@bp.route('/sortedindex/<sortoption>')
-def sortedindex(sortoption):
+@bp.route('/sortedindex/<sortoption>/<page_num>')
+def sortedindex(sortoption, page_num=1):
     if sortoption == '1':
         products = Product.get_by_price_asc(True)
     else:
-        products = Product.get_by_price_desc(True)
+        # products = Product.get_by_price_desc(True)
+        offset = (int(page_num) - 1) * 50
+        products = Product.get_some(offset=offset)
 
     sellers = Product.get_sellers()
     
