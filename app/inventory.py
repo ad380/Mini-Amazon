@@ -1,4 +1,4 @@
-from flask import render_template
+from flask import render_template, redirect
 from flask_login import current_user
 import datetime
 from flask_wtf import FlaskForm
