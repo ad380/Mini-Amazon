@@ -117,15 +117,15 @@ ORDER BY seller_id
             fulfilled = 'f'
         else:
             fulfilled = 'nf'
-            
-        rows = app.db.execute('''
+        try:
+            rows = app.db.execute('''
 UPDATE Purchases
 SET fulfilled = :fulfilled
 WHERE id = :id
 ''',
                               id=id,
                               fulfilled=fulfilled)
-        return id
-    except Exception:
+            return id
+        except Exception:
             print("couldn't update purchase status")
             return None
