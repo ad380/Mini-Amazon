@@ -24,11 +24,12 @@ def index():
     return render_template('index.html',
                            avail_products=products,
                            purchase_history=purchases,
-                           sellers=sellers)
+                           sellers=sellers,
+                           page_num=1)
 
 @bp.route('/sortedindex/<sortoption>/<page_num>')
 def sortedindex(sortoption, page_num=1):
-    offset = (int(page_num) - 1) * 50
+    offset = (int(page_num) - 1) * 100
     if sortoption == '1':
         products = Product.get_by_price_asc(True, offset)
     else:
@@ -46,7 +47,8 @@ def sortedindex(sortoption, page_num=1):
     return render_template('index.html',
                            avail_products=products,
                            purchase_history=purchases,
-                           sellers=sellers)
+                           sellers=sellers,
+                           page_num=int(page_num))
 
 @bp.route('/categorizedindex/<category>/<page_num>')
 def categorizedindex(category, page_num):
@@ -76,5 +78,6 @@ def categorizedindex(category, page_num):
     return render_template('index.html',
                            avail_products=products,
                            purchase_history=purchases,
-                           sellers=sellers)
+                           sellers=sellers,
+                           page_num=int(page_num))
 

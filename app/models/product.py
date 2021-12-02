@@ -44,7 +44,7 @@ SELECT id, seller_id, name, description, category, image,
 price, available, available_quantity
 FROM Products
 WHERE available = :available
-LIMIT 50
+LIMIT 100
 OFFSET :offset
 ''',
                               available=available,
@@ -80,7 +80,7 @@ price, available, available_quantity
 FROM Products
 WHERE available = :available
 ORDER BY price ASC
-LIMIT 50
+LIMIT 100
 OFFSET :offset
 ''', 
                             available=available,
@@ -95,7 +95,7 @@ price, available, available_quantity
 FROM Products
 WHERE available = :available
 ORDER BY price DESC
-LIMIT 50
+LIMIT 100
 OFFSET :offset
 ''', 
                             available=available,
@@ -109,7 +109,7 @@ SELECT id, seller_id, name, description, category, image,
 price, available, available_quantity
 FROM Products
 WHERE category = :category
-LIMIT 50
+LIMIT 100
 OFFSET :offset
 ''', 
                             category=category,
