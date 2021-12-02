@@ -22,7 +22,6 @@ git pull
   </p>
   <p>
     {{ form.category.label }}<br/>
-    {{ form.category(size=64) }}<br/>
     {% for error in form.category.errors %}
     <span style="color: red;">[{{ error }}]</span>
     {% endfor %}
