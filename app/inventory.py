@@ -2,6 +2,9 @@ from flask import render_template
 from flask_login import current_user
 import datetime
 from flask_wtf import FlaskForm
+from wtforms import SelectField, StringField, PasswordField, BooleanField, SubmitField, DecimalField, IntegerField
+from wtforms.validators import ValidationError, DataRequired, Email, EqualTo, InputRequired
+from flask_babel import _, lazy_gettext as _l
 from .models.product import Product
 from .models.purchase import Purchase
 from .models.user import User
