@@ -28,9 +28,9 @@ def index():
                            purchase_history=purchases,
                            users = users)
 
-class StatusForm(FlaskForm, status):
+class StatusForm(FlaskForm):
     categories = ['Fulfilled', 'Not Fulfilled']
-    newStatus = SelectField(u'Category', choices = categories, default = status, validators = [DataRequired()])
+    newStatus = SelectField(u'Category', choices = categories, validators = [DataRequired()])
     submit = SubmitField(_l('Submit Purchase Status'))
 
 @bp.route('/editstatus/<pid>',methods=["POST", "GET"])
@@ -41,7 +41,8 @@ def editStatus(pid):
         status = 'Fulfilled'
     else:
         status = 'Not Fulfilled'
-    form = StatusForm(status)
+    form = StatusForm()
+    form.newStatus.data = status
     if form.validate_on_submit():
         if Purchase.editStatus(pid, form.newStatus.data):
             flash('Congratualtions, your purchase status has been updated')
