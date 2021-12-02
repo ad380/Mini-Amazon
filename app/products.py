@@ -79,3 +79,16 @@ def editQuantity(pid):
     return render_template('editquantity.html', title='Edit Product Quantity',
                            form=form, product = Product.get(pid))
 
+class DeleteForm(FlaskForm):
+    submit = SubmitField(_l('Delete Product'))
+    
+@bp.route('/products/delete/<pid>',methods=["POST", "GET"])
+def deleteProduct(pid):
+    form = DeleteForm()
+    if form.validate_on_submit():
+        if Product.deleteProduct(pid):
+            flash('Your product has been removed')
+            return redirect(url_for('inventory.index'))
+    return render_template('deleteproduct.html', title='Delete Product',
+                           form=form, product = Product.get(pid))
+

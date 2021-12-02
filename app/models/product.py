@@ -143,3 +143,17 @@ WHERE id = :id
             print("couldn't update product quantity")
             return None
 
+# delete product with given product id
+    @staticmethod
+    def deleteProduct(id):
+        try:
+            rows = app.db.execute('''
+DELETE FROM Products
+WHERE id = :id
+''',
+                              id=id)
+            return id
+        except Exception:
+            print("couldn't delete product")
+            return None
+
