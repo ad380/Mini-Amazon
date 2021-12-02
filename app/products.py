@@ -29,6 +29,7 @@ def products(pid):
     reviewer_names = [User.get_name(id) for id in reviewer_ids]
     review_count = ProductReview.get_count(pid)
     review_avg = round(ProductReview.get_avg(pid), 1)
+    stars = ProductReview.get_stars(review_avg)
     return render_template('detailed_product.html', 
                             pid=pid,
                             prod_desc=product.description,
@@ -40,7 +41,8 @@ def products(pid):
                             reviews=reviews,
                             reviewer_names=reviewer_names,
                             review_count=review_count,
-                            review_avg=review_avg)
+                            review_avg=review_avg,
+                            stars=stars)
 
 class ProductForm(FlaskForm):
     categories = ['food','clothing','gadgets','media','misc']

@@ -23,7 +23,7 @@ body {
     font-size:25px !important;
     padding:0px 0px 0px 5px;
 }  
-.checked {
+.checked, .fa-star-half-o, .fa-star-o {
     color: orange;
 }
 /* Three column layout */
