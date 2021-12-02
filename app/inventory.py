@@ -27,3 +27,23 @@ def index():
                            sold_products=products,
                            purchase_history=purchases,
                            users = users)
+
+class StatusForm(FlaskForm, status):
+    categories = ['Fulfilled', 'Not Fulfilled']
+    newStatus = SelectField(u'Category', choices = categories, default = status, validators = [DataRequired()])
+    submit = SubmitField(_l('Submit Purchase Status'))
+
+@bp.route('/editstatus/<pid>',methods=["POST", "GET"])
+def editStatus(pid):
+    status = Purchase.get(pid)[6]
+    print(status)
+    if status == 'f':
+        status = 'Fulfilled'
+    else:
+        status = 'Not Fulfilled'
+    form = StatusForm(status)
+    if form.validate_on_submit():
+        if Purchase.editStatus(pid, form.newStatus.data):
+            flash('Congratualtions, your purchase status has been updated')
+            return redirect(url_for('inventory.index'))
+    return render_template('editstatus.html', title='Edit Purchase Status', form=form)

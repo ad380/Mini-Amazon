@@ -52,7 +52,7 @@
         <td>{{purchase.pname}}</td>
         <td>{{purchase.quantity}}</td>
         {% if purchase.fulfilled == 'f'%}
-        <td>Fulfilled</td>
+        <td>Fulfilled <a href="{{ url_for('inventory.editStatus', id=purchase.id) }}">Edit</a></td>
         {% else %}
         <td>Not Fulfilled</td>
         {%endif%}
