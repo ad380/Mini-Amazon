@@ -3,7 +3,6 @@
 {% block content %}
 
 <h1>Add Product</h1>
-
 <form action="" method="post">
   {{ form.hidden_tag() }}
   <p>
@@ -17,6 +16,13 @@
     {{ form.description.label }}<br/>
     {{ form.description(size=64) }}<br/>
     {% for error in form.description.errors %}
+    <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+  <p>
+    {{ form.category.label }}<br/>
+    {{ form.category(size=1) }}<br/>
+    {% for error in form.category.errors %}
     <span style="color: red;">[{{ error }}]</span>
     {% endfor %}
   </p>

@@ -109,3 +109,24 @@ ORDER BY seller_id
                               uid=uid,
                               since=since)
         return [Purchase(*row) for row in rows]
+
+# update purchase status for given purchase id
+    @staticmethod
+    def editStatus(id, status):
+        if status == 'Fulfilled':
+            fulfilled = 'f'
+        else:
+            fulfilled = 'nf'
+        print(fulfilled)
+        try:
+            rows = app.db.execute('''
+UPDATE Purchases
+SET fulfilled = :fulfilled
+WHERE id = :id
+''',
+                              id=id,
+                              fulfilled=fulfilled)
+            return id
+        except Exception:
+            print("couldn't update purchase status")
+            return None

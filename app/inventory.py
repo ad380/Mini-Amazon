@@ -2,6 +2,9 @@ from flask import render_template
 from flask_login import current_user
 import datetime
 from flask_wtf import FlaskForm
+from wtforms import SelectField, StringField, PasswordField, BooleanField, SubmitField, DecimalField, IntegerField
+from wtforms.validators import ValidationError, DataRequired, Email, EqualTo, InputRequired
+from flask_babel import _, lazy_gettext as _l
 from .models.product import Product
 from .models.purchase import Purchase
 from .models.user import User
@@ -27,3 +30,24 @@ def index():
                            sold_products=products,
                            purchase_history=purchases,
                            users = users)
+
+class StatusForm(FlaskForm):
+    categories = ['Fulfilled', 'Not Fulfilled']
+    newStatus = SelectField(u'Status', choices = categories, validators = [DataRequired()])
+    submit = SubmitField(_l('Submit Purchase Status'))
+
+@bp.route('/editstatus/<pid>',methods=["POST", "GET"])
+def editStatus(pid):
+    status = Purchase.get(pid).fulfilled
+    if status == 'f':
+        status = 'Fulfilled'
+    else:
+        status = 'Not Fulfilled'
+    form = StatusForm()
+    form.newStatus.data = status
+    if form.validate_on_submit():
+        if Purchase.editStatus(pid, form.newStatus.data):
+            flash('Congratualtions, your purchase status has been updated')
+            return redirect(url_for('inventory.index'))
+    return render_template('editstatus.html', title='Edit Purchase Status',
+                           form=form, purchase = Purchase.get(pid))

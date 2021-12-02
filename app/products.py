@@ -5,14 +5,15 @@ import datetime
 
 
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField, DecimalField, IntegerField
-from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
+from wtforms import SelectField, StringField, PasswordField, BooleanField, SubmitField, DecimalField, IntegerField
+from wtforms.validators import ValidationError, DataRequired, Email, EqualTo, InputRequired
 from flask_babel import _, lazy_gettext as _l
 
 from app.models.product_review import ProductReview
 
 from .models.product import Product
 from .models.purchase import Purchase
+from .models.category import Category
 from .models.product_review import ProductReview
 
 from flask import Blueprint
@@ -38,10 +39,12 @@ def products(pid):
                             review_avg=review_avg)
 
 class ProductForm(FlaskForm):
+    categories = ['food','clothing','gadgets','media','misc']
     name = StringField(_l('Product Name'), validators=[DataRequired()])
-    price = DecimalField(_l('Price'), validators=[DataRequired()])
+    price = DecimalField(_l('Price', validators=[InputRequired()]))
     description = StringField(_l('Product Description'), validators=[DataRequired()])
-    quantity = IntegerField(_l('Quantity'),validators=[DataRequired()] )
+    category = SelectField(u'Category', choices = categories, validators = [DataRequired()])
+    quantity = IntegerField(_l('Quantity',validators=[InputRequired()]))
     submit = SubmitField(_l('Add to Inventory'))
 
 
@@ -50,13 +53,12 @@ def addProduct():
     if current_user.is_authenticated:
         form = ProductForm()
         if form.validate_on_submit():
-            if Product.addProduct(
+            if Product.addProduct(current_user.id,
                                   form.name.data,
                                   form.description.data,
+                                  form.category.data,
                                   form.price.data,
                                   form.quantity.data):
                 flash('Congratualtions, your product has been added')
                 return redirect(url_for('inventory.index'))
-            return render_template('addproduct.html', title='Add Product', form=form)
-        return render_template('addproduct.html', title='Add Product', form=form)
     return render_template('addproduct.html', title='Add Product', form=form)
