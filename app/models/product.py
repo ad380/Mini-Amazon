@@ -112,7 +112,7 @@ WHERE category = :category
             rows = app.db.execute("""
 INSERT INTO Products(seller_id, name, description, category, image,
 price, available, available_quantity)
-VALUES(:seller_id, :name, :description, :category, url, :price, True, :available_quantity)
+VALUES(:seller_id, :name, :description, :category, 'url', :price, True, :available_quantity)
 RETURNING id
 """,
                                   seller_id = seller_id,
