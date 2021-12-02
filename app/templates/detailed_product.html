@@ -11,6 +11,7 @@
     <tr>
       <th scope="col">Product Name</th>
       <th scope="col">Description</th>
+      <th scope="col">Category</th>
       <th scope="col">Price</th>
       <th scope="col">Available Quantity</th>
       <th scope="col">Sold By</th>
@@ -20,6 +21,7 @@
       <tr>
         <th scope="row">{{prod_name}}</th>
         <td>{{prod_desc}}</td>
+        <td>{{prod_cat}}</td>
         <td>{{prod_price}}</td>
         <td>{{prod_quant}}</td>
         <td><a href="{{ url_for('users.privateprofile', uid=prod_seller) }}" type="button" class="btn btn-light">{{prod_seller}}</a></td>

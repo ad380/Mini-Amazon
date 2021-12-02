@@ -82,6 +82,18 @@ ORDER BY price DESC
         return [Product(*row) for row in rows]
 
     @staticmethod
+    def get_by_category(category):
+        rows = app.db.execute('''
+SELECT id, seller_id, name, description, category, image,
+price, available, available_quantity
+FROM Products
+WHERE category = :category
+''', 
+                            category=category)
+        return [Product(*row) for row in rows]
+
+
+    @staticmethod
     def get_names(pid):
         #pids is list of pids
         rows = app.db.execute('''
