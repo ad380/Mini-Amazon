@@ -52,7 +52,6 @@ ORDER BY time_purchased DESC
                               seller_id=seller_id)
         return [Purchase(*row) for row in rows]
 
-# methods Tess has added
 
 # get all purchases by time ascending (chronological)
     @staticmethod
@@ -117,7 +116,6 @@ ORDER BY seller_id
             fulfilled = 'f'
         else:
             fulfilled = 'nf'
-        print(fulfilled)
         try:
             rows = app.db.execute('''
 UPDATE Purchases

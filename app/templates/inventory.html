@@ -21,7 +21,7 @@
         <th scope="row">{{product.id}}</th>
         <td>{{product.name}}</td>
         <td>{{product.price}}</td>
-        <td>{{product.available_quantity}}</td>
+        <td>{{product.available_quantity}} <a href="{{ url_for('products.editQuantity', pid=product.id) }}">Edit</a></td>
       </tr>
     {% endfor %}
   </tbody>
