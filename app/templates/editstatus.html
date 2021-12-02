@@ -5,10 +5,17 @@
 
 <h1>Edit Purchase Status</h1>
 <p>Purchase id: {{purchase.id}}</p>
+<p>Buyer Name: {{purchase.bfname+' '+purchase.blname}}</p>
+<p>Buyer Address: {{purchase.baddress}}</p>
+<p>Date Purchased: {{purchase.time_purchased}}</p>
+<p>Product Id: {{purchase.pid}}</p>
+<p>Product Name: {{purchase.pname}}</p>
+<p>Purchase Quantity: {{purchase.quantity}}</p>
+
 <form action="" method="post">
   {{ form.hidden_tag() }}
   <p>
-    {{ form.newStatus.label }}<br/>
+    {{ form.newStatus.label }}: 
     {{ form.newStatus(size=1) }}<br/>
     {% for error in form.newStatus.errors %}
     <span style="color: red;">[{{ error }}]</span>

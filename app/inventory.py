@@ -33,7 +33,7 @@ def index():
 
 class StatusForm(FlaskForm):
     categories = ['Fulfilled', 'Not Fulfilled']
-    newStatus = SelectField(u'Category', choices = categories, validators = [DataRequired()])
+    newStatus = SelectField(u'Status', choices = categories, validators = [DataRequired()])
     submit = SubmitField(_l('Submit Purchase Status'))
 
 @bp.route('/editstatus/<pid>',methods=["POST", "GET"])
