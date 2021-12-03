@@ -94,8 +94,9 @@
   <thead class="thead-dark">
     <tr>
       <th scope="col">Reviewer</th>
-      <th scope="col" style="width: 200px;">rating</th>
-      <th scope="col">comment</th>   
+      <th scope="col" style="width: 175px;">Rating</th>
+      <th scope="col" style="width: 175px;">Date</th>
+      <th scope="col">Comment</th>   
     </tr>
   </thead>
   <tbody>
@@ -107,9 +108,11 @@
           <div>
             <script>
             stars({{review.rating}})
-            </script>   
-            {{review.rating}}   
+            </script>    
           </div>  
+        </td>
+        <td>
+          {{review.date|format_date('standard')}}
         </td>
         <td>{{review.comment}}</td>
       </tr>
