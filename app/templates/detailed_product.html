@@ -31,28 +31,95 @@
 
 <p style="text-align: center"><a href="{{ url_for('cart.carts') }}" type="button" class="btn btn-light">Add To Cart</a></p>
 
-<h2>Reviews: {{review_avg}}/5.0 ({{review_count}})</h2>
-<!-- TODO: Change the score/5 to stars -->
+<head>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/reviews.css') }}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<!-- script in JS to display stars for each reviewer's rating -->
+<!-- Return list of size 5 representing how many stars
+        should be shown for review
+        -1 = empty, 0 = half, 1 = full -->
+<script>
+  function stars(rating){
+    // Star types
+    let filled_star = "<span class=\"fa fa-star checked\"></span>"
+    let empty_star = "<span class=\"fa fa-star-o\"></span>"
+    let half_star = "<i class=\"fa fa-star-half-o\" aria-hidden=\"true\"></i>"
+
+    let dec = rating % 1  // Number after the decimal
+    let full = Math.floor(rating) // Number before decimal
+
+    var stars = [-1, -1, -1, -1, -1]  // Initial stars all to be empty
+    var half = false
+
+    if (0.25 < dec && dec <= 0.75){
+      // When decimal value in this range, we have half star
+      half = true
+    }
+
+    for (let i = 0; i < full; i++) {
+      stars[i] = 1
+    }
+
+    if (half == true) {
+      stars[full] = 0
+    } else if (dec > 0.75) {
+      // Round up to next star
+      stars[full] = 1
+    }
+
+    // Write stars
+    for (let i = 0; i < stars.length; i++) {
+      let val = stars[i]
+      if (val == 1) {
+        document.write(filled_star)
+      } else if (val == 0) {
+        document.write(half_star)
+      } else {
+        document.write(empty_star)
+      }
+    }   
+  }
+</script>
+
+
+<body>
+<div class="main-section">
+<span class="heading">Customer Reviews ({{review_count}})</span>
+<script>stars({{review_avg}})</script>
+<span class="sub-heading">{{review_avg}} out of 5</span>
+<hr style="border:3px solid #f1f1f1">
+
 <table class='table table-hover table-bordered container'>
   <thead class="thead-dark">
     <tr>
-      <th scope="col">uid</th>
-      <th scope="col">rating</th>
-      <th scope="col">comment</th>   
+      <th scope="col">Reviewer</th>
+      <th scope="col" style="width: 175px;">Rating</th>
+      <th scope="col" style="width: 175px;">Date</th>
+      <th scope="col">Comment</th>   
     </tr>
   </thead>
   <tbody>
       {% for review in reviews %}
       <tr>
-        <!-- <th scope="row">{{uid}}</th> -->
-        <!-- <td>{{review.buyer_id}}</td> -->
-        <td><a href="{{ url_for('users.privateprofile', uid=review.buyer_id) }}" type="button" class="btn btn-light">{{review.buyer_id}}</a></td>
-        <td>{{review.rating}}</td>
+        <td><a href="{{ url_for('users.privateprofile', uid=review.buyer_id) }}" type="button" class="btn btn-light">{{reviewer_names[loop.index-1]}}</a></td>
+        <!-- <td>{{review.rating}}</td> -->
+        <td>
+          <div>
+            <script>
+            stars({{review.rating}})
+            </script>    
+          </div>  
+        </td>
+        <td>
+          {{review.date|format_date('standard')}}
+        </td>
         <td>{{review.comment}}</td>
       </tr>
       {% endfor %}
   </tbody>
 </table>
 
-
+</div>
+</body>
 {% endblock %}
