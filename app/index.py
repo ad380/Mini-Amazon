@@ -25,15 +25,19 @@ def index():
                            avail_products=products,
                            purchase_history=purchases,
                            sellers=sellers,
-                           page_num=1)
+                           page_num=1,
+                           sortoption=0,
+                           category=0)
 
 @bp.route('/sortedindex/<sortoption>/<page_num>')
 def sortedindex(sortoption, page_num=1):
     offset = (int(page_num) - 1) * 100
     if sortoption == '1':
         products = Product.get_by_price_asc(True, offset)
-    else:
+    if sortoption == '2':
         products = Product.get_by_price_desc(True, offset)
+    else:
+        products = Product.get_some(offset=offset)
 
     sellers = Product.get_sellers()
     
@@ -48,7 +52,9 @@ def sortedindex(sortoption, page_num=1):
                            avail_products=products,
                            purchase_history=purchases,
                            sellers=sellers,
-                           page_num=int(page_num))
+                           page_num=int(page_num),
+                           sortoption=int(sortoption),
+                           category=0)
 
 @bp.route('/categorizedindex/<category>/<page_num>')
 def categorizedindex(category, page_num):
@@ -64,7 +70,7 @@ def categorizedindex(category, page_num):
     elif category == '5':
         products = Product.get_by_category(category='misc', offset=offset)
     else:
-        products = Product.get_some()
+        products = Product.get_some(offset=offset)
 
     sellers = Product.get_sellers()
     
@@ -79,5 +85,7 @@ def categorizedindex(category, page_num):
                            avail_products=products,
                            purchase_history=purchases,
                            sellers=sellers,
-                           page_num=int(page_num))
+                           page_num=int(page_num),
+                           sortoption=0,
+                           category=int(category))
 

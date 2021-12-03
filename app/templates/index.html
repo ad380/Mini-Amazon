@@ -54,12 +54,46 @@
   </tbody>
 </table>
 
-<!-- Edit these links so it keeps the current sort or filter -->
-
+<!-- if this isn't the first page, have a previous page button -->
 {% if page_num > 1 %}
-<a href="{{ url_for('index.sortedindex', sortoption=2, page_num=(page_num - 1)) }}" type="button" class="btn btn-light">prev</a>
+
+<!-- if we have a sort, keep the sortedindex -->
+{% if sortoption != 0 %}
+<a href="{{ url_for('index.sortedindex', sortoption=sortoption, page_num=(page_num - 1)) }}" type="button" class="btn btn-light">prev</a>
+
+{% else %}
+
+<!-- if we have a category filter, keep the categorizedindex -->
+{% if category != 0 %}
+<a href="{{ url_for('index.categorizedindex', category=category, page_num=(page_num - 1)) }}" type="button" class="btn btn-light">prev</a>
+
+<!-- default listings if there's no sort/filter -->
+{% else %}
+<a href="{{ url_for('index.sortedindex', sortoption=0, page_num=(page_num - 1)) }}" type="button" class="btn btn-light">prev</a>
+
+{% endif %}
 {% endif %}
 
-<a href="{{ url_for('index.sortedindex', sortoption=2, page_num=(page_num + 1)) }}" type="button" class="btn btn-light">next</a>
+{% endif %}
+
+<!-- create a next page button -->
+
+<!-- if we have a sort, keep the sortedindex -->
+{% if sortoption != 0 %}
+<a href="{{ url_for('index.sortedindex', sortoption=sortoption, page_num=(page_num + 1)) }}" type="button" class="btn btn-light">next</a>
+
+{% else %}
+
+<!-- if we have a category filter, keep the categorizedindex -->
+{% if category != 0 %}
+<a href="{{ url_for('index.categorizedindex', category=category, page_num=(page_num + 1)) }}" type="button" class="btn btn-light">next</a>
+
+<!-- default listings if there's no sort/filter -->
+{% else %}
+<a href="{{ url_for('index.sortedindex', sortoption=0, page_num=(page_num + 1)) }}" type="button" class="btn btn-light">next</a>
+
+{% endif %}
+{% endif %}
+
 
 {% endblock %}
