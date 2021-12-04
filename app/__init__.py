@@ -43,7 +43,7 @@ def create_app():
         elif format == 'medium':
             format="EE dd.MM.y HH:mm"
         elif format == 'standard':
-            format="MMMM d, y"
+            format="MMM d, y"
         return format_datetime(value, format)
 
     return app
