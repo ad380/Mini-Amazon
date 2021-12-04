@@ -14,19 +14,19 @@
   <div class="dropdown" style="color: aliceblue; text-align: right; margin-bottom: 25px; position:static">
     <button class="dropbtn">Sort By</button>
     <div class="dropdown-content">
-      <a href="{{ url_for('index.sortedindex', sortoption=1) }}" type="button" class="btn btn-light">Price Asc</a>
-      <a href="{{ url_for('index.sortedindex', sortoption=2) }}" type="button" class="btn btn-light">Price Desc</a>
+      <a href="{{ url_for('index.sortedindex', sortoption=1, page_num=1) }}" type="button" class="btn btn-light">Price Asc</a>
+      <a href="{{ url_for('index.sortedindex', sortoption=2, page_num=1) }}" type="button" class="btn btn-light">Price Desc</a>
       <a href="{{ url_for('index.index') }}" type="button" class="btn btn-light">Product ID</a>
     </div>
   </div>
   <div class="dropdown" style="color: aliceblue; text-align: right; margin-bottom: 25px; position:static">
     <button class="dropbtn">Filter By Category</button>
     <div class="dropdown-content">
-      <a href="{{ url_for('index.categorizedindex', category=1) }}" type="button" class="btn btn-light">Clothing</a>
-      <a href="{{ url_for('index.categorizedindex', category=2) }}" type="button" class="btn btn-light">Food</a>
-      <a href="{{ url_for('index.categorizedindex', category=3) }}" type="button" class="btn btn-light">Gadgets</a>
-      <a href="{{ url_for('index.categorizedindex', category=4) }}" type="button" class="btn btn-light">Media</a>
-      <a href="{{ url_for('index.categorizedindex', category=5) }}" type="button" class="btn btn-light">Misc</a>
+      <a href="{{ url_for('index.categorizedindex', category=1, page_num=1) }}" type="button" class="btn btn-light">Clothing</a>
+      <a href="{{ url_for('index.categorizedindex', category=2, page_num=1) }}" type="button" class="btn btn-light">Food</a>
+      <a href="{{ url_for('index.categorizedindex', category=3, page_num=1) }}" type="button" class="btn btn-light">Gadgets</a>
+      <a href="{{ url_for('index.categorizedindex', category=4, page_num=1) }}" type="button" class="btn btn-light">Media</a>
+      <a href="{{ url_for('index.categorizedindex', category=5, page_num=1) }}" type="button" class="btn btn-light">Misc</a>
     </div>
   </div>
   <form action="" method="get">
@@ -53,5 +53,47 @@
     {% endfor %}
   </tbody>
 </table>
+
+<!-- if this isn't the first page, have a previous page button -->
+{% if page_num > 1 %}
+
+<!-- if we have a sort, keep the sortedindex -->
+{% if sortoption != 0 %}
+<a href="{{ url_for('index.sortedindex', sortoption=sortoption, page_num=(page_num - 1)) }}" type="button" class="btn btn-light">prev</a>
+
+{% else %}
+
+<!-- if we have a category filter, keep the categorizedindex -->
+{% if category != 0 %}
+<a href="{{ url_for('index.categorizedindex', category=category, page_num=(page_num - 1)) }}" type="button" class="btn btn-light">prev</a>
+
+<!-- default listings if there's no sort/filter -->
+{% else %}
+<a href="{{ url_for('index.sortedindex', sortoption=0, page_num=(page_num - 1)) }}" type="button" class="btn btn-light">prev</a>
+
+{% endif %}
+{% endif %}
+
+{% endif %}
+
+<!-- create a next page button -->
+
+<!-- if we have a sort, keep the sortedindex -->
+{% if sortoption != 0 %}
+<a href="{{ url_for('index.sortedindex', sortoption=sortoption, page_num=(page_num + 1)) }}" type="button" class="btn btn-light">next</a>
+
+{% else %}
+
+<!-- if we have a category filter, keep the categorizedindex -->
+{% if category != 0 %}
+<a href="{{ url_for('index.categorizedindex', category=category, page_num=(page_num + 1)) }}" type="button" class="btn btn-light">next</a>
+
+<!-- default listings if there's no sort/filter -->
+{% else %}
+<a href="{{ url_for('index.sortedindex', sortoption=0, page_num=(page_num + 1)) }}" type="button" class="btn btn-light">next</a>
+
+{% endif %}
+{% endif %}
+
 
 {% endblock %}
