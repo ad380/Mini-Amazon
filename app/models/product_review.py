@@ -44,8 +44,7 @@ class ProductReview:
     WHERE product_id = :product_id
     ''',
                     product_id=product_id)
-        # return [row[0] for row in rows
-        return rows[0][0]
+        return rows[0][0] if rows[0][0] is not None else 0
 
     @staticmethod
     def get_user_reviews(uid):
