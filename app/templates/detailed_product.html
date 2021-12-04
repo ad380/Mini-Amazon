@@ -80,6 +80,22 @@
       }
     }   
   }
+
+  function selected(val) {
+    var rec = "<option value=\"0\">Most Recent</option>"
+    var desc = "<option value=\"1\">Rating (Desc)</option>"
+    var asc = "<option value=\"2\">Rating (Asc) </option>"
+    if (val == "0") {
+      rec = "<option value=\"0\" selected>Most Recent</option>"
+    } else if (val == "1") {
+      desc = "<option value=\"1\" selected>Rating (Desc)</option>"
+    } else {
+      asc = "<option value=\"2\" selected>Rating (Asc)</option>"
+    }
+    document.write(rec)
+    document.write(desc)
+    document.write(asc)
+  }
 </script>
 
 
@@ -92,10 +108,10 @@
 
 <!-- Dropdown for sorting options -->
 <select name="sort-options" id="sort-options" class="drop-down" onchange="location = this.value">
-  <option value="0">Most Recent</option>
+  <!-- <option value="0">Most Recent</option>
   <option value="1">Rating (Desc)</option>
-  <option value="2">Rating (Asc) </option>
-  
+  <option value="2">Rating (Asc) </option> -->
+  <script>selected({{sortoption}})</script>
 </select>
 
 <hr style="border:3px solid #f1f1f1">
