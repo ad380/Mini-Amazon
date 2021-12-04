@@ -139,10 +139,7 @@ def gen_product_reviews():
         for r in ratings.keys():
             product_id, buyer_id = r
             rating = ratings[r]
-            title = fake.sentence(nb_words=4)[:-1]
-            # comment = ""
-            # comment_ratio = 1 # comment_ratio % of ratings actually contain a comment
-            # if random.random() <= comment_ratio:
+            title = fake.sentence(nb_words=4)[:-1].title()
             comment = fake.paragraph(nb_sentences=6, variable_nb_sentences=True)
             date = fake.date_time()
             writer.writerow([product_id, buyer_id, rating, title, comment[:512], date, 0])
