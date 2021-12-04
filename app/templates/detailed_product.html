@@ -1,10 +1,12 @@
 {% extends "base.html" %}
 
 {% block content %}
+<!-- Back button at top of page -->
 <p><a href="{{ url_for('index.index') }}" type="button" class="btn btn-light">Back</a></p>
 
 <br><br>
 
+<!-- Product information table -->
 <h2>Product Information:</h2>
 <table class='table table-hover table-bordered container'>
   <thead class="thead-dark">
@@ -29,12 +31,15 @@
   </tbody>
 </table>
 
+<!-- Add to cart button -->
 <p style="text-align: center"><a href="{{ url_for('cart.carts') }}" type="button" class="btn btn-light">Add To Cart</a></p>
 
+<!-- Import css file / star images -->
 <head>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/reviews.css') }}">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
+
 <!-- script in JS to display stars for each reviewer's rating -->
 <!-- Return list of size 5 representing how many stars
         should be shown for review
@@ -57,6 +62,7 @@
       half = true
     }
 
+    // Update appropiate indices to be 1 for filled
     for (let i = 0; i < full; i++) {
       stars[i] = 1
     }
@@ -81,6 +87,7 @@
     }   
   }
 
+  // Method used for selecting correct sort option after page is reloaded
   function selected(val) {
     var rec = "<option value=\"0\">Most Recent</option>"
     var desc = "<option value=\"1\">Rating (Desc)</option>"
@@ -98,53 +105,38 @@
   }
 </script>
 
-
 <body>
+<hr style="border:1px solid #f1f1f1">
+
 <div class="main-section">
-<span class="heading">Customer Reviews ({{review_count}})</span>
-<!-- Call stars method to show product average reviews -->
-<script>stars({{review_avg}})</script>
-<span class="sub-heading">{{review_avg}} out of 5</span>
+  <span class="heading">Customer Reviews ({{review_count}})</span>
 
-<!-- Dropdown for sorting options -->
-<select name="sort-options" id="sort-options" class="drop-down" onchange="location = this.value">
-  <!-- <option value="0">Most Recent</option>
-  <option value="1">Rating (Desc)</option>
-  <option value="2">Rating (Asc) </option> -->
-  <script>selected({{sortoption}})</script>
-</select>
+  <!-- Call stars method to show product average reviews -->
+  <script>stars({{review_avg}})</script>
+  <span class="sub-heading">{{review_avg}} out of 5</span>
 
-<hr style="border:3px solid #f1f1f1">
+  <!-- Dropdown for sorting options -->
+  <select name="sort-options" id="sort-options" class="drop-down" onchange="location = this.value">
+    <script>selected({{sortoption}})</script>
+  </select>
 
-<table class='table table-hover table-bordered container'>
-  <thead class="thead-dark">
-    <tr>
-      <th scope="col">Reviewer</th>
-      <th scope="col" style="width: 175px;">Rating</th>
-      <th scope="col" style="width: 175px;">Date</th>
-      <th scope="col">Comment</th>   
-    </tr>
-  </thead>
-  <tbody>
-      {% for review in reviews %}
-      <tr>
-        <td><a href="{{ url_for('users.privateprofile', uid=review.buyer_id) }}" type="button" class="btn btn-light">{{reviewer_names[loop.index-1]}}</a></td>
-        <!-- <td>{{review.rating}}</td> -->
-        <td>
-          <div>
-            <script>
-            stars({{review.rating}})
-            </script>    
-          </div>  
-        </td>
-        <td>
-          {{review.date|format_date('standard')}}
-        </td>
-        <td>{{review.comment}}</td>
-      </tr>
-      {% endfor %}
-  </tbody>
-</table>
+  <hr style="border:3px solid #f1f1f1">
+
+  <!-- Loop to display reach review -->
+  {% for review in reviews%}
+  <div class="review">
+    <span class="heading">
+      <a href="{{ url_for('users.privateprofile', uid=review.buyer_id) }}" type="button" 
+        class="btn btn-light">{{reviewer_names[loop.index-1]}}
+      </a>
+    <a style="display: inline; font-size: 18px;">{{review.date|format_date('standard')}}</a>
+    <p></p>
+
+    <script>stars({{review.rating}})</script>
+    <a style="display: inline; font-size: 18px; padding-left: 10px; font-style: b;"><strong>{{review.title}}</strong></a>
+    <p class="comment">{{review.comment}}</p>
+  </div>
+  {% endfor %}
 
 </div>
 </body>
