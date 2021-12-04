@@ -2,10 +2,11 @@ from flask import current_app as app
 
 
 class ProductReview:
-    def __init__(self, product_id, buyer_id, rating, comment, date, upvotes):
+    def __init__(self, product_id, buyer_id, rating, title, comment, date, upvotes):
         self.product_id = product_id
         self.buyer_id = buyer_id
         self.rating = rating
+        self.title = title
         self.comment = comment
         self.date = date
         self.upvotes = upvotes

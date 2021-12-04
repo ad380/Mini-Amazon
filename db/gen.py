@@ -116,10 +116,16 @@ def get_random_purchases_ratings():
             id, uid, seller_id, time_purchased, pid, \
                 quantity, fulfilled = purchase
             if fulfilled == 'f':
-                review_ratio = .5 # review_ratio % of purchases actually contain a review
+                review_ratio = .8 # review_ratio % of purchases actually contain a review
                 if random.random() <= review_ratio:
-                    rating = random.choice(RATING_VALS)
-                    # ratings.append((pid, uid, rating))
+                    # rating = random.choice(RATING_VALS)
+                    
+                    # Calculating rating based on normal distribution around 4.4
+                    # with SD of 2, also make sure rating is between 0 and 5
+                    rating = max(0, min(random.gauss(4.4, 2), 5))
+                    
+                    #Convert raw rating decimal to star value
+                    rating = round(rating*2)/2
                     ratings[(pid, uid)] = rating
     return ratings
 
@@ -133,12 +139,13 @@ def gen_product_reviews():
         for r in ratings.keys():
             product_id, buyer_id = r
             rating = ratings[r]
-            comment = ""
-            comment_ratio = .5 # comment_ratio % of ratings actually contain a comment
-            if random.random() <= comment_ratio:
-                comment = fake.paragraph(nb_sentences=6, variable_nb_sentences=True)
+            title = fake.sentence(nb_words=4)[:-1]
+            # comment = ""
+            # comment_ratio = 1 # comment_ratio % of ratings actually contain a comment
+            # if random.random() <= comment_ratio:
+            comment = fake.paragraph(nb_sentences=6, variable_nb_sentences=True)
             date = fake.date_time()
-            writer.writerow([product_id, buyer_id, rating, comment[:512], date, 0])
+            writer.writerow([product_id, buyer_id, rating, title, comment[:512], date, 0])
     return
 
 def get_random_seller_ratings():
@@ -155,8 +162,6 @@ def get_random_seller_ratings():
                 review_ratio = .7 # review_ratio % of purchases actually contain a review
                 if random.random() <= review_ratio:
                     rating = random.choice(RATING_VALS)
-                    # ratings.append((pid, uid, rating))
-                    #dictionary enforces key value constraint
                     ratings[(seller_id, uid)] = (rating, time_purchased)
     return ratings   
 
@@ -184,6 +189,6 @@ def gen_seller_reviews():
 # available_pids = gen_products(num_products)
 # gen_purchases(num_purchases, available_pids)
 gen_product_reviews()
-gen_seller_reviews()
+# gen_seller_reviews()
 # print(random.choice(RATINGS))
 # print(get_random_seller_ratings())
