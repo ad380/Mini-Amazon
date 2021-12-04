@@ -87,8 +87,8 @@ def logout():
 # code I've added beyond the skeleton
 
 # make the private user profile with ability to sort purchases
-@bp.route('/sortedprofile/<sortoption>')
-def sortedprofile(sortoption='0'):
+@bp.route('/profile/<sortoption>')
+def sortedprofile(sortoption='1'):
     # get all available products for sale:
     products = Product.get_all(True)
     sellers = Product.get_sellers()
