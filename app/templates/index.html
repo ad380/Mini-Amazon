@@ -49,6 +49,7 @@
       <th scope="col">Product ID</th>
       <th scope="col">Product Name</th>
       <th scope="col">Price</th>
+      <th scope="col">Image</th>
     </tr>
   </thead>
   <tbody>
@@ -57,6 +58,7 @@
         <th scope="row">{{product.id}}</th>
         <td><a href="{{ url_for('products.products', pid=product.id, sortoption=0) }}" type="button" class="btn btn-light">{{product.name}}</a></td>
         <td>{{product.price}}</td>
+        <td><img width="200" src="{{product.image}}"/></td>
       </tr>
     {% endfor %}
   </tbody>
