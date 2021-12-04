@@ -29,10 +29,18 @@
       <a href="{{ url_for('index.categorizedindex', category=5, page_num=1) }}" type="button" class="btn btn-light">Misc</a>
     </div>
   </div>
-  <form action="" method="get">
-    <input type="text" id="search" name="search">
-    <input type="submit" value="Search">
-  </form>
+    <form action="{{ url_for('index.index') }}" method="POST">
+      {{ form.csrf_token }}
+      {{ form.hidden_tag() }}
+      <p>
+        {{ form.searchValue.label }}<br/>
+        {{ form.searchValue(size=32) }}<br/>
+        {% for error in form.searchValue.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+      </p>
+      <p>{{ form.submit() }}</p>
+    </form>
 </div>
 
 <table class='table table-hover table-bordered container'>
