@@ -24,8 +24,8 @@
         <td>{{product.name}}</td>
         <td>{{product.price}}</td>
         <td>{{product.available_quantity}}</td>
-        <td><a href="{{ url_for('products.editQuantity', pid=product.id) }}">Edit</a></td>
-        <td><a href="{{ url_for('products.deleteProduct', pid=product.id) }}">Delete</a></td>
+        <td><a href="{{ url_for('products.editQuantity', pid=product.id, sortoption=0) }}">Edit</a></td>
+        <td><a href="{{ url_for('products.deleteProduct', pid=product.id, sortoption=0) }}">Delete</a></td>
       </tr>
     {% endfor %}
   </tbody>

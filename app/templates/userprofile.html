@@ -66,7 +66,7 @@
     {% for purchase in purchase_history%}
       <tr>
         <th scope="row">{{purchase.id}}</th>
-        <td><a href="{{ url_for('products.products', pid=purchase.pid) }}" type="button" class="btn btn-light">{{purchase.pid}}</a></td>
+        <td><a href="{{ url_for('products.products', pid=purchase.pid, sortoption=0) }}" type="button" class="btn btn-light">{{purchase.pid}}</a></td>
         <!-- <td>{{purchase.seller_id}}</td> -->
         <td><a href="{{ url_for('users.privateprofile', uid=purchase.seller_id) }}" type="button" class="btn btn-light">{{purchase.seller_id}}</a></td>
         <td>{{purchase.time_purchased}}</td>
