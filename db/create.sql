@@ -18,7 +18,7 @@ seller_id INTEGER NOT NULL REFERENCES Users(id),
 name VARCHAR(255) NOT NULL,
 description VARCHAR NOT NULL,
 category VARCHAR NOT NULL REFERENCES Category(category),
-image BYTEA NOT NULL,
+image VARCHAR NOT NULL,
 price DECIMAL(12,2) NOT NULL,
 available BOOLEAN,
 available_quantity INTEGER NOT NULL

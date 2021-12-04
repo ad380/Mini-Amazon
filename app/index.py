@@ -1,6 +1,12 @@
 from flask import render_template
+from flask import Flask, render_template, session, redirect, url_for, request
 from flask_login import current_user
 import datetime
+
+from flask_wtf import FlaskForm
+from wtforms import SelectField, StringField, PasswordField, BooleanField, SubmitField, DecimalField, IntegerField
+from wtforms.validators import ValidationError, DataRequired, Email, EqualTo, InputRequired
+from flask_babel import _, lazy_gettext as _l
 
 from .models.product import Product
 from .models.purchase import Purchase
@@ -8,9 +14,14 @@ from .models.purchase import Purchase
 from flask import Blueprint
 bp = Blueprint('index', __name__)
 
+class SearchForm(FlaskForm):
+    searchValue = StringField('', [DataRequired()])
+    submit = SubmitField('Search')
 
-@bp.route('/')
+
+@bp.route('/', methods=['GET', 'POST'])
 def index():
+    form = SearchForm()
     # get all available products for sale:
     products = Product.get_some()
     sellers = Product.get_sellers()
@@ -21,16 +32,31 @@ def index():
     else:
         purchases = None
     # render the page by adding information to the index.html file
+    if request.method == 'POST':
+        products = Product.search_products(form.searchValue.data)
+        print(form.searchValue.data)
+        print(len(products))
+        return render_template('index.html',
+                                avail_products=products,
+                                purchase_history=purchases,
+                                sellers=sellers,
+                                page_num=1,
+                                sortoption=0,
+                                category=0,
+                                form=form)
+
     return render_template('index.html',
                            avail_products=products,
                            purchase_history=purchases,
                            sellers=sellers,
                            page_num=1,
                            sortoption=0,
-                           category=0)
+                           category=0,
+                           form=form)
 
 @bp.route('/sortedindex/<sortoption>/<page_num>')
 def sortedindex(sortoption, page_num=1):
+    form = SearchForm()
     offset = (int(page_num) - 1) * 100
     if sortoption == '1':
         products = Product.get_by_price_asc(True, offset)
@@ -54,10 +80,12 @@ def sortedindex(sortoption, page_num=1):
                            sellers=sellers,
                            page_num=int(page_num),
                            sortoption=int(sortoption),
-                           category=0)
+                           category=0,
+                           form=form)
 
 @bp.route('/categorizedindex/<category>/<page_num>')
 def categorizedindex(category, page_num):
+    form = SearchForm()
     offset = (int(page_num) - 1) * 50
     if category == '1':
         products = Product.get_by_category(category='clothing', offset=offset)
@@ -87,5 +115,6 @@ def categorizedindex(category, page_num):
                            sellers=sellers,
                            page_num=int(page_num),
                            sortoption=0,
-                           category=int(category))
+                           category=int(category),
+                           form=form)
 
