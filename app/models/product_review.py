@@ -12,13 +12,13 @@ class ProductReview:
 
 
     @staticmethod
-    def get(product_id):
+    def get(product_id, orderby="date DESC"):
         # Returns list of ProductReview objects for given product
-        rows = app.db.execute('''
+        rows = app.db.execute(f'''
     SELECT *
     FROM ProductReviews
     WHERE product_id = :product_id
-    ORDER BY rating DESC
+    ORDER BY {orderby}
     ''',
                     product_id=product_id)
         return [ProductReview(*row) for row in rows]

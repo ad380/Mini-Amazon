@@ -91,10 +91,11 @@
 <span class="sub-heading">{{review_avg}} out of 5</span>
 
 <!-- Dropdown for sorting options -->
-<select name="sort-options" id="sort-options" class="drop-down">
-  <option value="recent">Most Recent</option>
-  <option value="desc">Rating (Desc)</option>
-  <option value="asc">Rating (Asc) </option>
+<select name="sort-options" id="sort-options" class="drop-down" onchange="location = this.value">
+  <option value="0">Most Recent</option>
+  <option value="1">Rating (Desc)</option>
+  <option value="2">Rating (Asc) </option>
+  
 </select>
 
 <hr style="border:3px solid #f1f1f1">

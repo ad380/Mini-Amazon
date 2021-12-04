@@ -21,10 +21,17 @@ from flask import Blueprint
 bp = Blueprint('products', __name__)
 
 
-@bp.route('/products/<pid>')
-def products(pid):
+@bp.route('/products/<pid>/<sortoption>')
+def products(pid, sortoption=0):
     product = Product.get(pid)
-    reviews = ProductReview.get(pid)
+    print(f"SORT OPTION = {sortoption}")
+    if sortoption == '0':
+        order = "date DESC"
+    elif sortoption == '1':
+        order = "rating DESC"
+    else:
+        order = "rating ASC"
+    reviews = ProductReview.get(pid, orderby=order)
     reviewer_ids = [r.buyer_id for r in reviews]
     reviewer_names = [User.get_name(id) for id in reviewer_ids]
     review_count = ProductReview.get_count(pid)
@@ -40,7 +47,8 @@ def products(pid):
                             reviews=reviews,
                             reviewer_names=reviewer_names,
                             review_count=review_count,
-                            review_avg=review_avg)
+                            review_avg=review_avg,
+                            sortoption=sortoption)
 
 class ProductForm(FlaskForm):
     categories = ['food','clothing','gadgets','media','misc']
