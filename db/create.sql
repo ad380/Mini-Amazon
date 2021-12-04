@@ -61,8 +61,8 @@ CREATE TABLE ProductReviews
 (product_id INTEGER NOT NULL REFERENCES Products(id),
  buyer_id INTEGER NOT NULL REFERENCES Users(id),
  rating FLOAT NOT NULL CHECK(rating BETWEEN 0.0 AND 5.0),
- title VARCHAR(64),
- comment VARCHAR(512),
+ title VARCHAR(64) NOT NULL,
+ comment VARCHAR(512) NOT NULL,
  date TIMESTAMP without time zone NOT NULL DEFAULT (current_timestamp AT TIME ZONE 'UTC'),
  upvotes INTEGER NOT NULL,
  PRIMARY KEY(product_id, buyer_id)
