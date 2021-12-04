@@ -29,7 +29,7 @@ WHERE id = :id
 # get all purchases since the given time/date and in the given order
     @staticmethod
     def get_all_by_uid_ordered(uid, since, orderby="time_purchased DESC"):
-        rows = app.db.execute('''
+        rows = app.db.execute(f'''
 SELECT id, uid, seller_id, time_purchased, pid, quantity, fulfilled
 FROM Purchases
 WHERE uid = :uid

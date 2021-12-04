@@ -118,8 +118,7 @@ def sortedprofile(sortoption):
         order = "time_purchased DESC"
     
     if current_user.is_authenticated:
-        purchases = Purchase.get_all_by_uid_ordered(current_user.id, datetime.datetime(1980, 9, 14, 0, 0, 0), order)
-
+        purchases = Purchase.get_all_by_uid_ordered(current_user.id, datetime.datetime(1980, 9, 14, 0, 0, 0), orderby=order)
     else:
         purchases = None
     
@@ -135,7 +134,7 @@ def sortedprofile(sortoption):
 
 # make the public user profile
 @bp.route('/publicprofile/<uid>')
-def privateprofile(uid):
+def publicprofile(uid):
     # get all available products for sale:
     products = Product.get(uid)
     user = User.get(uid)

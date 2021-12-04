@@ -26,7 +26,7 @@
         <td>{{prod_cat}}</td>
         <td>{{prod_price}}</td>
         <td>{{prod_quant}}</td>
-        <td><a href="{{ url_for('users.privateprofile', uid=prod_seller) }}" type="button" class="btn btn-light">{{prod_seller}}</a></td>
+        <td><a href="{{ url_for('users.publicprofile', uid=prod_seller) }}" type="button" class="btn btn-light">{{prod_seller}}</a></td>
       </tr>
   </tbody>
 </table>
@@ -126,7 +126,7 @@
   {% for review in reviews%}
   <div class="review">
     <span class="heading">
-      <a href="{{ url_for('users.privateprofile', uid=review.buyer_id) }}" type="button" 
+      <a href="{{ url_for('users.publicprofile', uid=review.buyer_id) }}" type="button" 
         class="btn btn-light">{{reviewer_names[loop.index-1]}}
       </a>
     <a style="display: inline; font-size: 18px;">{{review.date|format_date('standard')}}</a>

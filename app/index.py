@@ -16,7 +16,7 @@ def index():
     sellers = Product.get_sellers()
     # find the products current user has bought:
     if current_user.is_authenticated:
-        purchases = Purchase.get_all_by_uid_since(
+        purchases = Purchase.get_all_by_uid_ordered(
             current_user.id, datetime.datetime(1980, 9, 14, 0, 0, 0))
     else:
         purchases = None
@@ -43,7 +43,7 @@ def sortedindex(sortoption, page_num=1):
     
     # find the products current user has bought:
     if current_user.is_authenticated:
-        purchases = Purchase.get_all_by_uid_since(
+        purchases = Purchase.get_all_by_uid_ordered(
             current_user.id, datetime.datetime(1980, 9, 14, 0, 0, 0))
     else:
         purchases = None

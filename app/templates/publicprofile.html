@@ -40,7 +40,7 @@
     {% for r in reviews%}
       <tr>
         <!-- <td>{{r.buyer_id}}</td> -->
-        <td><a href="{{ url_for('users.privateprofile', uid=r.buyer_id) }}" type="button" class="btn btn-light">{{r.buyer_id}}</a></td>
+        <td><a href="{{ url_for('users.publicprofile', uid=r.buyer_id) }}" type="button" class="btn btn-light">{{r.buyer_id}}</a></td>
         <td>{{r.rating}}</td>
         <td>{{r.comment}}</td>
         <td>{{r.date}}</td>
