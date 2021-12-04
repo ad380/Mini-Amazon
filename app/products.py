@@ -44,6 +44,7 @@ def products(pid, sortoption=0):
                             prod_cat=product.category,
                             prod_quant=product.available_quantity,
                             prod_seller=product.seller_id,
+                            prod_image=product.image,
                             reviews=reviews,
                             reviewer_names=reviewer_names,
                             review_count=review_count,
