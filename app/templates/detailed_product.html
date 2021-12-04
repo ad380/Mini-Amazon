@@ -86,8 +86,17 @@
 <body>
 <div class="main-section">
 <span class="heading">Customer Reviews ({{review_count}})</span>
+<!-- Call stars method to show product average reviews -->
 <script>stars({{review_avg}})</script>
 <span class="sub-heading">{{review_avg}} out of 5</span>
+
+<!-- Dropdown for sorting options -->
+<select name="sort-options" id="sort-options" class="drop-down">
+  <option value="recent">Most Recent</option>
+  <option value="desc">Rating (Desc)</option>
+  <option value="asc">Rating (Asc) </option>
+</select>
+
 <hr style="border:3px solid #f1f1f1">
 
 <table class='table table-hover table-bordered container'>
