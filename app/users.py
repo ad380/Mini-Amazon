@@ -103,27 +103,26 @@ def sortedprofile(sortoption):
     seller_names = [User.get_name(id) for id in seller_ids]
 
     # find the products and purchases with the current user as the buyer:
+    
+    if sortoption == '0':       # sort by date purchased, descending
+        order = "time_purchased DESC"
+    elif sortoption == '1':     # sort by date purchased, ascending
+        order = "time_purchased ASC"
+    elif sortoption == '2':     # sort by purchase id
+        order = "id"
+    elif sortoption == '3':     # sort by product id
+        order = "pid"
+    elif sortoption == '4':     # sort by seller id
+        order = "seller_id"
+    else: # if an invalid sortoption is passed, sort by date purchased, descending
+        order = "time_purchased DESC"
+    
     if current_user.is_authenticated:
-        if sortoption == '0':       # sort by date purchased, descending
-            purchases = Purchase.get_all_by_uid_since(
-                current_user.id, datetime.datetime(1980, 9, 14, 0, 0, 0))
-        elif sortoption == '1':     # sort by date purchased, ascending
-            purchases = Purchase.get_all_by_uid_since_asc(
-                current_user.id, datetime.datetime(1980, 9, 14, 0, 0, 0))
-        elif sortoption == '2':     # sort by purchase id
-            purchases = Purchase.get_all_by_uid_since_by_id(
-                current_user.id, datetime.datetime(1980, 9, 14, 0, 0, 0))
-        elif sortoption == '3':     # sort by product id
-            purchases = Purchase.get_all_by_uid_since_by_pid(
-                current_user.id, datetime.datetime(1980, 9, 14, 0, 0, 0))
-        elif sortoption == '4':     # sort by seller id
-            purchases = Purchase.get_all_by_uid_since_by_seller_id(
-                current_user.id, datetime.datetime(1980, 9, 14, 0, 0, 0))
-        else: # if an invalid sortoption is passed, sort by date purchased, descending
-            purchases = Purchase.get_all_by_uid_since(
-                current_user.id, datetime.datetime(1980, 9, 14, 0, 0, 0))
+        purchases = Purchase.get_all_by_uid_ordered(current_user.id, datetime.datetime(1980, 9, 14, 0, 0, 0), order)
+
     else:
         purchases = None
+    
     # render the page by adding information to the userprofile.html file
     return render_template('userprofile.html',
                            avail_products=products,
