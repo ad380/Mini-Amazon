@@ -65,5 +65,6 @@ CREATE TABLE ProductReviews
  comment VARCHAR(512) NOT NULL,
  date TIMESTAMP without time zone NOT NULL DEFAULT (current_timestamp AT TIME ZONE 'UTC'),
  upvotes INTEGER NOT NULL,
+ image VARCHAR NOT NULL,
  PRIMARY KEY(product_id, buyer_id)
  );
