@@ -88,7 +88,7 @@ def logout():
 
 # make the private user profile with ability to sort purchases
 @bp.route('/profile/<sortoption>')
-def sortedprofile(sortoption='1'):
+def sortedprofile(sortoption='0'):
     # get all available products for sale:
     products = Product.get_all(True)
     sellers = Product.get_sellers()
@@ -104,15 +104,15 @@ def sortedprofile(sortoption='1'):
 
     # find the products and purchases with the current user as the buyer:
     
-    if sortoption == '1':       # sort by date purchased, descending
+    if sortoption == '0':       # sort by date purchased, descending
         order = "time_purchased DESC"
-    elif sortoption == '2':     # sort by date purchased, ascending
+    elif sortoption == '1':     # sort by date purchased, ascending
         order = "time_purchased ASC"
-    elif sortoption == '3':     # sort by purchase id
+    elif sortoption == '2':     # sort by purchase id
         order = "id"
-    elif sortoption == '4':     # sort by product id
+    elif sortoption == '3':     # sort by product id
         order = "pid"
-    elif sortoption == '5':     # sort by seller id
+    elif sortoption == '4':     # sort by seller id
         order = "seller_id"
     else: # if an invalid sortoption is passed, sort by date purchased, descending
         order = "time_purchased DESC"
@@ -130,7 +130,8 @@ def sortedprofile(sortoption='1'):
                            prod_reviews=prod_reviews,
                            prod_names=prod_names,
                            seller_reviews=seller_reviews,
-                           seller_names=seller_names)
+                           seller_names=seller_names,
+                           sortoption=sortoption)
 
 # make the public user profile
 @bp.route('/publicprofile/<uid>')

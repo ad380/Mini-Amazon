@@ -46,23 +46,23 @@
 <script>
   // Method used for selecting correct sort option after page is reloaded
   function selected(val) {
-    var desc = "<option value=\"1\">Time Desc</option>"
-    var asc = "<option value=\"2\">Time Asc</option>"
-    var pur = "<option value=\"3\">Purchase ID</option>"
-    var pro = "<option value=\"4\">Product ID</option>"
-    var sel = "<option value=\"5\">Seller ID</option>"
+    var desc = "<option value=\"0\">Time Desc</option>"
+    var asc = "<option value=\"1\">Time Asc</option>"
+    var pur = "<option value=\"2\">Purchase ID</option>"
+    var pro = "<option value=\"3\">Product ID</option>"
+    var sel = "<option value=\"4\">Seller ID</option>"
     if (val == "0") {
-      desc = "<option value=\"1\" selected>Time Desc</option>"
+      desc = "<option value=\"0\" selected>Time Desc</option>"
     } else if (val == "1") {
-      asc = "<option value=\"2\" selected>Time Asc</option>"
+      asc = "<option value=\"1\" selected>Time Asc</option>"
     } else if (val == "2") {
-      pur = "<option value=\"3\" selected>Purchase ID</option>"
+      pur = "<option value=\"2\" selected>Purchase ID</option>"
     } else if (val == "3") {
-      pro = "<option value=\"4\" selected>Product ID</option>"
+      pro = "<option value=\"3\" selected>Product ID</option>"
     } else if (val == "4") {
-      sel = "<option value=\"5\" selected>Seller ID</option>"
+      sel = "<option value=\"4\" selected>Seller ID</option>"
     } else {
-      desc = "<option value=\"1\" selected>Time Desc</option>"
+      desc = "<option value=\"0\" selected>Time Desc</option>"
     }
     document.write(desc)
     document.write(asc)
