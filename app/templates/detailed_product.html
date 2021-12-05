@@ -105,8 +105,16 @@
     document.write(asc)
 
     for (const btn of document.querySelectorAll('.vote')) {
-        console.log("test")
         btn.addEventListener('click', event)
+    }
+  }
+
+  // Updates upvote arrow color 
+  function changeColor(val) {
+    if (val == 1) {
+      event.currentTarget.classList.toggle('on_up')
+    } else if (val == -1) {
+      event.currentTarget.classList.toggle('on_down')
     }
   }
 </script>
@@ -139,24 +147,19 @@
     
     <!-- <span style="align-items: right;">test</span> -->
     <vote>
-    <button class="vote" onclick="changeColor();">
+    <span class="vote up" onclick="changeColor(1);">
       <svg width="36" height="36" id="vote">
         <path d="M2 26h32L18 10z" fill="currentColor"></path>
       </svg>
-    </button>
-    <p>{{review_upvotes[loop.index-1]}}</p>
-    <span class="vote">
+    </span>
+    <p style="text-align: right; padding-right: 50px;">{{review_upvotes[loop.index-1]}}</p>
+    
+    <span class="vote down" onclick="changeColor(-1);">
       <svg width="36" height="36">
         <path d="M2 10h32L18 26 2 10z" fill="currentColor"></path>
       </svg>
     </span>
     </vote>
-
-    <script>
-    function changeColor() {
-      console.log(event.currentTarget.classList.toggle('on'))
-    }
-    </script>
 
     <p></p>
 
