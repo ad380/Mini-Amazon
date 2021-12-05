@@ -2,14 +2,13 @@ from flask import current_app as app
 
 
 class ProductReview:
-    def __init__(self, product_id, buyer_id, rating, title, comment, date, upvotes, image):
+    def __init__(self, product_id, buyer_id, rating, title, comment, date, image):
         self.product_id = product_id
         self.buyer_id = buyer_id
         self.rating = rating
         self.title = title
         self.comment = comment
         self.date = date
-        self.upvotes = upvotes
         self.image = image
 
 
@@ -27,7 +26,7 @@ class ProductReview:
 
     @staticmethod
     def get_count(product_id):
-        # Returns list of ProductReview objects for given product
+        # Returns number of reviews for product
         rows = app.db.execute('''
     SELECT count(buyer_id)
     FROM ProductReviews
@@ -39,7 +38,7 @@ class ProductReview:
 
     @staticmethod
     def get_avg(product_id):
-        # Returns list of ProductReview objects for given product
+        # Returns average rating for product
         rows = app.db.execute('''
     SELECT AVG(rating)
     FROM ProductReviews
@@ -61,6 +60,19 @@ class ProductReview:
                     uid=uid)
         return [ProductReview(*row) for row in rows]
 
+    @staticmethod
+    def get_upvotes(pid, bid):
+        # Returns list of review upvotes 
+        # given the product_id and buyer_id
+        rows = app.db.execute('''
+    SELECT sum(vote)
+    FROM ProductReviewsUpvotes
+    WHERE buyer_id = :bid
+    AND product_id = :pid    
+    ''',
+                    pid=pid,
+                    bid=bid)
+        return rows[0][0] if rows[0][0] is not None else 0
         
         
         

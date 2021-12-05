@@ -103,6 +103,19 @@
     document.write(rec)
     document.write(desc)
     document.write(asc)
+
+    for (const btn of document.querySelectorAll('.vote')) {
+        btn.addEventListener('click', event)
+    }
+  }
+
+  // Updates upvote arrow color 
+  function changeColor(val) {
+    if (val == 1) {
+      event.currentTarget.classList.toggle('on_up')
+    } else if (val == -1) {
+      event.currentTarget.classList.toggle('on_down')
+    }
   }
 </script>
 
@@ -131,6 +144,23 @@
         class="btn btn-light">{{reviewer_names[loop.index-1]}}
       </a>
     <a style="display: inline; font-size: 18px;">{{review.date|format_date('standard')}}</a>
+    
+    <!-- <span style="align-items: right;">test</span> -->
+    <vote>
+    <span class="vote up" onclick="changeColor(1);">
+      <svg width="36" height="36" id="vote">
+        <path d="M2 26h32L18 10z" fill="currentColor"></path>
+      </svg>
+    </span>
+    <p style="text-align: right; padding-right: 50px;">{{review_upvotes[loop.index-1]}}</p>
+    
+    <span class="vote down" onclick="changeColor(-1);">
+      <svg width="36" height="36">
+        <path d="M2 10h32L18 26 2 10z" fill="currentColor"></path>
+      </svg>
+    </span>
+    </vote>
+
     <p></p>
 
     <script>stars({{review.rating}})</script>
