@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<!-- back button -->
+
+<p><a href="{{ url_for('users.sortedprofile', sortoption=0) }}" type="button" class="btn btn-secondary">Back</a></p>
+
+<!-- display form for editing user email -->
+
+<h1>Edit User Email</h1>
+
+<form action="" method="post">
+  {{ form.hidden_tag() }}
+  <p>
+    {{ form.email.label }} (Could be fake email address)<br/>
+    {{ form.email(size=64) }}<br/>
+    {% for error in form.email.errors %}
+    <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+  <p>
+    {{ form.password.label }}<br/>
+    {{ form.password(size=32) }}<br/>
+    {% for error in form.password.errors %}
+    <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+  <p>{{ form.submit() }}</p>
+</form>
+
+{% endblock %}
