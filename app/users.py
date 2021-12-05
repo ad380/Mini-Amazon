@@ -162,17 +162,37 @@ def publicprofile(uid):
                            review_avg=review_avg,
                            user=user)
 
-# make the edit user form
-class EditUserForm(FlaskForm):
+# make the edit name form
+class EditNameForm(FlaskForm):
     firstname = StringField(_l('First Name'), validators=[DataRequired()])
     lastname = StringField(_l('Last Name'), validators=[DataRequired()])
+    password = PasswordField(_l('Confirm Password'), validators=[DataRequired()])
+    submit = SubmitField(_l('Update'))
+
+# run the edit name form
+@bp.route('/editname', methods=['GET', 'POST'])
+def editname():
+    if current_user.is_authenticated:
+        form = EditNameForm()
+        if form.validate_on_submit():
+            user = User.get_by_auth(current_user.email, form.password.data)
+            if user is None:
+                print('Invalid password')
+                return redirect(url_for('users.editname'))
+            if User.edituser(current_user.id,
+                            current_user.email,
+                            form.password.data,
+                            form.firstname.data,
+                            form.lastname.data,
+                            current_user.address,
+                            current_user.balance):
+                return redirect(url_for('users.sortedprofile', sortoption=0))
+        return render_template('editname.html', title='Edit User Name', form=form)
+
+# make the edit email form
+class EditEmailForm(FlaskForm):
     email = StringField(_l('Email'), validators=[DataRequired(), Email()])
-    address = StringField(_l('Address'), validators=[DataRequired()])
-    password = PasswordField(_l('Password'), validators=[DataRequired()])
-    password2 = PasswordField(
-        _l('Repeat Password'), validators=[DataRequired(),
-                                           EqualTo('password')])
-    balance = DecimalField(_l('Balance'), validators=[InputRequired()])
+    password = PasswordField(_l('Confirm Password'), validators=[DataRequired()])
     submit = SubmitField(_l('Update'))
 
     #can either be a new email that is not taken by someone else or your current email
@@ -180,18 +200,103 @@ class EditUserForm(FlaskForm):
         if User.email_exists(email.data) and email != self.email:
             raise ValidationError(_('Already a user with this email.'))
 
-# run the edit user form
-@bp.route('/edituser', methods=['GET', 'POST'])
-def edituser():
+# run the edit name form
+@bp.route('/editemail', methods=['GET', 'POST'])
+def editemail():
     if current_user.is_authenticated:
-        form = EditUserForm()
+        form = EditEmailForm()
         if form.validate_on_submit():
+            user = User.get_by_auth(current_user.email, form.password.data)
+            if user is None:
+                print('Invalid password')
+                return redirect(url_for('users.editemail'))
             if User.edituser(current_user.id,
                             form.email.data,
                             form.password.data,
-                            form.firstname.data,
-                            form.lastname.data,
+                            current_user.firstname,
+                            current_user.lastname,
+                            current_user.address,
+                            current_user.balance):
+                return redirect(url_for('users.sortedprofile', sortoption=0))
+        return render_template('editemail.html', title='Edit User Email', form=form)
+
+# make the edit address form
+class EditAddressForm(FlaskForm):
+    address = StringField(_l('Address'), validators=[DataRequired()])
+    password = PasswordField(_l('Confirm Password'), validators=[DataRequired()])
+    submit = SubmitField(_l('Update'))
+
+# run the edit address form
+@bp.route('/editaddress', methods=['GET', 'POST'])
+def editaddress():
+    if current_user.is_authenticated:
+        form = EditAddressForm()
+        if form.validate_on_submit():
+            user = User.get_by_auth(current_user.email, form.password.data)
+            if user is None:
+                print('Invalid password')
+                return redirect(url_for('users.editaddress'))
+            if User.edituser(current_user.id,
+                            current_user.email,
+                            form.password.data,
+                            current_user.firstname,
+                            current_user.lastname,
                             form.address.data,
+                            current_user.balance):
+                return redirect(url_for('users.sortedprofile', sortoption=0))
+        return render_template('editaddress.html', title='Edit User Address', form=form)
+
+# make the edit balance form
+class EditBalanceForm(FlaskForm):
+    balance = DecimalField(_l('Balance'), validators=[InputRequired()])
+    password = PasswordField(_l('Confirm Password'), validators=[DataRequired()])
+    submit = SubmitField(_l('Update'))
+
+# run the edit balance form
+@bp.route('/editbalance', methods=['GET', 'POST'])
+def editbalance():
+    if current_user.is_authenticated:
+        form = EditBalanceForm()
+        if form.validate_on_submit():
+            user = User.get_by_auth(current_user.email, form.password.data)
+            if user is None:
+                print('Invalid password')
+                return redirect(url_for('users.editbalance'))
+            if User.edituser(current_user.id,
+                            current_user.email,
+                            form.password.data,
+                            current_user.firstname,
+                            current_user.lastname,
+                            current_user.address,
                             form.balance.data):
-                return redirect(url_for('users.profile'))
-        return render_template('edituser.html', title='Edit User', form=form)
+                return redirect(url_for('users.sortedprofile', sortoption=0))
+        return render_template('editbalance.html', title='Edit User Balance', form=form)
+
+# make the edit password form
+class EditPasswordForm(FlaskForm):
+    password = PasswordField(_l('Old Password'), validators=[DataRequired()])
+    password2 = PasswordField(_l('New Password'), validators=[DataRequired()])
+    password3 = PasswordField(
+        _l('Repeat New Password'), validators=[DataRequired(),
+                                           EqualTo('password2')])
+    submit = SubmitField(_l('Update'))
+
+# run the edit password form
+@bp.route('/editpassword', methods=['GET', 'POST'])
+def editpassword():
+    if current_user.is_authenticated:
+        form = EditPasswordForm()
+        if form.validate_on_submit():
+            user = User.get_by_auth(current_user.email, form.password.data)
+            if user is None:
+                print('Invalid password')
+                return redirect(url_for('users.editpassword'))
+            if User.edituser(current_user.id,
+                            current_user.email,
+                            form.password2.data,
+                            current_user.firstname,
+                            current_user.lastname,
+                            current_user.address,
+                            current_user.balance):
+                return redirect(url_for('users.sortedprofile', sortoption=0))
+        return render_template('editpassword.html', title='Edit User Password', form=form)

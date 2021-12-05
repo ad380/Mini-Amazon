@@ -10,28 +10,30 @@
 <p><a href="{{ url_for('inventory.index') }}" type="button" class="btn btn-light">Seller Inventory</a></p>
 {% endif %}
 
-<br><br>
+<p></p>
 
 <h2 style="text-align: center">Private User Profile</h2>
 
-<!-- Display all user information -->
+<!-- Display (and edit) all user information -->
 
-<div>Name: {{current_user.firstname}} {{current_user.lastname}}</div>
+<div>Name: <a href="{{ url_for('users.editname') }}">{{current_user.firstname}} {{current_user.lastname}}</a></div>
 
 <div>Account number: {{current_user.id}}</div>
 
-<div>Email: {{current_user.email}}</div>
+<div>Email: <a href="{{ url_for('users.editemail') }}">{{current_user.email}}</a></div>
 
-<div>Address: {{current_user.address}}</div>
+<div>Address: <a href="{{ url_for('users.editaddress') }}">{{current_user.address}}</a></div>
 
-<div>Balance: ${{current_user.balance}}</div>
-
-<!-- Buttons to edit user or view public profile -->
+<div>Balance: <a href="{{ url_for('users.editbalance') }}">${{current_user.balance}}</a></div>
 
 <p></p>
-<div><a href="{{ url_for('users.edituser') }}">Edit User</a></div>
+<div><a href="{{ url_for('users.editpassword') }}">Update Password</a></div>
 
 <p></p>
+<div>(Click on your information above to edit it)</div>
+
+<!-- Button to view public profile -->
+<br><br>
 <div><a href="{{ url_for('users.publicprofile', uid=current_user.id) }}">View Your Public Profile</a></div>
 
 <br><br>
@@ -72,14 +74,14 @@
   }
 </script>
 
-<div>Sort By:</div>
+<div style="text-align: right">Sort By:</div>
 
 <!-- Dropdown for sorting options -->
-<select name="sort-options" id="sort-options" class="drop-down" onchange="location = this.value">
-  <script>selected({{sortoption}})</script>
-</select>
-
-<br><br>
+<div style="text-align: right">
+  <select name="sort-options" id="sort-options" class="drop-down" onchange="location = this.value">
+    <script>selected({{sortoption}})</script>
+  </select>
+</div>
 
 <table class='table table-hover table-bordered container'>
   <thead class="thead-dark">
