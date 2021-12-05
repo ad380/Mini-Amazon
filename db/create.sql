@@ -64,7 +64,15 @@ CREATE TABLE ProductReviews
  title VARCHAR(64) NOT NULL,
  comment VARCHAR(512) NOT NULL,
  date TIMESTAMP without time zone NOT NULL DEFAULT (current_timestamp AT TIME ZONE 'UTC'),
- upvotes INTEGER NOT NULL,
  image VARCHAR NOT NULL,
  PRIMARY KEY(product_id, buyer_id)
  );
+
+CREATE TABLE ProductReviewsUpvotes
+(uid INTEGER NOT NULL REFERENCES Users(id),
+product_id INTEGER NOT NULL REFERENCES Products(id),
+buyer_id INTEGER NOT NULL REFERENCES Users(id),
+vote INTEGER NOT NULL CHECK(vote in (-1, 0, 1)),
+PRIMARY KEY (uid, product_id, buyer_id),
+FOREIGN KEY (product_id, buyer_id) REFERENCES  ProductReviews(product_id, buyer_id)
+);

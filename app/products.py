@@ -24,7 +24,7 @@ bp = Blueprint('products', __name__)
 @bp.route('/products/<pid>/<sortoption>')
 def products(pid, sortoption=0):
     product = Product.get(pid)
-    print(f"SORT OPTION = {sortoption}")
+
     if sortoption == '0':
         order = "date DESC"
     elif sortoption == '1':
@@ -36,6 +36,9 @@ def products(pid, sortoption=0):
     reviewer_names = [User.get_name(id) for id in reviewer_ids]
     review_count = ProductReview.get_count(pid)
     review_avg = round(ProductReview.get_avg(pid), 1)
+
+    review_keys = [(r.product_id, r.buyer_id) for r in reviews]
+    review_upvotes = [ProductReview.get_upvotes(pid, bid) for pid, bid in review_keys]
     return render_template('detailed_product.html', 
                             pid=pid,
                             prod_desc=product.description,
@@ -49,7 +52,8 @@ def products(pid, sortoption=0):
                             reviewer_names=reviewer_names,
                             review_count=review_count,
                             review_avg=review_avg,
-                            sortoption=sortoption)
+                            sortoption=sortoption,
+                            review_upvotes=review_upvotes)
 
 class ProductForm(FlaskForm):
     categories = ['food','clothing','gadgets','media','misc']

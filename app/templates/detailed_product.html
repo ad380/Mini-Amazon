@@ -103,6 +103,11 @@
     document.write(rec)
     document.write(desc)
     document.write(asc)
+
+    for (const btn of document.querySelectorAll('.vote')) {
+        console.log("test")
+        btn.addEventListener('click', event)
+    }
   }
 </script>
 
@@ -131,6 +136,28 @@
         class="btn btn-light">{{reviewer_names[loop.index-1]}}
       </a>
     <a style="display: inline; font-size: 18px;">{{review.date|format_date('standard')}}</a>
+    
+    <!-- <span style="align-items: right;">test</span> -->
+    <vote>
+    <button class="vote" onclick="changeColor();">
+      <svg width="36" height="36" id="vote">
+        <path d="M2 26h32L18 10z" fill="currentColor"></path>
+      </svg>
+    </button>
+    <p>{{review_upvotes[loop.index-1]}}</p>
+    <span class="vote">
+      <svg width="36" height="36">
+        <path d="M2 10h32L18 26 2 10z" fill="currentColor"></path>
+      </svg>
+    </span>
+    </vote>
+
+    <script>
+    function changeColor() {
+      console.log(event.currentTarget.classList.toggle('on'))
+    }
+    </script>
+
     <p></p>
 
     <script>stars({{review.rating}})</script>

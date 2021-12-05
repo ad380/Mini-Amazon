@@ -11,6 +11,7 @@ SELECT pg_catalog.setval('public.users_id_seq',
 \COPY Purchases FROM 'Purchases.csv' WITH DELIMITER ',' NULL '' CSV
 \COPY SellerReviews FROM 'SellerReviews.csv' WITH DELIMITER ',' NULL '' CSV
 \COPY ProductReviews FROM 'ProductReviews.csv' WITH DELIMITER ',' NULL '' CSV
+\COPY ProductReviewsUpvotes FROM 'ProductReviewsUpvotes.csv' WITH DELIMITER ',' NULL '' CSV
 
 
 
