@@ -10,37 +10,37 @@
 
 <h2>Products for sale:</h2>
 
-<div class="dropdown" style="color: aliceblue; text-align: right; margin-bottom: 25px; position:static">
-  <div class="dropdown" style="color: aliceblue; text-align: right; margin-bottom: 25px; position:static">
-    <button class="dropbtn">Sort By</button>
-    <div class="dropdown-content">
-      <a href="{{ url_for('index.sortedindex', sortoption=1, page_num=1) }}" type="button" class="btn btn-light">Price Asc</a>
-      <a href="{{ url_for('index.sortedindex', sortoption=2, page_num=1) }}" type="button" class="btn btn-light">Price Desc</a>
-      <a href="{{ url_for('index.index') }}" type="button" class="btn btn-light">Product ID</a>
-    </div>
-  </div>
-  <div class="dropdown" style="color: aliceblue; text-align: right; margin-bottom: 25px; position:static">
-    <button class="dropbtn">Filter By Category</button>
-    <div class="dropdown-content">
-      <a href="{{ url_for('index.categorizedindex', category=1, page_num=1) }}" type="button" class="btn btn-light">Clothing</a>
-      <a href="{{ url_for('index.categorizedindex', category=2, page_num=1) }}" type="button" class="btn btn-light">Food</a>
-      <a href="{{ url_for('index.categorizedindex', category=3, page_num=1) }}" type="button" class="btn btn-light">Gadgets</a>
-      <a href="{{ url_for('index.categorizedindex', category=4, page_num=1) }}" type="button" class="btn btn-light">Media</a>
-      <a href="{{ url_for('index.categorizedindex', category=5, page_num=1) }}" type="button" class="btn btn-light">Misc</a>
-    </div>
-  </div>
-    <form action="{{ url_for('index.index') }}" method="POST">
-      {{ form.csrf_token }}
-      {{ form.hidden_tag() }}
-      <p>
-        {{ form.searchValue.label }}<br/>
-        {{ form.searchValue(size=32) }}<br/>
-        {% for error in form.searchValue.errors %}
-        <span style="color: red;">[{{ error }}]</span>
-        {% endfor %}
-      </p>
-      <p>{{ form.submit() }}</p>
-    </form>
+
+<div class="dropdown" style="color: green; text-align: right; margin-bottom: 25px; position:static">
+  <select name="sort-options" id="sort-options" class="drop-down" onchange="location = this.value">
+    <option label="Sort By" value="">Sort By</option>
+    <option value="{{ url_for('index.index') }}">Product ID</option>
+    <option value="{{ url_for('index.sortedindex', sortoption=1, page_num=1) }}">Price (ASC)</option>
+    <option value="{{ url_for('index.sortedindex', sortoption=2, page_num=1) }}">Price (DESC)</option>
+  </select> 
+  <br><br>
+  <select name="category-options" id="category-options" class="drop-down" onchange="location = this.value">
+    <option label="Filter By Category" value="">Filter By Category</option>
+    <option value="{{ url_for('index.index') }}">None</option>
+    <option value="{{ url_for('index.categorizedindex', category=1, page_num=1) }}">Clothing</option>
+    <option value="{{ url_for('index.categorizedindex', category=2, page_num=1) }}">Food</option>
+    <option value="{{ url_for('index.categorizedindex', category=3, page_num=1) }}">Gadgets</option>
+    <option value="{{ url_for('index.categorizedindex', category=4, page_num=1) }}">Media</option>
+    <option value="{{ url_for('index.categorizedindex', category=5, page_num=1) }}">Misc</option>
+  </select> 
+
+  <form action="{{ url_for('index.index') }}" method="POST">
+    {{ form.csrf_token }}
+    {{ form.hidden_tag() }}
+    <p>
+      {{ form.searchValue.label }}<br/>
+      {{ form.searchValue(size=32) }}<br/>
+      {% for error in form.searchValue.errors %}
+      <span style="color: red;">[{{ error }}]</span>
+      {% endfor %}
+    </p>
+    <p>{{ form.submit() }}</p>
+  </form>
 </div>
 
 <table class='table table-hover table-bordered container'>

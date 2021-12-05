@@ -188,7 +188,7 @@ WHERE id = :id
 SELECT id, seller_id, name, description, category, image,
 price, available, available_quantity
 FROM Products
-WHERE name = :searchValue
+WHERE lower(name) LIKE '%' || lower(:searchValue) || '%'
 ''', 
                             searchValue=searchValue)
         return [Product(*row) for row in rows]
