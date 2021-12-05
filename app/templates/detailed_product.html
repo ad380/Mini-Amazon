@@ -8,6 +8,7 @@
 
 <!-- Product information table -->
 <h2>Product Information:</h2>
+<img width="200" src="{{prod_image}}"/>
 <table class='table table-hover table-bordered container'>
   <thead class="thead-dark">
     <tr>
@@ -135,6 +136,12 @@
     <script>stars({{review.rating}})</script>
     <a style="display: inline; font-size: 18px; padding-left: 10px; font-style: b;"><strong>{{review.title}}</strong></a>
     <p class="comment">{{review.comment}}</p>
+    <!-- Check if review has default value "IMAGE"
+          otherwise if there is valid link
+          display image -->
+    {% if review.image != "IMAGE" %} 
+      <img width="100" src="{{review.image}}"/>
+    {% endif %}
   </div>
   {% endfor %}
 

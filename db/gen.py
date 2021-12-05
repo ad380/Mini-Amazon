@@ -5,6 +5,7 @@ import os
 from flask import current_app as app
 import random
 from datetime import datetime
+import requests
 
 
 num_users = 500
@@ -182,10 +183,72 @@ def gen_seller_reviews():
             writer.writerow([seller_id, buyer_id, rating, comment[:512], date, 0])
     return
 
+
+def gen_random_image(length=100, width=100):
+    return requests.get(f"https://picsum.photos/{length}/{width}").url
+
+   
+def update_product_images():
+    """
+    Method that updates the CSV file for products
+    """
+    __location__ = os.path.realpath(
+    os.path.join(os.getcwd(), os.path.dirname(__file__)))
+    f = open(os.path.join(__location__, 'data/Products.csv'))
+    
+    r = csv.reader(f) # Here your csv file
+    products = list(r)
+    for i, product in enumerate(products):
+        product[5] = gen_random_image()
+        if i % 10 == 0:
+                print(f'{i}', end=' ', flush=True)
+
+    w = open(os.path.join(__location__, 'data/Products.csv'), "w")
+    writer = csv.writer(w)
+    writer.writerows(products)
+    return  
+
+def update_reviews_images(type):
+    """
+    Method that updates the CSV file for product reviews
+    In the case append to each line since we just added image attribute
+    """
+    __location__ = os.path.realpath(
+    os.path.join(os.getcwd(), os.path.dirname(__file__)))
+    f = open(os.path.join(__location__, f'data/{type}Reviews.csv'))
+    
+    r = csv.reader(f) # Here your csv file
+    reviews = list(r)
+    for i, review in enumerate(reviews):
+        """
+        ******** IMPORTANT ********
+        If you are using this method in the future, and the
+        reviews table already has images make sure you 
+        aren't appending but rather updating by index
+        """
+        image_ratio = .2 # image % of reviews actually contain a an
+        if random.random() <= image_ratio:
+            # review.append(gen_random_image())
+            review[7] = gen_random_image()
+        else:
+            # review.append("IMAGE")
+            review[7] = "IMAGE"
+        if i % 100 == 0:
+                print(f'{i}', end=' ', flush=True)
+
+    w = open(os.path.join(__location__, f'data/{type}Reviews.csv'), "w")
+    writer = csv.writer(w)
+    writer.writerows(reviews)
+    return  
+
 # gen_users(num_users)
 # available_pids = gen_products(num_products)
 # gen_purchases(num_purchases, available_pids)
-gen_product_reviews()
+# gen_product_reviews()
 # gen_seller_reviews()
 # print(random.choice(RATINGS))
 # print(get_random_seller_ratings())
+# print(gen_random_image())
+# update_product_images()
+# update_reviews_images("Product")
+# update_reviews_images("Seller")

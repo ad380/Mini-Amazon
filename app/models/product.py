@@ -181,3 +181,15 @@ WHERE id = :id
             print("couldn't delete product")
             return None
 
+# search for product given product name
+    @staticmethod
+    def search_products(searchValue):
+        rows = app.db.execute('''
+SELECT id, seller_id, name, description, category, image,
+price, available, available_quantity
+FROM Products
+WHERE name = :searchValue
+''', 
+                            searchValue=searchValue)
+        return [Product(*row) for row in rows]
+
