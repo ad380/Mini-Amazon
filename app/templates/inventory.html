@@ -9,7 +9,7 @@
 
 <p></p>
 
-<div>
+<div class="dropdown" style="color: green; text-align: right; margin-bottom: 25px; position:static">
 <form action="{{ url_for('inventory.index') }}" method="POST">
     {{ form.csrf_token }}
     {{ form.hidden_tag() }}
@@ -22,6 +22,7 @@
     </p>
     <p>{{ form.submit() }}</p>
   </form>
+  <a href="{{ url_for('inventory.index') }}" type="button" class="btn btn-primary">Clear</a>
 </div>
 
 <br>
