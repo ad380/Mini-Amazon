@@ -40,7 +40,7 @@ def index():
     return render_template('inventory.html',
                            sold_products=products,
                            purchase_history=purchases,
-                           users = users)
+                           users = users, form = form)
 
 # Order history page
 @bp.route('/orders',methods=["POST", "GET"])
