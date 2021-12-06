@@ -112,7 +112,7 @@ OFFSET :offset
 SELECT id, seller_id, name, description, category, Products.image,
 price, available_quantity, AVG(ProductReviews.rating), ProductReviews.product_id
 FROM ProductReviews, Products 
-WHERE ProductReviews.product_id = Products.id 
+WHERE ProductReviews.product_id = id 
 GROUP BY ProductReviews.product_id
 ORDER BY AVG(ProductReviews.rating) DESC
 LIMIT 50
