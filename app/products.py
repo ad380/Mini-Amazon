@@ -136,7 +136,7 @@ def addProduct():
                                   form.image.data,
                                   form.price.data,
                                   form.quantity.data):
-                flash('Congratualtions, your product has been added')
+                print('Congratualtions, your product has been added')
                 return redirect(url_for('inventory.index'))
     return render_template('addproduct.html', title='Add Product', form=form)
 
@@ -151,7 +151,7 @@ def editQuantity(pid):
     form.newQuantity.default = quantity
     if form.validate_on_submit():
         if Product.editQuantity(pid, form.newQuantity.data):
-            flash('Congratualtions, your product quantity has been updated')
+            print('Congratualtions, your product quantity has been updated')
             return redirect(url_for('inventory.index'))
     return render_template('editquantity.html', title='Edit Product Quantity',
                            form=form, product = Product.get(pid))
@@ -164,7 +164,7 @@ def deleteProduct(pid):
     form = DeleteForm()
     if form.validate_on_submit():
         if Product.deleteProduct(pid):
-            flash('Your product has been removed')
+            print('Your product has been removed')
             return redirect(url_for('inventory.index'))
         return redirect(url_for('inventory.index'))
     return render_template('deleteproduct.html', title='Delete Product',
@@ -173,7 +173,7 @@ def deleteProduct(pid):
 @bp.route('/products/deletereview/<pid>/<bid>',methods=["POST", "GET"])
 def deleteReview(pid, bid):
     if ProductReview.deleteReview(pid, bid):
-            flash('Your product has been removed')
+            print('Your review has been removed')
             return redirect(url_for('products.products', pid=pid, sortoption=0))
     return redirect(url_for('products.products', pid=pid, sortoption=0))
 

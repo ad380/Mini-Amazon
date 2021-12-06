@@ -7,7 +7,8 @@
 {% if current_user.is_authenticated %}
 
 {% if current_user.id in sellers %}
-<p><a href="{{ url_for('inventory.index') }}" type="button" class="btn btn-light">Seller Inventory</a></p>
+<p></p>
+<p><a href="{{ url_for('inventory.index') }}" type="button" class="btn btn-secondary">Seller Inventory</a></p>
 {% endif %}
 
 <p></p>
@@ -35,6 +36,11 @@
 <!-- Button to view public profile -->
 <br><br>
 <div><a href="{{ url_for('users.publicprofile', uid=current_user.id, sortoption=0) }}">View Your Public Profile</a></div>
+
+{% if current_user.id not in sellers %}
+<br><br>
+<div>Want to become a seller? <a href="{{ url_for('products.addProduct') }}">Add Product</a></div>
+{% endif %}
 
 <br><br>
 

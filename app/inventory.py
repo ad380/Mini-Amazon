@@ -31,6 +31,25 @@ def index():
                            purchase_history=purchases,
                            users = users)
 
+# Order history page
+@bp.route('/orders',methods=["POST", "GET"])
+def orders():
+    # get all available products for sale:
+    products = Product.get_all()
+    users = User.get_info()
+    # find the products and purchases with the current user as the seller:
+    if current_user.is_authenticated:
+        purchases = Purchase.get_all_by_seller_id(current_user.id)
+        products = Product.get_all_by_seller(current_user.id)
+    else:
+        purchases = None
+        products = None
+    # render the page by adding information to the inventory.html file
+    return render_template('orders.html',
+                           sold_products=products,
+                           purchase_history=purchases,
+                           users = users)
+
 class StatusForm(FlaskForm):
     categories = ['Fulfilled', 'Not Fulfilled']
     newStatus = SelectField(u'Status', choices = categories, validators = [DataRequired()])
@@ -47,7 +66,7 @@ def editStatus(pid):
     form.newStatus.default = status
     if form.validate_on_submit():
         if Purchase.editStatus(pid, form.newStatus.data):
-            flash('Congratualtions, your purchase status has been updated')
+            print('Congratualtions, your purchase status has been updated')
             return redirect(url_for('inventory.index'))
     return render_template('editstatus.html', title='Edit Purchase Status',
                            form=form, purchase = Purchase.get(pid))
