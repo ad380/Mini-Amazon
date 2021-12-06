@@ -105,6 +105,20 @@ OFFSET :offset
                             offset=offset)
         return [Product(*row) for row in rows]
 
+#this sorts the products by average rating from highest to lowest
+    @staticmethod
+    def get_by_rating(offset=0):
+        rows = app.db.execute('''
+SELECT AVG(r.rating), r.product_id
+FROM ProductReviews r, Products p
+WHERE r.product_id = p.id 
+ORDER BY AVG(r.rating) DESC
+LIMIT 50
+OFFSET :offset
+        ''',
+                            offset=offset)
+        return [Product(*row) for row in rows]
+
 #this filters products by category
     @staticmethod
     def get_by_category(category, offset=0):
