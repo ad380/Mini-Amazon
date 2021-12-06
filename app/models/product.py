@@ -132,8 +132,8 @@ OFFSET :offset
 #add new product
     @staticmethod
     def addProduct(seller_id, name, description, category, price, available_quantity):
-        #try:
-        rows = app.db.execute("""
+        try:
+            rows = app.db.execute("""
 INSERT INTO Products(seller_id, name, description, category, image,
 price, available, available_quantity)
 VALUES(:seller_id, :name, :description, :category, 'url', :price, True, :available_quantity)
@@ -145,17 +145,17 @@ RETURNING id
                                   category = category,
                                   price=price,
                                   available_quantity=available_quantity)
-        id = rows[0][0]
-        return Product.get(id)
-        #except Exception:
-        #    print("Couldn't add product")
-        #    return None
+            id = rows[0][0]
+            return Product.get(id)
+        except Exception:
+            print("Couldn't add product")
+            return None
 
 # update purchase status for given product id
     @staticmethod
     def editQuantity(id, quantity):
-        #try:
-        rows = app.db.execute('''
+        try:
+            rows = app.db.execute('''
 UPDATE Products
 SET available_quantity = :quantity
 WHERE id = :id
@@ -163,25 +163,25 @@ RETURNING *
 ''',
                               id=id,
                               quantity=quantity)
-        return rows
-        #except Exception:
-        #    print("couldn't update product quantity")
-        #    return None
+            return rows
+        except Exception:
+            print("couldn't update product quantity")
+            return None
 
 # delete product with given product id
     @staticmethod
     def deleteProduct(id):
-        #try:
-        rows = app.db.execute('''
+        try:
+            rows = app.db.execute('''
 DELETE FROM Products
 WHERE id = :id
 RETURNING *
 ''',
                               id=id)
-        return rows
-        #except Exception:
-        #    print("couldn't delete product")
-        #    return None
+            return rows
+        except Exception:
+            print("couldn't delete product")
+            return None
 
 # search for product given product name
     @staticmethod

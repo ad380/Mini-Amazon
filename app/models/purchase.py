@@ -61,8 +61,9 @@ ORDER BY time_purchased DESC
             fulfilled = 'f'
         else:
             fulfilled = 'nf'
-        #try:
-        rows = app.db.execute('''
+        try:
+            print(fulfilled)
+            rows = app.db.execute('''
 UPDATE Purchases
 SET fulfilled = :fulfilled
 WHERE id = :id
@@ -70,8 +71,7 @@ RETURNING *
 ''',
                               id=id,
                               fulfilled=fulfilled)
-        print(rows)
-        return rows
-        #except Exception:
-        #    print("couldn't update purchase status")
-        #    return None
+            return rows
+        except Exception:
+            print("couldn't update purchase status")
+            return None
