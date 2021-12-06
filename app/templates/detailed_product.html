@@ -9,6 +9,7 @@
 <!-- Product information table -->
 <h2>Product Information:</h2>
 <img width="200" src="{{prod_image}}"/>
+<br><br>
 <table class='table table-hover table-bordered container'>
   <thead class="thead-dark">
     <tr>
@@ -124,6 +125,20 @@
 
 <div class="main-section">
   <span class="heading">Customer Reviews ({{review_count}})</span>
+
+  {% if current_user.is_authenticated and has_reviewed %}
+    <p>You may only leave one review per product</p>
+    <br><br>
+  {% elif current_user.is_authenticated and has_purchased %}
+    <p><a href="{{ url_for('products.reviewProduct', pid=pid) }}" type="button" class="btn btn-light">Review This Product</a></p>
+    <br><br>
+  {% elif current_user.is_authenticated %}
+    <p>You can only review previously purchased items</p>
+    <br><br>
+  {% else %}
+    <p><a href="{{ url_for('users.login') }}" type="button" class="btn btn-light">Must be signed in to review products</a></p>
+    <br><br>
+  {% endif %}
 
   <!-- Call stars method to show product average reviews -->
   <script>stars({{review_avg}})</script>

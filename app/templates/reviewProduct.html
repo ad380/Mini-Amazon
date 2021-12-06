@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<!-- back button -->
+
+<p><a href="{{ url_for('products.products', pid=product.id, sortoption=0) }}" type="button" class="btn btn-secondary">Back</a></p>
+
+<!-- display form for making a product review -->
+
+<h1>Create A Product Review</h1>
+
+<form action="" method="post">
+  {{ form.hidden_tag() }}
+  <p>
+    {{ form.rating.label }}<br/>
+    {{ form.rating(size=32) }}<br/>
+    {% for error in form.rating.errors %}
+    <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+  <p>
+    {{ form.title.label }}<br/>
+    {{ form.title(size=32) }}<br/>
+    {% for error in form.title.errors %}
+    <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+  <p>
+    {{ form.comment.label }}<br/>
+    {{ form.comment(size=32) }}<br/>
+    {% for error in form.comment.errors %}
+    <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+  <p>
+    {{ form.image.label }}<br/>
+    {{ form.image(size=32) }}<br/>
+    {% for error in form.image.errors %}
+    <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+  <p>{{ form.submit() }}</p>
+</form>
+
+{% endblock %}
