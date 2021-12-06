@@ -20,9 +20,8 @@
       <span style="color: red;">[{{ error }}]</span>
       {% endfor %}
     </p>
-    <p>{{ form.submit() }}</p>
+    <p><a href="{{ url_for('inventory.index') }}" type="button" class="btn btn-light">Clear</a> {{ form.submit() }}</p>
   </form>
-  <a href="{{ url_for('inventory.index') }}" type="button" class="btn btn-primary">Clear</a>
 </div>
 
 <br>
