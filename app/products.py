@@ -88,7 +88,7 @@ class QuantityForm(FlaskForm):
 def editQuantity(pid):
     quantity = Product.get(pid).available_quantity
     form = QuantityForm()
-    form.newQuantity.data = quantity
+    form.newQuantity.default = quantity
     if form.validate_on_submit():
         if Product.editQuantity(pid, form.newQuantity.data):
             flash('Congratualtions, your product quantity has been updated')
