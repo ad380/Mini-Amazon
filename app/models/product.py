@@ -3,11 +3,10 @@ from flask import current_app as app
 
 class Product:
     def __init__(self, id, seller_id, name, description, category, image,\
-                 price, available, available_quantity):
+                 price, available_quantity):
         self.id = id
         self.name = name
         self.price = price
-        self.available = available
         self.seller_id = seller_id
         self.description = description
         self.category = category
@@ -18,7 +17,7 @@ class Product:
     def get(id):
         rows = app.db.execute('''
 SELECT id, seller_id, name, description, category, image,
-price, available, available_quantity
+price, available_quantity
 FROM Products
 WHERE id = :id
 ''',
@@ -26,36 +25,37 @@ WHERE id = :id
         return Product(*(rows[0])) if rows is not None else None
 
     @staticmethod
-    def get_all(available=True):
+    def get_all():
         rows = app.db.execute('''
 SELECT id, seller_id, name, description, category, image,
-price, available, available_quantity
+price, available_quantity
 FROM Products
-WHERE available = :available
+WHERE available_quantity > 0
 ''',
-                              available=available)
+                              )
         return [Product(*row) for row in rows]
 
     #this gets 100 products with the given offset for pagination
     @staticmethod
-    def get_some(available=True, offset=0):
+    def get_some(offset=0):
         rows = app.db.execute('''
 SELECT id, seller_id, name, description, category, image,
-price, available, available_quantity
+price, available_quantity
 FROM Products
-WHERE available = :available
+WHERE available_quantity > 0
+ORDER BY id
 LIMIT 100
 OFFSET :offset
 ''',
-                              available=available,
-                              offset=offset)
+                              offset=offset
+        )
         return [Product(*row) for row in rows]
 
     @staticmethod
     def get_all_by_seller(seller_id):
         rows = app.db.execute('''
 SELECT id, seller_id, name, description, category, image,
-price, available, available_quantity
+price, available_quantity
 FROM Products
 WHERE seller_id = :seller_id
 ''',
@@ -73,32 +73,32 @@ FROM Products
 
 
     @staticmethod
-    def get_by_price_asc(available=True, offset=0):
+    def get_by_price_asc(offset=0):
         rows = app.db.execute('''
 SELECT id, seller_id, name, description, category, image,
-price, available, available_quantity
+price, available_quantity
 FROM Products
-WHERE available = :available
+WHERE available_quantity > 0
 ORDER BY price ASC
 LIMIT 100
 OFFSET :offset
 ''', 
-                            available=available,
+                            
                             offset=offset)
         return [Product(*row) for row in rows]
 
     @staticmethod
-    def get_by_price_desc(available=True, offset=0):
+    def get_by_price_desc(offset=0):
         rows = app.db.execute('''
 SELECT id, seller_id, name, description, category, image,
-price, available, available_quantity
+price, available_quantity
 FROM Products
-WHERE available = :available
+WHERE available_quantity > 0
 ORDER BY price DESC
 LIMIT 100
 OFFSET :offset
 ''', 
-                            available=available,
+                            
                             offset=offset)
         return [Product(*row) for row in rows]
 
@@ -106,7 +106,7 @@ OFFSET :offset
     def get_by_category(category, offset=0):
         rows = app.db.execute('''
 SELECT id, seller_id, name, description, category, image,
-price, available, available_quantity
+price, available_quantity
 FROM Products
 WHERE category = :category
 LIMIT 100
@@ -135,8 +135,8 @@ OFFSET :offset
         try:
             rows = app.db.execute("""
 INSERT INTO Products(seller_id, name, description, category, image,
-price, available, available_quantity)
-VALUES(:seller_id, :name, :description, :category, :image, :price, True, :available_quantity)
+price, available_quantity)
+VALUES(:seller_id, :name, :description, :category, :image, :price, :available_quantity)
 RETURNING id
 """,
                                   seller_id = seller_id,
@@ -189,7 +189,7 @@ RETURNING *
     def search_products(searchValue):
         rows = app.db.execute('''
 SELECT id, seller_id, name, description, category, image,
-price, available, available_quantity
+price, available_quantity
 FROM Products
 WHERE lower(name) LIKE '%' || lower(:searchValue) || '%'
 ''', 

@@ -137,3 +137,19 @@ class ProductReview:
                     pid=pid,
                     bid=bid)
         return [ProductReview(*row) for row in rows][0]
+
+    @staticmethod
+    def deleteReview(pid, bid):
+        try:
+            rows = app.db.execute('''
+DELETE FROM ProductReviews
+WHERE product_id = :pid
+AND buyer_id = :bid
+RETURNING *
+''',
+                              pid=pid,
+                              bid=bid)
+            return rows
+        except Exception:
+            print("couldn't delete product")
+            return None

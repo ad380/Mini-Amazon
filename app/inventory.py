@@ -16,7 +16,7 @@ bp = Blueprint('inventory', __name__)
 @bp.route('/inventory',methods=["POST", "GET"])
 def index():
     # get all available products for sale:
-    products = Product.get_all(True)
+    products = Product.get_all()
     users = User.get_info()
     # find the products and purchases with the current user as the seller:
     if current_user.is_authenticated:
