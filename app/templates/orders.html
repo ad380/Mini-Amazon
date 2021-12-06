@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block content %}
+<p></p>
+<p><a href="{{ url_for('inventory.index') }}" type="button" class="btn btn-secondary">Back</a></p>
+
+<br>
+
+<h2>Order History:</h2>
+<table class='table table-hover table-bordered container'>
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">Buyer Name</th>
+      <th scope="col">Buyer Address</th>
+      <th scope="col">Date Ordered</th>
+      <th scope="col">Product ID</th>
+      <th scope="col">Product Name</th>
+      <th scope="col">Quantity</th>
+      <th scope="col">Status</th>
+      <th scope="col">Edit</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for purchase in purchase_history%}
+      <tr>
+        <!-- <th scope="row">{{purchase.bfname+' '+purchase.blname}}</th> -->
+        <td><a href="{{ url_for('users.publicprofile', uid=purchase.uid, sortoption=0) }}" type="button" class="btn btn-light">{{purchase.bfname+' '+purchase.blname}}</a></td>
+        <td>{{purchase.baddress}}</td>
+        <td>{{purchase.time_purchased}}</td>
+        <td>{{purchase.pid}}</td>
+        <td>{{purchase.pname}}</td>
+        <td>{{purchase.quantity}}</td>
+        {% if purchase.fulfilled == 'f'%}
+        <td>Fulfilled</td>
+        {% else %}
+        <td>Not Fulfilled</td>
+        {%endif%}
+        <td><a href="{{ url_for('inventory.editStatus', pid=purchase.id) }}">Edit</a></td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% endblock %}
