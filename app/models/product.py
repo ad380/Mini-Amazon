@@ -118,7 +118,7 @@ LIMIT 50
 OFFSET :offset
         ''',
                             offset=offset)
-        return [row[0] for row in rows]
+        return [row[1] for row in rows]
 
 #this filters products by category
     @staticmethod
