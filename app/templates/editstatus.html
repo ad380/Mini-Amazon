@@ -15,7 +15,11 @@
   {{ form.hidden_tag() }}
   <p><b>
     {{ form.newStatus.label }}: 
-    {{ form.newStatus(size=1) }}<br/>
+    {% if purchase.fulfilled == 'f'%}
+    {{ form.newStatus(size=1, value='Fulfilled') }}<br/>
+    {% else %}
+    {{ form.newStatus(size=1, value='Not Fulfilled') }}<br/>
+    {%endif%}
     {% for error in form.newStatus.errors %}
     <span style="color: red;">[{{ error }}]</span>
     {% endfor %}
