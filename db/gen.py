@@ -71,11 +71,11 @@ def gen_products(num_products):
             #TODO: CHANGE IMAGE
             image = "IMAGE"
             price = f'{str(fake.random_int(max=500))}.{fake.random_int(max=99):02}'
-            available = fake.random_element(elements=('true', 'false'))
+            # available = fake.random_element(elements=('true', 'false'))
             if available == 'true':
                 available_pids[pid] = (seller_id, price)
                 available_quantity = fake.random_int(min=1, max=500)
-            writer.writerow([pid, seller_id, name, description, category, image, price, available, available_quantity])
+            writer.writerow([pid, seller_id, name, description, category, image, price, available_quantity])
         print(f'{num_products} generated; {len(available_pids)} available')
     return available_pids
 

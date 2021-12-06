@@ -90,7 +90,7 @@ def logout():
 @bp.route('/profile/<sortoption>')
 def sortedprofile(sortoption='0'):
     # get all available products for sale:
-    products = Product.get_all(True)
+    products = Product.get_all()
     sellers = Product.get_sellers()
     uid = current_user.id
 
