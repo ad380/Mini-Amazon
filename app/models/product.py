@@ -112,7 +112,8 @@ OFFSET :offset
 SELECT AVG(r.rating), r.product_id
 FROM ProductReviews r, Products p
 WHERE r.product_id = p.id 
-ORDER BY AVG(r.rating) DESC, r.product_id
+GROUP BY r.product_id
+ORDER BY AVG(r.rating) DESC
 LIMIT 50
 OFFSET :offset
         ''',
