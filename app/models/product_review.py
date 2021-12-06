@@ -126,4 +126,14 @@ class ProductReview:
             print(str(e))
             return None
     
-        
+    @staticmethod
+    def get_review_from(pid, bid):
+        rows = app.db.execute('''
+    SELECT *
+    FROM ProductReviews
+    WHERE product_id = :pid
+    AND buyer_id = :bid
+    ''',
+                    pid=pid,
+                    bid=bid)
+        return [ProductReview(*row) for row in rows][0]

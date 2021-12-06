@@ -45,6 +45,7 @@ def products(pid, sortoption=0):
 
     has_purchased = False
     has_reviewed = False
+    current_user_review = None
     if current_user.is_authenticated:
         purchases = Purchase.get_all_pid_by_uid(current_user.id)
         reviewedProducts = ProductReview.get_reviewed_products(current_user.id)
@@ -54,10 +55,14 @@ def products(pid, sortoption=0):
             has_purchased = False
         if int(pid) in reviewedProducts:
             has_reviewed = True
+            current_user_review = ProductReview.get_review_from(pid, current_user.id)
+            print(f"current_user_review = {current_user_review}")
         else:
             has_reviewed = False
     else:
         purchases = None
+
+    current_user_name = User.get_name(current_user.id)
 
     return render_template('detailed_product.html', 
                             pid=pid,
@@ -75,7 +80,9 @@ def products(pid, sortoption=0):
                             sortoption=sortoption,
                             review_upvotes=review_upvotes,
                             has_purchased=has_purchased,
-                            has_reviewed=has_reviewed)
+                            has_reviewed=has_reviewed,
+                            current_user_review=current_user_review,
+                            current_user_name=current_user_name)
 
 class ProductForm(FlaskForm):
     categories = ['food','clothing','gadgets','media','misc']
