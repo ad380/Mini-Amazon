@@ -10,6 +10,7 @@ from flask_babel import _, lazy_gettext as _l
 
 from .models.product import Product
 from .models.purchase import Purchase
+from .models.product_review import ProductReview
 
 from flask import Blueprint
 bp = Blueprint('index', __name__)
@@ -24,6 +25,9 @@ def index():
     form = SearchForm()
     # get all available products for sale:
     products = Product.get_some()
+    product_ids = [p.id for p in products]
+    product_avgs = [round(ProductReview.get_avg(id), 1) for id in product_ids]
+
     sellers = Product.get_sellers()
     # find the products current user has bought:
     if current_user.is_authenticated:
@@ -43,7 +47,8 @@ def index():
                                 page_num=1,
                                 sortoption=0,
                                 category=0,
-                                form=form)
+                                form=form,
+                                product_avgs=product_avgs)
 
     return render_template('index.html',
                            avail_products=products,
@@ -52,7 +57,8 @@ def index():
                            page_num=1,
                            sortoption=0,
                            category=0,
-                           form=form)
+                           form=form,
+                           product_avgs=product_avgs)
 
 @bp.route('/sortedindex/<sortoption>/<page_num>')
 def sortedindex(sortoption, page_num=1):
@@ -64,6 +70,9 @@ def sortedindex(sortoption, page_num=1):
         products = Product.get_by_price_asc(True, offset)
     else:
         products = Product.get_by_price_desc(True, offset)
+
+    product_ids = [p.id for p in products]
+    product_avgs = [round(ProductReview.get_avg(id), 1) for id in product_ids]
 
     sellers = Product.get_sellers()
     
@@ -81,7 +90,8 @@ def sortedindex(sortoption, page_num=1):
                            page_num=int(page_num),
                            sortoption=int(sortoption),
                            category=0,
-                           form=form)
+                           form=form,
+                           product_avgs=product_avgs)
 
 @bp.route('/categorizedindex/<category>/<page_num>')
 def categorizedindex(category, page_num):
@@ -103,6 +113,9 @@ def categorizedindex(category, page_num):
         products = Product.get_some(offset=offset)
 
     sellers = Product.get_sellers()
+
+    product_ids = [p.id for p in products]
+    product_avgs = [round(ProductReview.get_avg(id), 1) for id in product_ids]
     
     # find the products current user has bought:
     if current_user.is_authenticated:
@@ -118,5 +131,5 @@ def categorizedindex(category, page_num):
                            page_num=int(page_num),
                            sortoption=0,
                            category=int(category),
-                           form=form)
-
+                           form=form,
+                           product_avgs=product_avgs)

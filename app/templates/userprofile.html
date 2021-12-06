@@ -34,7 +34,7 @@
 
 <!-- Button to view public profile -->
 <br><br>
-<div><a href="{{ url_for('users.publicprofile', uid=current_user.id) }}">View Your Public Profile</a></div>
+<div><a href="{{ url_for('users.publicprofile', uid=current_user.id, sortoption=0) }}">View Your Public Profile</a></div>
 
 <br><br>
 
@@ -98,7 +98,7 @@
         <th scope="row">{{purchase.id}}</th>
         <td><a href="{{ url_for('products.products', pid=purchase.pid, sortoption=0) }}" type="button" class="btn btn-light">{{purchase.pid}}</a></td>
         <!-- <td>{{purchase.seller_id}}</td> -->
-        <td><a href="{{ url_for('users.publicprofile', uid=purchase.seller_id) }}" type="button" class="btn btn-light">{{purchase.seller_id}}</a></td>
+        <td><a href="{{ url_for('users.publicprofile', uid=purchase.seller_id, sortoption=0) }}" type="button" class="btn btn-light">{{purchase.seller_id}}</a></td>
         <td>{{purchase.time_purchased}}</td>
       </tr>
     {% endfor %}
@@ -151,7 +151,7 @@
   <tbody>
     {% for r in seller_reviews%}
       <tr>
-        <td><a href="{{ url_for('users.publicprofile', uid=r.seller_id) }}" type="button" class="btn btn-light">{{r.seller_id}}</a></td>
+        <td><a href="{{ url_for('users.publicprofile', uid=r.seller_id, sortoption=0) }}" type="button" class="btn btn-light">{{r.seller_id}}</a></td>
         <td>{{seller_names[loop.index-1]}}</td>
         <td>{{r.rating}}</td>
         <td>{{r.comment}}</td>

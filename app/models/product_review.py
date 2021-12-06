@@ -100,10 +100,17 @@ class ProductReview:
     @staticmethod
     def add_product_review(pid, bid, rating=None, title=None, comment=None, date=None, image=None):
         # Adds a review to a product's review
+
+        # If user does not add an image to their review,
+        # Make default value of "IMAGE"
+        if not image:
+            image = "IMAGE"
+            
         try:
             rows = app.db.execute("""
     INSERT INTO ProductReviews(product_id, buyer_id, rating, title, comment, date, image)
     VALUES(:pid, :bid, :rating, :title, :comment, :date, :image)
+    RETURNING product_id, buyer_id
     """,
                     pid=pid,
                     bid=bid,
@@ -113,10 +120,20 @@ class ProductReview:
                     date=date,
                     image=image)
 
-            print(rows)
-            return Product_Review.get_review(pid, bid)
-        except Exception:
-            print("Couldn't add review")
+            product_id, buyer_id = rows[0][0], rows[0][1]
+            return ProductReview.get_review(product_id, buyer_id)
+        except Exception as e:
+            print(str(e))
             return None
     
-        
+    @staticmethod
+    def get_review_from(pid, bid):
+        rows = app.db.execute('''
+    SELECT *
+    FROM ProductReviews
+    WHERE product_id = :pid
+    AND buyer_id = :bid
+    ''',
+                    pid=pid,
+                    bid=bid)
+        return [ProductReview(*row) for row in rows][0]

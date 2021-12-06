@@ -45,6 +45,7 @@ def products(pid, sortoption=0):
 
     has_purchased = False
     has_reviewed = False
+    current_user_review = None
     if current_user.is_authenticated:
         purchases = Purchase.get_all_pid_by_uid(current_user.id)
         reviewedProducts = ProductReview.get_reviewed_products(current_user.id)
@@ -54,10 +55,14 @@ def products(pid, sortoption=0):
             has_purchased = False
         if int(pid) in reviewedProducts:
             has_reviewed = True
+            current_user_review = ProductReview.get_review_from(pid, current_user.id)
+            print(f"current_user_review = {current_user_review}")
         else:
             has_reviewed = False
     else:
         purchases = None
+
+    current_user_name = User.get_name(current_user.id)
 
     return render_template('detailed_product.html', 
                             pid=pid,
@@ -75,7 +80,9 @@ def products(pid, sortoption=0):
                             sortoption=sortoption,
                             review_upvotes=review_upvotes,
                             has_purchased=has_purchased,
-                            has_reviewed=has_reviewed)
+                            has_reviewed=has_reviewed,
+                            current_user_review=current_user_review,
+                            current_user_name=current_user_name)
 
 class ProductForm(FlaskForm):
     categories = ['food','clothing','gadgets','media','misc']
@@ -89,27 +96,30 @@ class ProductForm(FlaskForm):
 
 class ReviewForm(FlaskForm):
     rating = DecimalField(_l('Rating', places=1, rounding=decimal.ROUND_HALF_UP, validators=[InputRequired()]))
-    title = StringField('Title', default=None)
-    comment = StringField('Comment', default=None)
-    image = StringField('Image URL', default=None)
+    title = StringField('Title', default=None, validators=[InputRequired()])
+    comment = StringField('Comment', default=None, validators=[InputRequired()])
+    image = StringField('Image URL (Optional)', default=None)
     submit = SubmitField(_l('Post Review'))
 
 @bp.route('/products/review/<pid>',methods=["GET", "POST"])
 def reviewProduct(pid):
-    form = ReviewForm()
-    if form.validate_on_submit():
-        now = datetime.now()
-        if ProductReview.add_product_review(pid, 
+    
+    if current_user.is_authenticated:
+        form = ReviewForm()
+        if form.validate_on_submit():
+            now = datetime.now()    
+            if ProductReview.add_product_review(pid, 
                                             current_user.id, 
                                             form.rating.data, 
                                             form.title.data, 
                                             form.comment.data, 
                                             now.strftime("%b %d, %Y %H:%M:%S"), 
                                             form.image.data):
-            flash('Congratualtions, your review has been added')
-            return redirect(url_for('products.products', pid=pid, sortoption=0))
-        flash('Sorry, we could not add your review')
-        return redirect(url_for('products.products', pid=pid, sortoption=0))
+                flash('Congratualtions, your review has been added')
+                print("got here")
+                return redirect(url_for('products.products', pid=pid, sortoption=0))
+
+    flash('Error trying to submit review.')
     return render_template('reviewProduct.html', title='Title Goes Here',
                            form=form, product = Product.get(pid))
 

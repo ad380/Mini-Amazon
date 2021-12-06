@@ -28,7 +28,7 @@
         <td>{{prod_cat}}</td>
         <td>{{prod_price}}</td>
         <td>{{prod_quant}}</td>
-        <td><a href="{{ url_for('users.publicprofile', uid=prod_seller) }}" type="button" class="btn btn-light">{{prod_seller}}</a></td>
+        <td><a href="{{ url_for('users.publicprofile', uid=prod_seller, sortoption=0) }}" type="button" class="btn btn-light">{{prod_seller}}</a></td>
       </tr>
   </tbody>
 </table>
@@ -123,22 +123,9 @@
 <body>
 <hr style="border:1px solid #f1f1f1">
 
-<div class="main-section">
+<div class="float-container">
+<div class="left-section">
   <span class="heading">Customer Reviews ({{review_count}})</span>
-
-  {% if current_user.is_authenticated and has_reviewed %}
-    <p>You may only leave one review per product</p>
-    <br><br>
-  {% elif current_user.is_authenticated and has_purchased %}
-    <p><a href="{{ url_for('products.reviewProduct', pid=pid) }}" type="button" class="btn btn-light">Review This Product</a></p>
-    <br><br>
-  {% elif current_user.is_authenticated %}
-    <p>You can only review previously purchased items</p>
-    <br><br>
-  {% else %}
-    <p><a href="{{ url_for('users.login') }}" type="button" class="btn btn-light">Must be signed in to review products</a></p>
-    <br><br>
-  {% endif %}
 
   <!-- Call stars method to show product average reviews -->
   <script>stars({{review_avg}})</script>
@@ -155,7 +142,7 @@
   {% for review in reviews%}
   <div class="review">
     <span class="heading">
-      <a href="{{ url_for('users.publicprofile', uid=review.buyer_id) }}" type="button" 
+      <a href="{{ url_for('users.publicprofile', uid=review.buyer_id, sortoption=0) }}" type="button" 
         class="btn btn-light">{{reviewer_names[loop.index-1]}}
       </a>
     <a style="display: inline; font-size: 18px;">{{review.date|format_date('standard')}}</a>
@@ -167,7 +154,7 @@
         <path d="M2 26h32L18 10z" fill="currentColor"></path>
       </svg>
     </span>
-    <p style="text-align: right; padding-right: 50px;">{{review_upvotes[loop.index-1]}}</p>
+    <p style="text-align: right; padding-right: 36px; font-size: 24px;">{{review_upvotes[loop.index-1]}}</p>
     
     <span class="vote down" onclick="changeColor(-1);">
       <svg width="36" height="36">
@@ -187,8 +174,53 @@
     {% if review.image != "IMAGE" %} 
       <img width="100" src="{{review.image}}"/>
     {% endif %}
-  </div>
+    <hr style="border:1px dashed #f1f1f1">
+    </div>
   {% endfor %}
+
+</div>
+
+  <div class="right-section">
+  <!-- <span class="heading">Customer Reviews ({{review_count}})</span> -->
+
+  <div>
+    {% if current_user.is_authenticated and has_reviewed %}
+      <p class="heading">Your Review</p>
+      <span style="padding:0px 0px 0px 10px;"><a type="button" class="btn btn-light" style="display: inline;">Edit Review</a></span>
+      <!-- <br><br> -->
+      <span><a type="button" class="btn btn-light" style="float: right; display: inline;">Delete Review</a></span>
+      <!-- <br><br> -->
+      <hr style="border:1px dashed #f1f1f1">
+      <div class="review">
+        <span class="heading">
+          <a href="{{ url_for('users.publicprofile', uid=current_user_review.buyer_id, sortoption=0) }}" type="button" 
+            class="btn btn-light">{{current_user_name}}
+          </a>
+        <a style="display: inline; font-size: 18px;">{{current_user_review.date|format_date('standard')}}</a>
+      
+      
+      <p></p>
+
+      <script>stars({{current_user_review.rating}})</script>
+      <a style="display: inline; font-size: 18px; padding-left: 10px; font-style: b;"><strong>{{current_user_review.title}}</strong></a>
+      <p class="comment">{{current_user_review.comment}}</p>
+      <!-- Check if review has default value "IMAGE"
+            otherwise if there is valid link
+            display image -->
+      {% if current_user_review.image != "IMAGE" %} 
+        <img width="100" src="{{current_user_review.image}}"/>
+      {% endif %}
+       
+      </div>
+
+
+
+  {% elif current_user.is_authenticated and has_purchased %}
+    <p><a href="{{ url_for('products.reviewProduct', pid=pid) }}" type="button" class="btn btn-light">Review This Product</a></p>
+    <!-- <br><br> -->
+  {% endif %}
+  </div>
+  </div>
 
 </div>
 </body>

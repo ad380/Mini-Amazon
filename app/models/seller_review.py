@@ -2,23 +2,23 @@ from flask import current_app as app
 
 
 class SellerReview:
-    def __init__(self, seller_id, buyer_id, rating, comment, date, upvotes):
+    def __init__(self, seller_id, buyer_id, rating, title, comment, date):
         self.seller_id = seller_id
         self.buyer_id = buyer_id
         self.rating = rating
+        self.title = title
         self.comment = comment
         self.date = date
-        self.upvotes = upvotes
 
 
     @staticmethod
-    def get(seller_id):
+    def get(seller_id, orderby="date DESC"):
         # Returns list of SellerReview objects for given product
-        rows = app.db.execute('''
+        rows = app.db.execute(f'''
     SELECT *
     FROM SellerReviews
     WHERE seller_id = :seller_id
-    ORDER BY rating DESC
+    ORDER BY {orderby}
     ''',
                     seller_id=seller_id)
         return [SellerReview(*row) for row in rows]

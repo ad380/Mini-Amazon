@@ -134,7 +134,6 @@ def get_random_purchases_ratings():
 def gen_product_reviews():
     ratings = get_random_purchases_ratings()
 
-    # product_id, buyer_id, rating, comment
     with open('ProductReviews.csv', 'w') as f:
         writer = get_csv_writer(f)
         for r in ratings.keys():
@@ -159,28 +158,31 @@ def get_random_seller_ratings():
             if fulfilled == 'f':
                 review_ratio = .7 # review_ratio % of purchases actually contain a review
                 if random.random() <= review_ratio:
-                    rating = random.choice(RATING_VALS)
+                    # rating = random.choice(RATING_VALS)
+
+                    # Calculating rating based on normal distribution around 4.4
+                    # with SD of 2, also make sure rating is between 0 and 5
+                    rating = max(0, min(random.gauss(4.4, 2), 5))
+                    
+                    #Convert raw rating decimal to star value
+                    rating = round(rating*2)/2
                     ratings[(seller_id, uid)] = (rating, time_purchased)
     return ratings   
-
 
 def gen_seller_reviews():
     ratings = get_random_seller_ratings()
 
-    # product_id, buyer_id, rating, comment
     with open('SellerReviews.csv', 'w') as f:
         writer = get_csv_writer(f)
         for r in ratings.keys():
             seller_id, buyer_id, = r
             rating = ratings[r][0]
             time_purchased = ratings[r][1]
-            comment = ""
-            comment_ratio = .75 # comment_ratio % of ratings actually contain a comment
-            if random.random() <= comment_ratio:
-                comment = fake.paragraph(nb_sentences=6, variable_nb_sentences=True)
+            title = fake.sentence(nb_words=4)[:-1].title()
+            comment = fake.paragraph(nb_sentences=6, variable_nb_sentences=True)
             # make sure time of seller review happens after product is purchased from that seller
             date = fake.date_time_ad(start_datetime=datetime.fromisoformat(time_purchased))
-            writer.writerow([seller_id, buyer_id, rating, comment[:512], date, 0])
+            writer.writerow([seller_id, buyer_id, rating, title, comment[:512], date])
     return
 
 
@@ -245,9 +247,9 @@ def update_reviews_images(type):
 # available_pids = gen_products(num_products)
 # gen_purchases(num_purchases, available_pids)
 # gen_product_reviews()
-# gen_seller_reviews()
+gen_seller_reviews()
 # print(random.choice(RATINGS))
-# print(get_random_seller_ratings())
+# get_random_seller_ratings()
 # print(gen_random_image())
 # update_product_images()
 # update_reviews_images("Product")

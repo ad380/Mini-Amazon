@@ -134,25 +134,30 @@ def sortedprofile(sortoption='0'):
                            sortoption=sortoption)
 
 # make the public user profile
-@bp.route('/publicprofile/<uid>')
-def publicprofile(uid):
+@bp.route('/publicprofile/<uid>/<sortoption>')
+def publicprofile(uid, sortoption=0):
     # get all available products for sale:
     products = Product.get(uid)
     user = User.get(uid)
     sellers = Product.get_sellers()
 
-    reviews = SellerReview.get(uid)
-    print(f"reviews = {reviews}")
+    if sortoption == '0':
+        order = "date DESC"
+    elif sortoption == '1':
+        order = "rating DESC"
+    else:
+        order = "rating ASC"
+
+    reviews = SellerReview.get(uid, orderby=order)
+    reviewer_ids = [r.buyer_id for r in reviews]
+    reviewer_names = [User.get_name(id) for id in reviewer_ids]
     reviews_count = SellerReview.get_count(uid)
-    # review_avg = round(SellerReview.get_avg(uid), 1)
     avg = SellerReview.get_avg(uid)
     review_avg = 0
     if avg is not None:
         review_avg = round(avg, 1)
-    # reviews = ProductReview.get(0)
-    # reviews_pids = [r.product_id for r in reviews]
-    # prod_names = [Product.get_names(pid) for pid in reviews_pids]
 
+    
     # render the page by adding information to the publicprofile.html file
     return render_template('publicprofile.html',
                            avail_products=products,
@@ -160,7 +165,9 @@ def publicprofile(uid):
                            reviews=reviews,
                            review_count=reviews_count,
                            review_avg=review_avg,
-                           user=user)
+                           user=user,
+                           sortoption=sortoption,
+                           reviewer_names=reviewer_names)
 
 # make the edit name form
 class EditNameForm(FlaskForm):
