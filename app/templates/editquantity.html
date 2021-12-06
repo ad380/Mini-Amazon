@@ -4,6 +4,7 @@
 <p><a href="{{ url_for('inventory.index') }}" type="button" class="btn btn-light">Back</a></p>
 
 <h1>Edit Product Quantity</h1>
+<img width="200" src="{{product.image}}"/>
 <p>Product ID: {{product.id}}</p>
 <p>Product Name: {{product.name}}</p>
 <p>Price: {{product.price}}</p>
@@ -12,7 +13,7 @@
 <form action="" method="post">
   {{ form.hidden_tag() }}
   <p><b>
-    {{ form.newQuantity.label }}: 
+    New Status: 
     {{ form.newQuantity(size=16) }}<br/>
     {% for error in form.newQuantity.errors %}
     <span style="color: red;">[{{ error }}]</span>
