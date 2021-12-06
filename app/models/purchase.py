@@ -87,3 +87,19 @@ RETURNING *
         except Exception:
             print("couldn't update purchase status")
             return None
+
+# search for purchases given product name
+    @staticmethod
+    def search_purchases(searchValue, uid, since):
+        rows = app.db.execute('''
+SELECT Purchases.id, Purchases.uid, Purchases.seller_id, Purchases.time_purchased, Purchases.pid, Purchases.quantity, Purchases.fulfilled, Products.name
+FROM Purchases INNER JOIN Products ON Purchases.pid = Products.id
+WHERE lower(Products.name) LIKE '%' || lower(:searchValue) || '%'
+AND Purchases.uid = :uid
+AND Purchases.time_purchased >= :since
+ORDER BY Purchases.time_purchased DESC
+''', 
+                            searchValue=searchValue,
+                            uid=uid,
+                            since=since)
+        return [Purchase(*row) for row in rows]

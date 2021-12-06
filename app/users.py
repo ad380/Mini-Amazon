@@ -86,9 +86,17 @@ def logout():
 
 # code I've added beyond the skeleton
 
+# create the search bar form
+class UserSearchForm(FlaskForm):
+    searchValue = StringField('', [DataRequired()])
+    submit = SubmitField('Search')
+
 # make the private user profile with ability to sort purchases
-@bp.route('/profile/<sortoption>')
+@bp.route('/profile/<sortoption>', methods=['GET', 'POST'])
 def sortedprofile(sortoption='0'):
+    # get search bar form
+    form = UserSearchForm()
+
     # get all available products for sale:
     products = Product.get_all()
     sellers = Product.get_sellers()
@@ -127,6 +135,23 @@ def sortedprofile(sortoption='0'):
         purchases = None
     
     # render the page by adding information to the userprofile.html file
+
+    # if we are searching product names
+    if request.method == 'POST':
+        purchases = Purchase.search_purchases(form.searchValue.data, current_user.id, datetime.datetime(1980, 9, 14, 0, 0, 0))
+        print(form.searchValue.data)
+        print(len(purchases))
+        return render_template('userprofile.html',
+                           avail_products=products,
+                           purchase_history=purchases,
+                           sellers=sellers,
+                           prod_reviews=prod_reviews,
+                           prod_names=prod_names,
+                           seller_reviews=seller_reviews,
+                           seller_names=seller_names,
+                           sortoption=sortoption,
+                           form=form)
+
     return render_template('userprofile.html',
                            avail_products=products,
                            purchase_history=purchases,
@@ -135,7 +160,8 @@ def sortedprofile(sortoption='0'):
                            prod_names=prod_names,
                            seller_reviews=seller_reviews,
                            seller_names=seller_names,
-                           sortoption=sortoption)
+                           sortoption=sortoption,
+                           form=form)
 
 # make the public user profile
 @bp.route('/publicprofile/<uid>/<sortoption>')

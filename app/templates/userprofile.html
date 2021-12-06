@@ -90,12 +90,27 @@
 
 <div style="text-align: right">Sort By:</div>
 
-<!-- Dropdown for sorting options -->
+<!-- Dropdown for sorting options and product name search bar -->
 <div style="text-align: right">
   <select name="sort-options" id="sort-options" class="drop-down" onchange="location = this.value">
     <script>selected({{sortoption}})</script>
   </select>
+  <form action="{{ url_for('users.sortedprofile', sortoption=0) }}" method="POST">
+    {{ form.csrf_token }}
+    {{ form.hidden_tag() }}
+    <p>
+      {{ form.searchValue.label }}<br/>
+      {{ form.searchValue(size=32) }}<br/>
+      {% for error in form.searchValue.errors %}
+      <span style="color: red;">[{{ error }}]</span>
+      {% endfor %}
+    </p>
+    <p>{{ form.submit() }}</p>
+  </form>
+  <a href="{{ url_for('users.sortedprofile', sortoption=0) }}" type="button" class="btn btn-light">Clear Search</a>
 </div>
+
+<p></p>
 
 <table class='table table-hover table-bordered container'>
   <thead class="thead-dark">
