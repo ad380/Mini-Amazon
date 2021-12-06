@@ -11,6 +11,7 @@
     <tr>
       <th scope="col">Product ID</th>
       <th scope="col">Product Name</th>
+      <th scope="col">Image</th>
       <th scope="col">Price</th>
       <th scope="col">Quantity</th>
       <th scope="col">Edit</th>
@@ -22,6 +23,7 @@
       <tr>
         <th scope="row">{{product.id}}</th>
         <td>{{product.name}}</td>
+        <td><img width="100" src="{{product.image}}"/></td>
         <td>{{product.price}}</td>
         <td>{{product.available_quantity}}</td>
         <td><a href="{{ url_for('products.editQuantity', pid=product.id, sortoption=0) }}">Edit</a></td>

@@ -19,9 +19,11 @@ class Purchase:
     @staticmethod
     def get(id):
         rows = app.db.execute('''
-SELECT id, uid, seller_id, time_purchased, pid, quantity, fulfilled
-FROM Purchases
-WHERE id = :id
+SELECT Purchases.id, uid, Purchases.seller_id, time_purchased, pid, quantity,
+fulfilled, Products.name, Users.firstname, Users.lastname, Users.address
+FROM Purchases INNER JOIN Products ON Purchases.pid = Products.id
+INNER JOIN Users ON Purchases.uid = Users.id
+WHERE Purchases.id = :id
 ''',
                               id=id)
         return Purchase(*(rows[0])) if rows else None
@@ -66,10 +68,11 @@ ORDER BY time_purchased DESC
 UPDATE Purchases
 SET fulfilled = :fulfilled
 WHERE id = :id
+RETURNING *
 ''',
                               id=id,
                               fulfilled=fulfilled)
-            return id
+            return rows
         except Exception:
             print("couldn't update purchase status")
             return None

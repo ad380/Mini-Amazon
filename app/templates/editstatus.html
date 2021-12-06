@@ -4,12 +4,33 @@
 <p><a href="{{ url_for('inventory.index') }}" type="button" class="btn btn-light">Back</a></p>
 
 <h1>Edit Purchase Status</h1>
-<p>Purchase ID: {{purchase.id}}</p>
-<p>Buyer ID: {{purchase.uid}}</p>
-<p>Date Purchased: {{purchase.time_purchased}}</p>
-<p>Product Id: {{purchase.pid}}</p>
-<p>Product Name: {{purchase.pname}}</p>
-<p>Purchase Quantity: {{purchase.quantity}}</p>
+
+<table class='table table-hover table-bordered container'>
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">Purchase ID</th>
+      <th scope="col">Buyer</th>
+      <th scope="col">Date Purchased</th>
+      <th scope="col">Product Name</th>
+      <th scope="col">Purchase Quantity</th>
+      <th scope="col">Current Purchase Status</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <th scope="row">{{purchase.id}}</th>
+        <td><a href="{{ url_for('users.publicprofile', uid=purchase.uid) }}" type="button" class="btn btn-light">{{purchase.bfname+' '+purchase.blname}}</a></td>
+        <td>{{purchase.time_purchased}}</td>
+        <td>{{purchase.pname}}</td>
+        <td>{{purchase.quantity}}</td>
+        {% if purchase.fulfilled == 'f'%}
+        <td>Fulfilled</td>
+        {%else%}
+        <td>Not Fulfilled</td>
+        {%endif%}
+      </tr>
+  </tbody>
+</table>
 
 <form action="" method="post">
   {{ form.hidden_tag() }}

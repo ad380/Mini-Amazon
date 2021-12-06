@@ -131,18 +131,19 @@ OFFSET :offset
 
 #add new product
     @staticmethod
-    def addProduct(seller_id, name, description, category, price, available_quantity):
+    def addProduct(seller_id, name, description, category, image, price, available_quantity):
         try:
             rows = app.db.execute("""
 INSERT INTO Products(seller_id, name, description, category, image,
 price, available, available_quantity)
-VALUES(:seller_id, :name, :description, :category, 'url', :price, True, :available_quantity)
+VALUES(:seller_id, :name, :description, :category, :image, :price, True, :available_quantity)
 RETURNING id
 """,
                                   seller_id = seller_id,
                                   name = name,
                                   description = description,
                                   category = category,
+                                  image=image,
                                   price=price,
                                   available_quantity=available_quantity)
             id = rows[0][0]
@@ -159,10 +160,11 @@ RETURNING id
 UPDATE Products
 SET available_quantity = :quantity
 WHERE id = :id
+RETURNING *
 ''',
                               id=id,
                               quantity=quantity)
-            return id
+            return rows
         except Exception:
             print("couldn't update product quantity")
             return None
@@ -174,9 +176,10 @@ WHERE id = :id
             rows = app.db.execute('''
 DELETE FROM Products
 WHERE id = :id
+RETURNING *
 ''',
                               id=id)
-            return id
+            return rows
         except Exception:
             print("couldn't delete product")
             return None
