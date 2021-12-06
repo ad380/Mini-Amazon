@@ -192,8 +192,11 @@
   <div>
     {% if current_user.is_authenticated and has_reviewed %}
       <p class="heading">Your Review</p>
-      <span style="padding:0px 0px 0px 10px;"><a type="button" class="btn btn-light" style="display: inline;">Edit Review</a></span>
+      <span style="padding:0px 0px 0px 10px;"><a type="button" class="btn btn-light" style="display: inline;""
+        href="{{ url_for('products.editProductReview', pid=pid) }}">Edit Review</a></span>
       <!-- <br><br> -->
+
+
       <span><a type="button" class="confirm btn btn-light" style="float: right; display: inline;"
         href="{{ url_for('products.deleteReview', pid=pid, bid=current_user_review.buyer_id) }}">Delete Review</a></span>
       <!-- <br><br> -->
