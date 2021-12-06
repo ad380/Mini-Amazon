@@ -70,6 +70,7 @@ RETURNING *
 ''',
                               id=id,
                               fulfilled=fulfilled)
+        print(rows)
         return rows
         #except Exception:
         #    print("couldn't update purchase status")
