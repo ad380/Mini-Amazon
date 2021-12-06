@@ -26,7 +26,7 @@ INNER JOIN Users ON Purchases.uid = Users.id
 WHERE Purchases.id = :id
 ''',
                               id=id)
-        return [Purchase(*row) for row in rows] if rows else None
+        return Purchase(*(rows[0])) if rows else None
 
 # get all purchases since the given time/date and in the given order
     @staticmethod
