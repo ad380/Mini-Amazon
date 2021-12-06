@@ -95,7 +95,7 @@ class ProductForm(FlaskForm):
     submit = SubmitField(_l('Add to Inventory'))
 
 class ReviewForm(FlaskForm):
-    rating = DecimalField(_l('Rating', places=1, rounding=decimal.ROUND_HALF_UP, validators=[InputRequired()]))
+    rating = DecimalField(_l('Rating (0-5)', places=1, rounding=decimal.ROUND_HALF_UP, validators=[InputRequired()]))
     title = StringField('Title', default=None, validators=[InputRequired()])
     comment = StringField('Comment', default=None, validators=[InputRequired()])
     image = StringField('Image URL (Optional)', default=None)
@@ -115,12 +115,35 @@ def reviewProduct(pid):
                                             form.comment.data, 
                                             now.strftime("%b %d, %Y %H:%M:%S"), 
                                             form.image.data):
-                flash('Congratualtions, your review has been added')
                 print("got here")
+                
                 return redirect(url_for('products.products', pid=pid, sortoption=0))
 
-    flash('Error trying to submit review.')
+    flash('Please make sure your rating value is between 0 and 5.')
     return render_template('reviewProduct.html', title='Title Goes Here',
+                           form=form, product = Product.get(pid))
+
+
+@bp.route('/products/editreview/<pid>',methods=["GET", "POST"])
+def editProductReview(pid):
+    
+    if current_user.is_authenticated:
+        form = ReviewForm()
+        if form.validate_on_submit():
+            now = datetime.now()    
+            if ProductReview.edit_product_review(pid, 
+                                            current_user.id, 
+                                            form.rating.data, 
+                                            form.title.data, 
+                                            form.comment.data, 
+                                            now.strftime("%b %d, %Y %H:%M:%S"), 
+                                            form.image.data):
+                print("got here")
+                
+                return redirect(url_for('products.products', pid=pid, sortoption=0))
+
+    flash('Please make sure your rating value is between 0 and 5.')
+    return render_template('editProductReview.html', title='Title Goes Here',
                            form=form, product = Product.get(pid))
 
 

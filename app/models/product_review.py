@@ -125,6 +125,38 @@ class ProductReview:
         except Exception as e:
             print(str(e))
             return None
+
+    @staticmethod
+    def edit_product_review(pid, bid, rating=None, title=None, comment=None, date=None, image=None):
+        # Edit current user's review for product pid
+
+        # If user does not add an image to their review,
+        # Make default value of "IMAGE"
+        if not image:
+            image = "IMAGE"
+            
+        try:
+            rows = app.db.execute("""
+    UPDATE ProductReviews
+    SET product_id = :pid, buyer_id = :bid, rating = :rating, 
+        title = :title, comment = :comment, date = :date, image = :image
+    WHERE product_id = :pid
+    AND buyer_id = :bid
+    RETURNING product_id, buyer_id
+    """,
+                    pid=pid,
+                    bid=bid,
+                    rating=rating,
+                    title=title,
+                    comment=comment,
+                    date=date,
+                    image=image)
+
+            product_id, buyer_id = rows[0][0], rows[0][1]
+            return ProductReview.get_review(product_id, buyer_id)
+        except Exception as e:
+            print(str(e))
+            return None
     
     @staticmethod
     def get_review_from(pid, bid):
