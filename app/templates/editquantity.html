@@ -5,15 +5,31 @@
 
 <h1>Edit Product Quantity</h1>
 <img width="200" src="{{product.image}}"/>
-<p>Product ID: {{product.id}}</p>
-<p>Product Name: {{product.name}}</p>
-<p>Price: {{product.price}}</p>
-<p>Current Quantity: {{product.available_quantity}}</p>
+<table class='table table-hover table-bordered container'>
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">Product ID</th>
+      <th scope="col">Product Name</th>
+      <th scope="col">Category</th>
+      <th scope="col">Price</th>
+      <th scope="col">Current Quantity</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <th scope="row">{{product.id}}</th>
+        <td>{{product.name}}</td>
+        <td>{{product.category}}</td>
+        <td>{{product.price}}</td>
+        <td>{{product.availabe_quantity}}</td>
+      </tr>
+  </tbody>
+</table>
 
 <form action="" method="post">
   {{ form.hidden_tag() }}
   <p><b>
-    New Status: 
+    New Quantity: 
     {{ form.newQuantity(size=16) }}<br/>
     {% for error in form.newQuantity.errors %}
     <span style="color: red;">[{{ error }}]</span>
