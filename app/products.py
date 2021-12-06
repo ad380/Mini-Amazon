@@ -46,9 +46,11 @@ def products(pid, sortoption=0):
     has_purchased = False
     has_reviewed = False
     current_user_review = None
+    current_user_name = None
     if current_user.is_authenticated:
         purchases = Purchase.get_all_pid_by_uid(current_user.id)
         reviewedProducts = ProductReview.get_reviewed_products(current_user.id)
+        current_user_name = User.get_name(current_user.id)
         if int(pid) in purchases: 
             has_purchased = True
         else:
@@ -61,8 +63,6 @@ def products(pid, sortoption=0):
             has_reviewed = False
     else:
         purchases = None
-
-    current_user_name = User.get_name(current_user.id)
 
     return render_template('detailed_product.html', 
                             pid=pid,
