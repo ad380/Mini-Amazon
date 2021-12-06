@@ -123,19 +123,9 @@
 <body>
 <hr style="border:1px solid #f1f1f1">
 
-<div class="main-section">
+<div class="float-container">
+<div class="left-section">
   <span class="heading">Customer Reviews ({{review_count}})</span>
-
-  {% if current_user.is_authenticated and has_reviewed %}
-    <p>You may only leave one review per product</p>
-    <br><br>
-  {% elif current_user.is_authenticated and has_purchased %}
-    <p><a href="{{ url_for('products.reviewProduct', pid=pid) }}" type="button" class="btn btn-light">Review This Product</a></p>
-    <br><br>
-  {% elif not (current_user.is_authenticated) %}
-    <p><a href="{{ url_for('users.login') }}" type="button" class="btn btn-light">Must be signed in to review products</a></p>
-    <br><br>
-  {% endif %}
 
   <!-- Call stars method to show product average reviews -->
   <script>stars({{review_avg}})</script>
@@ -164,7 +154,7 @@
         <path d="M2 26h32L18 10z" fill="currentColor"></path>
       </svg>
     </span>
-    <p style="text-align: right; padding-right: 50px; font-size: 24px;">{{review_upvotes[loop.index-1]}}</p>
+    <p style="text-align: right; padding-right: 36px; font-size: 24px;">{{review_upvotes[loop.index-1]}}</p>
     
     <span class="vote down" onclick="changeColor(-1);">
       <svg width="36" height="36">
@@ -185,8 +175,23 @@
       <img width="100" src="{{review.image}}"/>
     {% endif %}
     <hr style="border:1px dashed #f1f1f1">
-  </div>
+    </div>
   {% endfor %}
+
+</div>
+
+  <div class="right-section">
+  <!-- <span class="heading">Customer Reviews ({{review_count}})</span> -->
+
+  {% if current_user.is_authenticated and has_reviewed %}
+    <p><a type="button" class="btn btn-light">Edit Review</a></p>
+    <br><br>
+  {% elif current_user.is_authenticated and has_purchased %}
+    <p><a href="{{ url_for('products.reviewProduct', pid=pid) }}" type="button" class="btn btn-light">Review This Product</a></p>
+    <br><br>
+  {% endif %}
+
+  </div>
 
 </div>
 </body>
