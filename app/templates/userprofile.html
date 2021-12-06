@@ -59,6 +59,8 @@
     var pur = "<option value=\"2\">Purchase ID</option>"
     var pro = "<option value=\"3\">Product ID</option>"
     var sel = "<option value=\"4\">Seller ID</option>"
+    var qua = "<option value=\"5\">Quantity</option>"
+    var ful = "<option value=\"6\">Status</option>"
     if (val == "0") {
       desc = "<option value=\"0\" selected>Time Desc</option>"
     } else if (val == "1") {
@@ -69,6 +71,10 @@
       pro = "<option value=\"3\" selected>Product ID</option>"
     } else if (val == "4") {
       sel = "<option value=\"4\" selected>Seller ID</option>"
+    } else if (val == "5") {
+      pro = "<option value=\"5\" selected>Quantity</option>"
+    } else if (val == "6") {
+      sel = "<option value=\"6\" selected>Status</option>"
     } else {
       desc = "<option value=\"0\" selected>Time Desc</option>"
     }
@@ -77,6 +83,8 @@
     document.write(pur)
     document.write(pro)
     document.write(sel)
+    document.write(qua)
+    document.write(ful)
   }
 </script>
 
@@ -96,6 +104,8 @@
       <th scope="col">Product ID</th>
       <th scope="col">Seller ID</th>
       <th scope="col">Time Purchased</th>
+      <th scope="col">Quantity</th>
+      <th scope="col">Status</th>
     </tr>
   </thead>
   <tbody>
@@ -103,9 +113,14 @@
       <tr>
         <th scope="row">{{purchase.id}}</th>
         <td><a href="{{ url_for('products.products', pid=purchase.pid, sortoption=0) }}" type="button" class="btn btn-light">{{purchase.pid}}</a></td>
-        <!-- <td>{{purchase.seller_id}}</td> -->
         <td><a href="{{ url_for('users.publicprofile', uid=purchase.seller_id, sortoption=0) }}" type="button" class="btn btn-light">{{purchase.seller_id}}</a></td>
         <td>{{purchase.time_purchased}}</td>
+        <td>{{purchase.quantity}}</td>
+        {% if purchase.fulfilled == 'f'%}
+        <td>Fulfilled</td>
+        {% else %}
+        <td>Not Fulfilled</td>
+        {%endif%}
       </tr>
     {% endfor %}
   </tbody>

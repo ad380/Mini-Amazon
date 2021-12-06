@@ -107,13 +107,17 @@ def sortedprofile(sortoption='0'):
     if sortoption == '0':       # sort by date purchased, descending
         order = "time_purchased DESC"
     elif sortoption == '1':     # sort by date purchased, ascending
-        order = "time_purchased ASC"
+        order = "time_purchased"
     elif sortoption == '2':     # sort by purchase id
         order = "id"
     elif sortoption == '3':     # sort by product id
         order = "pid"
     elif sortoption == '4':     # sort by seller id
         order = "seller_id"
+    elif sortoption == '5':     # sort by seller id
+        order = "quantity"
+    elif sortoption == '6':     # sort by seller id
+        order = "fulfilled DESC"
     else: # if an invalid sortoption is passed, sort by date purchased, descending
         order = "time_purchased DESC"
     
