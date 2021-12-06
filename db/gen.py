@@ -71,7 +71,7 @@ def gen_products(num_products):
             #TODO: CHANGE IMAGE
             image = "IMAGE"
             price = f'{str(fake.random_int(max=500))}.{fake.random_int(max=99):02}'
-            # available = fake.random_element(elements=('true', 'false'))
+            available = fake.random_element(elements=('true', 'false'))
             if available == 'true':
                 available_pids[pid] = (seller_id, price)
                 available_quantity = fake.random_int(min=1, max=500)
