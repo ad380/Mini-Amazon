@@ -67,9 +67,9 @@ def sortedindex(sortoption, page_num=1):
     if sortoption == '0':
         products = Product.get_some(offset=offset)
     elif sortoption == '1':
-        products = Product.get_by_price_asc(True, offset)
+        products = Product.get_by_price_asc(offset)
     else:
-        products = Product.get_by_price_desc(True, offset)
+        products = Product.get_by_price_desc(offset)
 
     product_ids = [p.id for p in products]
     product_avgs = [round(ProductReview.get_avg(id), 1) for id in product_ids]

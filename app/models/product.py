@@ -51,6 +51,7 @@ OFFSET :offset
         )
         return [Product(*row) for row in rows]
 
+#this gets only products sold by a specific seller
     @staticmethod
     def get_all_by_seller(seller_id):
         rows = app.db.execute('''
@@ -62,6 +63,7 @@ WHERE seller_id = :seller_id
                               seller_id=seller_id)
         return [Product(*row) for row in rows]
 
+#this is a list of sellers
     @staticmethod
     def get_sellers():
         rows = app.db.execute('''
@@ -71,7 +73,7 @@ FROM Products
                               )
         return [row[0] for row in rows]
 
-
+#this sorts the products by ascending order
     @staticmethod
     def get_by_price_asc(offset=0):
         rows = app.db.execute('''
@@ -87,6 +89,7 @@ OFFSET :offset
                             offset=offset)
         return [Product(*row) for row in rows]
 
+#this sorts the products by descending order
     @staticmethod
     def get_by_price_desc(offset=0):
         rows = app.db.execute('''
@@ -102,6 +105,7 @@ OFFSET :offset
                             offset=offset)
         return [Product(*row) for row in rows]
 
+#this filters products by category
     @staticmethod
     def get_by_category(category, offset=0):
         rows = app.db.execute('''
@@ -116,7 +120,7 @@ OFFSET :offset
                             offset=offset)
         return [Product(*row) for row in rows]
 
-
+#this a list of product names
     @staticmethod
     def get_names(pid):
         #pids is list of pids
@@ -194,5 +198,19 @@ FROM Products
 WHERE lower(name) LIKE '%' || lower(:searchValue) || '%'
 ''', 
                             searchValue=searchValue)
+        return [Product(*row) for row in rows]
+
+# search for product given product name for a specific seller
+    @staticmethod
+    def search_seller_products(seller_id, searchValue):
+        rows = app.db.execute('''
+SELECT id, seller_id, name, description, category, image,
+price, available_quantity
+FROM Products
+WHERE lower(name) LIKE '%' || lower(:searchValue) || '%'
+AND seller_id = :seller_id
+''', 
+                            searchValue=searchValue,
+                              seller_id = seller_id)
         return [Product(*row) for row in rows]
 
