@@ -9,7 +9,7 @@
   <thead class="thead-dark">
     <tr>
       <th scope="col">Purchase ID</th>
-      <th scope="col">Buyer ID</th>
+      <th scope="col">Buyer</th>
       <th scope="col">Date Purchased</th>
       <th scope="col">Product Name</th>
       <th scope="col">Purchase Quantity</th>
@@ -19,7 +19,7 @@
   <tbody>
       <tr>
         <th scope="row">{{purchase.id}}</th>
-        <td>{{purchase.uid}}</td>
+        <td><a href="{{ url_for('users.publicprofile', uid=purchase.uid) }}" type="button" class="btn btn-light">{{purchase.bfname+' '+purchase.blname}}</a></td>
         <td>{{purchase.time_purchased}}</td>
         <td>{{purchase.pname}}</td>
         <td>{{purchase.quantity}}</td>

@@ -19,12 +19,14 @@ class Purchase:
     @staticmethod
     def get(id):
         rows = app.db.execute('''
-SELECT id, uid, seller_id, time_purchased, pid, quantity, fulfilled
-FROM Purchases
-WHERE id = :id
+SELECT Purchases.id, uid, Purchases.seller_id, time_purchased, pid, quantity,
+fulfilled, Products.name, Users.firstname, Users.lastname, Users.address
+FROM Purchases INNER JOIN Products ON Purchases.pid = Products.id
+INNER JOIN Users ON Purchases.uid = Users.id
+WHERE Purchases.id = :id
 ''',
                               id=id)
-        return Purchase(*(rows[0])) if rows else None
+        return [Purchase(*row) for row in rows] else None
 
 # get all purchases since the given time/date and in the given order
     @staticmethod
