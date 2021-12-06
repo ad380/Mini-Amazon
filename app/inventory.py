@@ -36,7 +36,7 @@ def index():
         return render_template('inventory.html',
                            sold_products=products,
                            purchase_history=purchases,
-                           users = users)
+                           users = users, form = form)
     return render_template('inventory.html',
                            sold_products=products,
                            purchase_history=purchases,
