@@ -2,6 +2,9 @@ from flask import render_template, redirect, url_for, flash, request
 from flask.templating import render_template_string
 from flask_login import current_user
 import datetime
+from datetime import datetime
+import decimal
+from decimal import ROUND_HALF_UP
 
 
 from flask_wtf import FlaskForm
@@ -39,6 +42,23 @@ def products(pid, sortoption=0):
 
     review_keys = [(r.product_id, r.buyer_id) for r in reviews]
     review_upvotes = [ProductReview.get_upvotes(pid, bid) for pid, bid in review_keys]
+
+    has_purchased = False
+    has_reviewed = False
+    if current_user.is_authenticated:
+        purchases = Purchase.get_all_pid_by_uid(current_user.id)
+        reviewedProducts = ProductReview.get_reviewed_products(current_user.id)
+        if int(pid) in purchases: 
+            has_purchased = True
+        else:
+            has_purchased = False
+        if int(pid) in reviewedProducts:
+            has_reviewed = True
+        else:
+            has_reviewed = False
+    else:
+        purchases = None
+
     return render_template('detailed_product.html', 
                             pid=pid,
                             prod_desc=product.description,
@@ -53,7 +73,9 @@ def products(pid, sortoption=0):
                             review_count=review_count,
                             review_avg=review_avg,
                             sortoption=sortoption,
-                            review_upvotes=review_upvotes)
+                            review_upvotes=review_upvotes,
+                            has_purchased=has_purchased,
+                            has_reviewed=has_reviewed)
 
 class ProductForm(FlaskForm):
     categories = ['food','clothing','gadgets','media','misc']
@@ -64,6 +86,32 @@ class ProductForm(FlaskForm):
     quantity = IntegerField(_l('Quantity',validators=[InputRequired()]))
     image = StringField(_l('Image URL'), validators=[DataRequired()])
     submit = SubmitField(_l('Add to Inventory'))
+
+class ReviewForm(FlaskForm):
+    rating = DecimalField(_l('Rating', places=1, rounding=decimal.ROUND_HALF_UP, validators=[InputRequired()]))
+    title = StringField('Title', default=None)
+    comment = StringField('Comment', default=None)
+    image = StringField('Image URL', default=None)
+    submit = SubmitField(_l('Post Review'))
+
+@bp.route('/products/review/<pid>',methods=["GET", "POST"])
+def reviewProduct(pid):
+    form = ReviewForm()
+    if form.validate_on_submit():
+        now = datetime.now()
+        if ProductReview.add_product_review(pid, 
+                                            current_user.id, 
+                                            form.rating.data, 
+                                            form.title.data, 
+                                            form.comment.data, 
+                                            now.strftime("%b %d, %Y %H:%M:%S"), 
+                                            form.image.data):
+            flash('Congratualtions, your review has been added')
+            return redirect(url_for('products.products', pid=pid, sortoption=0))
+        flash('Sorry, we could not add your review')
+        return redirect(url_for('products.products', pid=pid, sortoption=0))
+    return render_template('reviewProduct.html', title='Title Goes Here',
+                           form=form, product = Product.get(pid))
 
 
 @bp.route('/products/add', methods=['GET', 'POST'])

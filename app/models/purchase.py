@@ -42,6 +42,17 @@ ORDER BY {orderby}
                               since=since)
         return [Purchase(*row) for row in rows]
 
+#get all product id's of products purchased by user
+    @staticmethod
+    def get_all_pid_by_uid(uid):
+        rows = app.db.execute('''
+SELECT pid
+FROM Purchases
+WHERE uid = :uid
+        ''',
+                            uid=uid)
+        return [row[0] for row in rows]
+
     @staticmethod
     def get_all_by_seller_id(seller_id):
         rows = app.db.execute('''
