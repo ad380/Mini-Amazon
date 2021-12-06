@@ -109,16 +109,17 @@ OFFSET :offset
     @staticmethod
     def get_by_rating(offset=0):
         rows = app.db.execute('''
-SELECT AVG(r.rating), r.product_id
-FROM ProductReviews r, Products p
-WHERE r.product_id = p.id 
-GROUP BY r.product_id
-ORDER BY AVG(r.rating) DESC
+SELECT id, seller_id, name, description, category, Products.image,
+price, available_quantity, AVG(ProductReviews.rating), ProductReviews.product_id
+FROM ProductReviews, Products 
+WHERE ProductReviews.product_id = Products.id 
+GROUP BY ProductReviews.product_id
+ORDER BY AVG(ProductReviews.rating) DESC
 LIMIT 50
 OFFSET :offset
         ''',
                             offset=offset)
-        return [row[1] for row in rows]
+        return [row[0,1,2,3,4,5,6,7,8] for row in rows]
 
 #this filters products by category
     @staticmethod
