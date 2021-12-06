@@ -27,6 +27,13 @@
     {% endfor %}
   </p>
   <p>
+    {{ form.image.label }}<br/>
+    {{ form.image(size=64) }}<br/>
+    {% for error in form.image.errors %}
+    <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+  <p>
     {{ form.price.label }}<br/>
     {{ form.price(size=16) }}<br/>
     {% for error in form.price.errors %}

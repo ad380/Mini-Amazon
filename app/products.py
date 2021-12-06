@@ -62,6 +62,7 @@ class ProductForm(FlaskForm):
     description = StringField(_l('Product Description'), validators=[DataRequired()])
     category = SelectField(u'Category', choices = categories, validators = [DataRequired()])
     quantity = IntegerField(_l('Quantity',validators=[InputRequired()]))
+    image = StringField(_l('Image URL'), validators=[DataRequired()])
     submit = SubmitField(_l('Add to Inventory'))
 
 
@@ -74,6 +75,7 @@ def addProduct():
                                   form.name.data,
                                   form.description.data,
                                   form.category.data,
+                                  form.image.data,
                                   form.price.data,
                                   form.quantity.data):
                 flash('Congratualtions, your product has been added')
