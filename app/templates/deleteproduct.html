@@ -6,10 +6,29 @@
 <h1>Delete Product</h1>
 <br>
 <h2>Are you sure you want to delete this product?</h2>
-<p>Product ID: {{product.id}}</p>
-<p>Product Name: {{product.name}}</p>
-<p>Price: {{product.price}}</p>
-<p>Quantity: {{product.available_quantity}}</p>
+
+<img width="200" src="{{product.image}}"/>
+<br/>
+<table class='table table-hover table-bordered container'>
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">Product ID</th>
+      <th scope="col">Product Name</th>
+      <th scope="col">Category</th>
+      <th scope="col">Price</th>
+      <th scope="col">Quantity</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <th scope="row">{{product.id}}</th>
+        <td>{{product.name}}</td>
+        <td>{{product.category}}</td>
+        <td>{{product.price}}</td>
+        <td>{{product.available_quantity}}</td>
+      </tr>
+  </tbody>
+</table>
 
 <form action="" method="post">
   {{ form.hidden_tag() }}
