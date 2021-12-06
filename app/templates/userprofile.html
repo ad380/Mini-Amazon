@@ -103,6 +103,7 @@
       <th scope="col">Purchase ID</th>
       <th scope="col">Product ID</th>
       <th scope="col">Seller ID</th>
+      <th scope="col">Product Name</th>
       <th scope="col">Time Purchased</th>
       <th scope="col">Quantity</th>
       <th scope="col">Status</th>
@@ -114,6 +115,7 @@
         <th scope="row">{{purchase.id}}</th>
         <td><a href="{{ url_for('products.products', pid=purchase.pid, sortoption=0) }}" type="button" class="btn btn-light">{{purchase.pid}}</a></td>
         <td><a href="{{ url_for('users.publicprofile', uid=purchase.seller_id, sortoption=0) }}" type="button" class="btn btn-light">{{purchase.seller_id}}</a></td>
+        <td>{{purchase.pname}}</td>
         <td>{{purchase.time_purchased}}</td>
         <td>{{purchase.quantity}}</td>
         {% if purchase.fulfilled == 'f'%}

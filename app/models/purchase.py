@@ -32,11 +32,11 @@ WHERE Purchases.id = :id
     @staticmethod
     def get_all_by_uid_ordered(uid, since, orderby="time_purchased DESC"):
         rows = app.db.execute(f'''
-SELECT id, uid, seller_id, time_purchased, pid, quantity, fulfilled
-FROM Purchases
-WHERE uid = :uid
-AND time_purchased >= :since
-ORDER BY {orderby}
+SELECT Purchases.id, Purchases.uid, Purchases.seller_id, Purchases.time_purchased, Purchases.pid, Purchases.quantity, Purchases.fulfilled, Products.name
+FROM Purchases INNER JOIN Products ON Purchases.pid = Products.id
+WHERE Purchases.uid = :uid
+AND Purchases.time_purchased >= :since
+ORDER BY Purchases.{orderby}
 ''',
                               uid=uid,
                               since=since)
