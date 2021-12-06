@@ -9,6 +9,21 @@
 
 <p></p>
 
+<div class="dropdown" style="color: green; text-align: right; margin-bottom: 25px; position:static">
+<form action="{{ url_for('inventory.index') }}" method="POST">
+    {{ form.csrf_token }}
+    {{ form.hidden_tag() }}
+    <p>
+      {{ form.searchValue.label }}<br/>
+      {{ form.searchValue(size=32) }}<br/>
+      {% for error in form.searchValue.errors %}
+      <span style="color: red;">[{{ error }}]</span>
+      {% endfor %}
+    </p>
+    <p><a href="{{ url_for('inventory.index') }}" type="button" class="btn btn-light">Clear</a> {{ form.submit() }}</p>
+  </form>
+</div>
+
 <br>
 
 <h2>Inventory:</h2>

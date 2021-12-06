@@ -12,11 +12,15 @@ from .models.user import User
 from flask import Blueprint
 bp = Blueprint('inventory', __name__)
 
+class SearchForm(FlaskForm):
+    searchValue = StringField('', [DataRequired()])
+    submit = SubmitField('Search')
 
 @bp.route('/inventory',methods=["POST", "GET"])
 def index():
+    form = SearchForm()
     # get all available products for sale:
-    products = Product.get_all()
+    products = Product.get_some()
     users = User.get_info()
     # find the products and purchases with the current user as the seller:
     if current_user.is_authenticated:
@@ -25,11 +29,18 @@ def index():
     else:
         purchases = None
         products = None
-    # render the page by adding information to the inventory.html file
+        
+    # render the page by adding information to the inventory.html file based on search
+    if request.method == 'POST':
+        products = Product.search_seller_products(current_user.id, form.searchValue.data)
+        return render_template('inventory.html',
+                           sold_products=products,
+                           purchase_history=purchases,
+                           users = users, form = form)
     return render_template('inventory.html',
                            sold_products=products,
                            purchase_history=purchases,
-                           users = users)
+                           users = users, form = form)
 
 # Order history page
 @bp.route('/orders',methods=["POST", "GET"])
