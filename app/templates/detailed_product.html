@@ -132,10 +132,7 @@
   {% elif current_user.is_authenticated and has_purchased %}
     <p><a href="{{ url_for('products.reviewProduct', pid=pid) }}" type="button" class="btn btn-light">Review This Product</a></p>
     <br><br>
-  {% elif current_user.is_authenticated %}
-    <p>You can only review previously purchased items</p>
-    <br><br>
-  {% else %}
+  {% elif not (current_user.is_authenticated) %}
     <p><a href="{{ url_for('users.login') }}" type="button" class="btn btn-light">Must be signed in to review products</a></p>
     <br><br>
   {% endif %}

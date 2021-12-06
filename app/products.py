@@ -89,27 +89,30 @@ class ProductForm(FlaskForm):
 
 class ReviewForm(FlaskForm):
     rating = DecimalField(_l('Rating', places=1, rounding=decimal.ROUND_HALF_UP, validators=[InputRequired()]))
-    title = StringField('Title', default=None)
-    comment = StringField('Comment', default=None)
-    image = StringField('Image URL', default=None)
+    title = StringField('Title', default=None, validators=[InputRequired()])
+    comment = StringField('Comment', default=None, validators=[InputRequired()])
+    image = StringField('Image URL (Optional)', default=None)
     submit = SubmitField(_l('Post Review'))
 
 @bp.route('/products/review/<pid>',methods=["GET", "POST"])
 def reviewProduct(pid):
-    form = ReviewForm()
-    if form.validate_on_submit():
-        now = datetime.now()
-        if ProductReview.add_product_review(pid, 
+    
+    if current_user.is_authenticated:
+        form = ReviewForm()
+        if form.validate_on_submit():
+            now = datetime.now()    
+            if ProductReview.add_product_review(pid, 
                                             current_user.id, 
                                             form.rating.data, 
                                             form.title.data, 
                                             form.comment.data, 
                                             now.strftime("%b %d, %Y %H:%M:%S"), 
                                             form.image.data):
-            flash('Congratualtions, your review has been added')
-            return redirect(url_for('products.products', pid=pid, sortoption=0))
-        flash('Sorry, we could not add your review')
-        return redirect(url_for('products.products', pid=pid, sortoption=0))
+                flash('Congratualtions, your review has been added')
+                print("got here")
+                return redirect(url_for('products.products', pid=pid, sortoption=0))
+
+    flash('Error trying to submit review.')
     return render_template('reviewProduct.html', title='Title Goes Here',
                            form=form, product = Product.get(pid))
 

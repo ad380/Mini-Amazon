@@ -40,6 +40,9 @@
     <span style="color: red;">[{{ error }}]</span>
     {% endfor %}
   </p>
+  <!-- {% for mesg in get_flashed_messages() %}
+  <h4>{{ mesg }}</h4>
+  {% endfor %} -->
   <p>{{ form.submit() }}</p>
 </form>
 
