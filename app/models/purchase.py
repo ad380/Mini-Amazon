@@ -62,7 +62,6 @@ ORDER BY time_purchased DESC
         else:
             fulfilled = 'nf'
         try:
-            print(fulfilled)
             rows = app.db.execute('''
 UPDATE Purchases
 SET fulfilled = :fulfilled

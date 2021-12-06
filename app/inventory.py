@@ -44,7 +44,7 @@ def editStatus(pid):
     else:
         status = 'Not Fulfilled'
     form = StatusForm()
-    form.newStatus.data = status
+    #form.newStatus.data = status
     if form.validate_on_submit():
         if Purchase.editStatus(pid, form.newStatus.data):
             flash('Congratualtions, your purchase status has been updated')
