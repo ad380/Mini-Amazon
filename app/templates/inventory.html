@@ -9,6 +9,21 @@
 
 <p></p>
 
+<div>
+<form action="{{ url_for('inventory.index') }}" method="POST">
+    {{ form.csrf_token }}
+    {{ form.hidden_tag() }}
+    <p>
+      {{ form.searchValue.label }}<br/>
+      {{ form.searchValue(size=32) }}<br/>
+      {% for error in form.searchValue.errors %}
+      <span style="color: red;">[{{ error }}]</span>
+      {% endfor %}
+    </p>
+    <p>{{ form.submit() }}</p>
+  </form>
+</div>
+
 <br>
 
 <h2>Inventory:</h2>
