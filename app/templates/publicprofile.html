@@ -31,10 +31,6 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='css/reviews.css') }}">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
-
-
- 
-
 <!-- script in JS to display stars for each reviewer's rating -->
 <!-- Return list of size 5 representing how many stars
         should be shown for review
@@ -113,29 +109,65 @@
   }
 </script> 
 
-<h2>Seller Reviews: {{review_avg}}/5.0 ({{review_count}})</h2>
-<table class='table table-hover table-bordered container'>
-  <thead class="thead-dark">
-    <tr>
-      <th scope="col">buyer id</th>
-      <th scope="col">rating</th>
-      <th scope="col">comment</th>
-      <th scope="col">date</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for r in reviews%}
-      <tr>
-        <!-- <td>{{r.buyer_id}}</td> -->
-        <td><a href="{{ url_for('users.publicprofile', uid=r.buyer_id, sortoption=0) }}" type="button" class="btn btn-light">{{r.buyer_id}}</a></td>
-        <td>{{r.rating}}</td>
-        <td>{{r.comment}}</td>
-        <td>{{r.date}}</td>
-      </tr>
+<body>
+  <hr style="border:1px solid #f1f1f1">
+  
+  <div class="main-section">
+    <span class="heading">Seller Reviews ({{review_count}})</span>
+  
+    <!-- Call stars method to show product average reviews -->
+    <script>stars({{review_avg}})</script>
+    <span class="sub-heading">{{review_avg}} out of 5</span>
+  
+    <!-- Dropdown for sorting options -->
+    <select name="sort-options" id="sort-options" class="drop-down" onchange="location = this.value">
+      <script>selected({{sortoption}})</script>
+    </select>
+  
+    <hr style="border:3px solid #f1f1f1">
+  
+    <!-- Loop to display reach review -->
+    {% for review in reviews%}
+    <div class="review">
+      <span class="heading">
+        <a href="{{ url_for('users.publicprofile', uid=review.buyer_id, sortoption=0) }}" type="button" 
+          class="btn btn-light">{{reviewer_names[loop.index-1]}}
+        </a>
+      <a style="display: inline; font-size: 18px;">{{review.date|format_date('standard')}}</a>
+      
+      <!-- <span style="align-items: right;">test</span> -->
+      <vote>
+      <span class="vote up" onclick="changeColor(1);">
+        <svg width="36" height="36" id="vote">
+          <path d="M2 26h32L18 10z" fill="currentColor"></path>
+        </svg>
+      </span>
+      <p style="text-align: right; padding-right: 50px; font-size: 24px;">0</p>
+      
+      <span class="vote down" onclick="changeColor(-1);">
+        <svg width="36" height="36">
+          <path d="M2 10h32L18 26 2 10z" fill="currentColor"></path>
+        </svg>
+      </span>
+      </vote>
+  
+      <p></p>
+  
+      <script>stars({{review.rating}})</script>
+      <a style="display: inline; font-size: 18px; padding-left: 10px; font-style: b;"><strong>{{review.title}}</strong></a>
+      <p class="comment">{{review.comment}}</p>
+      <!-- Check if review has default value "IMAGE"
+            otherwise if there is valid link
+            display image -->
+      {% if review.image != "IMAGE" %} 
+        <img width="100" src="{{review.image}}"/>
+      {% endif %}
+      <hr style="border:1px dashed #f1f1f1">
+    </div>
     {% endfor %}
-  </tbody>
-</table>
-
+  
+  </div>
+  </body>
 {% endif %}
 
 {% endblock %}
