@@ -13,14 +13,14 @@
 
 <div class="dropdown" style="color: green; text-align: right; margin-bottom: 25px; position:static">
   <select name="sort-options" id="sort-options" class="drop-down" onchange="location = this.value">
-    <option label="Sort By" value="">Sort By</option>
-    <option value="{{ url_for('index.index') }}">Product ID</option>
+    <option selected disabled label="Sort By" value="">Sort By</option>
+    <option value="{{ url_for('index.index') }}">None</option>
     <option value="{{ url_for('index.sortedindex', sortoption=1, page_num=1) }}">Price (ASC)</option>
     <option value="{{ url_for('index.sortedindex', sortoption=2, page_num=1) }}">Price (DESC)</option>
   </select> 
   <br><br>
   <select name="category-options" id="category-options" class="drop-down" onchange="location = this.value">
-    <option label="Filter By Category" value="">Filter By Category</option>
+    <option selected disabled label="Filter By Category" value="">Filter By Category</option>
     <option value="{{ url_for('index.index') }}">None</option>
     <option value="{{ url_for('index.categorizedindex', category=1, page_num=1) }}">Clothing</option>
     <option value="{{ url_for('index.categorizedindex', category=2, page_num=1) }}">Food</option>
