@@ -156,12 +156,6 @@
       <script>stars({{review.rating}})</script>
       <a style="display: inline; font-size: 18px; padding-left: 10px; font-style: b;"><strong>{{review.title}}</strong></a>
       <p class="comment">{{review.comment}}</p>
-      <!-- Check if review has default value "IMAGE"
-            otherwise if there is valid link
-            display image -->
-      {% if review.image != "IMAGE" %} 
-        <img width="100" src="{{review.image}}"/>
-      {% endif %}
       <hr style="border:1px dashed #f1f1f1">
     </div>
     {% endfor %}
