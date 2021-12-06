@@ -85,7 +85,7 @@ class ProductReview:
                     bid=bid)
         return rows[0][0] if rows[0][0] is not None else 0
         
-     @staticmethod
+    @staticmethod
     def get_review(pid, bid):
         rows = app.db.execute('''
     SELECT product_id, buyer_id
