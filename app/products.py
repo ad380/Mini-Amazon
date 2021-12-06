@@ -170,3 +170,10 @@ def deleteProduct(pid):
     return render_template('deleteproduct.html', title='Delete Product',
                            form=form, product = Product.get(pid))
 
+@bp.route('/products/deletereview/<pid>/<bid>',methods=["POST", "GET"])
+def deleteReview(pid, bid):
+    if ProductReview.deleteReview(pid, bid):
+            flash('Your product has been removed')
+            return redirect(url_for('products.products', pid=pid, sortoption=0))
+    return redirect(url_for('products.products', pid=pid, sortoption=0))
+
