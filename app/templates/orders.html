@@ -38,7 +38,11 @@
   </select>
   {%endif%}
 
+{%if not filtered%}
 <form action="{{ url_for('inventory.orders') }}" method="POST">
+{%else%}
+<form action="{{ url_for('inventory.ordersByStatus', status=filtered) }}" method="POST">
+{%endif%}
     {{ form.csrf_token }}
     {{ form.hidden_tag() }}
     <p>
@@ -51,10 +55,14 @@
       <span style="color: red;">[{{ error }}]</span>
       {% endfor %}
     </p>
-    {%if not filtered %}
-    <p><a href="{{ url_for('inventory.orders') }}" type="button" class="btn btn-light">Clear</a> {{ form.submit() }}</p>
+    {%if filtered == '0'%} 
+    <p><a href="{{ url_for('inventory.ordersByStatus', status=0) }}" type="button" class="btn btn-light">Clear</a> {{ form.submit() }}</p>
+    {%elif filtered == '1'%} 
+    <p><a href="{{ url_for('inventory.ordersByStatus', status=1) }}" type="button" class="btn btn-light">Clear</a> {{ form.submit() }}</p>
+    {%elif filtered == '2'%} 
+    <p><a href="{{ url_for('inventory.ordersByStatus', status=2) }}" type="button" class="btn btn-light">Clear</a> {{ form.submit() }}</p>
     {%else%}
-    <p><a href="{{ url_for('inventory.ordersByStatus', status=filtered) }}" type="button" class="btn btn-light">Clear</a> {{ form.submit() }}</p>
+    <p><a href="{{ url_for('inventory.orders') }}" type="button" class="btn btn-light">Clear</a> {{ form.submit() }}</p>
     {%endif%}
   </form>
 </div>
