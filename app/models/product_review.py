@@ -239,10 +239,22 @@ RETURNING *
                     val=val)
 
             uid, product_id, buyer_id = rows[0][0], rows[0][1], rows[0][2]
-            print(rows)
             return ProductReview.get_votes_from(uid, product_id, buyer_id)
         except Exception as e:
             print(str(e))
             return None
 
-    
+    @staticmethod
+    def get_top_reviews(product_id):
+        # Returns list of ProductReview objects for given product
+        rows = app.db.execute(f'''
+    SELECT buyer_id
+    FROM ProductReviewsUpvotes
+    WHERE product_id = :product_id
+    GROUP BY buyer_id
+    ORDER BY sum(vote) DESC
+    ''',
+                    product_id=product_id)
+
+        
+        return [ProductReview.get_review_from(product_id, bid[0]) for bid in rows]

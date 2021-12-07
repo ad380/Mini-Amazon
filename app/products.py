@@ -45,6 +45,10 @@ def products(pid, sortoption=0):
 
     user_votes = [ProductReview.get_votes_from(current_user.id, pid, bid) for bid in reviewer_ids]
 
+    top_reviews = ProductReview.get_top_reviews(pid)
+    top_reviewer_ids = [r.buyer_id for r in top_reviews]
+    top_reviewer_names = [User.get_name(id) for id in top_reviewer_ids]
+
     has_purchased = False
     has_reviewed = False
     current_user_review = None
@@ -85,7 +89,9 @@ def products(pid, sortoption=0):
                             has_reviewed=has_reviewed,
                             current_user_review=current_user_review,
                             current_user_name=current_user_name,
-                            user_votes=user_votes)
+                            user_votes=user_votes,
+                            top_reviews=top_reviews,
+                            top_reviewer_names=top_reviewer_names)
 
 class ProductForm(FlaskForm):
     categories = ['food','clothing','gadgets','media','misc']
