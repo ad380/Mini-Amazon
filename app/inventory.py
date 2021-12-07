@@ -91,13 +91,45 @@ def ordersByStatus(status):
     if current_user.is_authenticated:
         #filter by status
         if status == '0':
-            purchases = Purchase.get_all_by_seller_id(current_user.id)
+            if request.method == 'POST':
+                # if searching by buyer
+                if(form.searchBy.data == 'Buyer Name'):
+                    purchases = Purchase.search_buyer_by_seller_id(current_user.id, form.searchValue.data)
+                # searching by product
+                else:
+                    purchases = Purchase.search_product_by_seller_id(current_user.id, form.searchValue.data)
+            else:
+                purchases = Purchase.get_all_by_seller_id(current_user.id)
         elif status == '1':
-            purchases = Purchase.get_all_by_seller_id_status(current_user.id, status='f')
+            if request.method == 'POST':
+                # if searching by buyer
+                if(form.searchBy.data == 'Buyer Name'):
+                    purchases = Purchase.search_buyer_by_seller_id_status(current_user.id, form.searchValue.data , status='f')
+                # searching by product
+                else:
+                    purchases = Purchase.search_product_by_seller_id_status(current_user.id, form.searchValue.data, status='f')
+            else:
+                purchases = Purchase.get_all_by_seller_id_status(current_user.id, status='f')
         elif status == '2':
-            purchases = Purchase.get_all_by_seller_id_status(current_user.id, status='nf')
+            if request.method == 'POST':
+                # if searching by buyer
+                if(form.searchBy.data == 'Buyer Name'):
+                    purchases = Purchase.search_buyer_by_seller_id_status(current_user.id, form.searchValue.data, status='nf')
+                # searching by product
+                else:
+                    purchases = Purchase.search_product_by_seller_id_status(current_user.id, form.searchValue.data, status='nf')
+            else:
+                purchases = Purchase.get_all_by_seller_id_status(current_user.id, status='nf')
         else:
-            purchases = Purchase.get_all_by_seller_id(current_user.id)
+            if request.method == 'POST':
+                # if searching by buyer
+                if(form.searchBy.data == 'Buyer Name'):
+                    purchases = Purchase.search_buyer_by_seller_id(current_user.id, form.searchValue.data)
+                # searching by product
+                else:
+                    purchases = Purchase.search_product_by_seller_id(current_user.id, form.searchValue.data)
+            else:
+                purchases = Purchase.get_all_by_seller_id(current_user.id)
     else:
         purchases = None
     # render the page by adding information to the index.html file
@@ -126,7 +158,7 @@ def editStatus(pid):
     if form.validate_on_submit():
         if Purchase.editStatus(pid, form.newStatus.data):
             print('Congratualtions, your purchase status has been updated')
-            return redirect(url_for('inventory.index'))
+            return redirect(url_for('inventory.orders'))
     #render page by adding information to editstatus.html
     return render_template('editstatus.html', title='Edit Purchase Status',
                            form=form, purchase = Purchase.get(pid))

@@ -38,7 +38,11 @@
   </select>
   {%endif%}
 
-<form action="{{ url_for('inventory.orders') }}" method="POST">
+{%if not filtered%}
+<form action="{{ url_for('inventory.orders') }}" method="POST"> 
+{%else%}
+<form action="{{ url_for('inventory.ordersByStatus', status=filtered) }}" method="POST">
+{%endif%}
     {{ form.csrf_token }}
     {{ form.hidden_tag() }}
     <p>
