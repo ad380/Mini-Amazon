@@ -12,15 +12,17 @@ from .models.user import User
 from flask import Blueprint
 bp = Blueprint('inventory', __name__)
 
+#form for searching product name
 class SearchForm(FlaskForm):
     searchValue = StringField('', [DataRequired()])
+    searchBy = SelectField(u'Search By', choices = ['Buyer Name','Product Name'])
     submit = SubmitField('Search')
 
 @bp.route('/inventory',methods=["POST", "GET"])
 def index():
     form = SearchForm()
     # get all available products for sale:
-    products = Product.get_some()
+    products = Product.get_all()
     users = User.get_info()
     # find the products and purchases with the current user as the seller:
     if current_user.is_authenticated:
@@ -45,6 +47,7 @@ def index():
 # Order history page
 @bp.route('/orders',methods=["POST", "GET"])
 def orders():
+    form = SearchForm()
     # get all available products for sale:
     products = Product.get_all()
     users = User.get_info()
@@ -56,16 +59,60 @@ def orders():
         purchases = None
         products = None
     # render the page by adding information to the inventory.html file
+    if request.method == 'POST':
+        # if searching by buyer
+        if(form.searchBy.data == 'Buyer Name'):
+            purchases = Purchase.search_buyer_by_seller_id(current_user.id, form.searchValue.data)
+            return render_template('orders.html',
+                           sold_products=products,
+                           purchase_history=purchases,
+                           users = users, form = form, filtered = None)
+        # if searching by product
+        else:
+            purchases = Purchase.search_product_by_seller_id(current_user.id, form.searchValue.data)
+            return render_template('orders.html',
+                           sold_products=products,
+                           purchase_history=purchases,
+                           users = users, form = form, filtered = None)
     return render_template('orders.html',
                            sold_products=products,
                            purchase_history=purchases,
-                           users = users)
+                           users = users, form = form, filtered = None)
 
+# Order history page filtered by status
+@bp.route('/categorizedorders/<status>', methods = ["POST","GET"])
+def ordersByStatus(status):
+    form = SearchForm()
+    # get all available products for sale:
+    products = Product.get_all()
+    users = User.get_info()
+    
+    # find the products and purchases with the current user as the seller:
+    if current_user.is_authenticated:
+        #filter by status
+        if status == '0':
+            purchases = Purchase.get_all_by_seller_id(current_user.id)
+        elif status == '1':
+            purchases = Purchase.get_all_by_seller_id_status(current_user.id, status='f')
+        elif status == '2':
+            purchases = Purchase.get_all_by_seller_id_status(current_user.id, status='nf')
+        else:
+            purchases = Purchase.get_all_by_seller_id(current_user.id)
+    else:
+        purchases = None
+    # render the page by adding information to the index.html file
+    return render_template('orders.html',
+                           sold_products=products,
+                           purchase_history=purchases,
+                           users = users, form = form, filtered = status)
+
+#Form for editting purchase status
 class StatusForm(FlaskForm):
     categories = ['Fulfilled', 'Not Fulfilled']
     newStatus = SelectField(u'Status', choices = categories, validators = [DataRequired()])
     submit = SubmitField(_l('Submit Purchase Status'))
 
+#page to edit purchase status
 @bp.route('/editstatus/<pid>',methods=["POST", "GET"])
 def editStatus(pid):
     status = Purchase.get(pid).fulfilled
@@ -74,10 +121,12 @@ def editStatus(pid):
     else:
         status = 'Not Fulfilled'
     form = StatusForm()
+    #set default status as existing value
     form.newStatus.default = status
     if form.validate_on_submit():
         if Purchase.editStatus(pid, form.newStatus.data):
             print('Congratualtions, your purchase status has been updated')
             return redirect(url_for('inventory.index'))
+    #render page by adding information to editstatus.html
     return render_template('editstatus.html', title='Edit Purchase Status',
                            form=form, purchase = Purchase.get(pid))

@@ -7,6 +7,56 @@
 <br>
 
 <h2>Order History:</h2>
+<div class="dropdown" style="color: green; text-align: right; margin-bottom: 25px; position:static">
+  {%if filtered == '0'%} 
+  <select name="category-options" id="category-options" class="drop-down" onchange="location = this.value">
+    <option disabled label="Filter By Status" value="">Filter By Status</option>
+    <option selected value="{{ url_for('inventory.ordersByStatus', status=0) }}">None</option>
+    <option value="{{ url_for('inventory.ordersByStatus', status=1) }}">Fulfilled</option>
+    <option value="{{ url_for('inventory.ordersByStatus', status=2) }}">Not Fulfilled</option>
+  </select>
+  {% elif filtered == '1'%} 
+  <select name="category-options" id="category-options" class="drop-down" onchange="location = this.value">
+    <option disabled label="Filter By Status" value="">Filter By Status</option>
+    <option value="{{ url_for('inventory.ordersByStatus', status=0) }}">None</option>
+    <option selected value="{{ url_for('inventory.ordersByStatus', status=1) }}">Fulfilled</option>
+    <option value="{{ url_for('inventory.ordersByStatus', status=2) }}">Not Fulfilled</option>
+  </select>
+  {% elif filtered == '2'%} 
+  <select name="category-options" id="category-options" class="drop-down" onchange="location = this.value">
+    <option disabled label="Filter By Status" value="">Filter By Status</option>
+    <option value="{{ url_for('inventory.ordersByStatus', status=0) }}">None</option>
+    <option value="{{ url_for('inventory.ordersByStatus', status=1) }}">Fulfilled</option>
+    <option selected value="{{ url_for('inventory.ordersByStatus', status=2) }}">Not Fulfilled</option>
+  </select>
+  {%else%} 
+  <select name="category-options" id="category-options" class="drop-down" onchange="location = this.value">
+    <option selected disabled label="Filter By Status" value="">Filter By Status</option>
+    <option value="{{ url_for('inventory.ordersByStatus', status=0) }}">None</option>
+    <option value="{{ url_for('inventory.ordersByStatus', status=1) }}">Fulfilled</option>
+    <option value="{{ url_for('inventory.ordersByStatus', status=2) }}">Not Fulfilled</option>
+  </select>
+  {%endif%}
+
+<form action="{{ url_for('inventory.orders') }}" method="POST">
+    {{ form.csrf_token }}
+    {{ form.hidden_tag() }}
+    <p>
+      {{ form.searchValue.label }}<br/>
+      {{ form.searchValue(size=32)}} {{ form.searchBy(size=1)}}<br/>
+      {% for error in form.searchValue.errors %}
+      <span style="color: red;">[{{ error }}]</span>
+      {% endfor %}
+      {% for error in form.searchBy.errors %}
+      <span style="color: red;">[{{ error }}]</span>
+      {% endfor %}
+    </p>
+    <p><a href="{{ url_for('inventory.orders') }}" type="button" class="btn btn-light">Clear</a> {{ form.submit() }}</p>
+  </form>
+</div>
+
+<br>
+
 <table class='table table-hover table-bordered container'>
   <thead class="thead-dark">
     <tr>
