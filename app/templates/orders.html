@@ -51,7 +51,11 @@
       <span style="color: red;">[{{ error }}]</span>
       {% endfor %}
     </p>
+    {%if !filtered %}
     <p><a href="{{ url_for('inventory.orders') }}" type="button" class="btn btn-light">Clear</a> {{ form.submit() }}</p>
+    {%else%}
+    <p><a href="{{ url_for('inventory.ordersByStatus', status=filtered) }}" type="button" class="btn btn-light">Clear</a> {{ form.submit() }}</p>
+    {%endif%}
   </form>
 </div>
 
