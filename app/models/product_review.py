@@ -69,7 +69,7 @@ class ProductReview:
     WHERE buyer_id = :uid
     ''',
                     uid=uid)
-        return [row[0] for row in rows]
+        return [row[0] for row in rows] if rows is not None else []
 
     @staticmethod
     def get_upvotes(pid, bid):

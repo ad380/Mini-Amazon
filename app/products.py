@@ -61,8 +61,6 @@ def products(pid, sortoption=0):
             print(f"current_user_review = {current_user_review}")
         else:
             has_reviewed = False
-    else:
-        purchases = None
 
     return render_template('detailed_product.html', 
                             pid=pid,

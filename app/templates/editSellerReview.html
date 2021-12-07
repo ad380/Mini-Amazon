@@ -4,11 +4,11 @@
 
 <!-- back button -->
 
-<p><a href="{{ url_for('products.products', pid=product.id, sortoption=0) }}" type="button" class="btn btn-secondary">Back</a></p>
+<p><a href="{{ url_for('users.publicprofile', uid=seller_id, sortoption=0) }}" type="button" class="btn btn-secondary">Back</a></p>
 
 <!-- display form for making a product review -->
 
-<h2>Create A Product Review</h2>
+<h2>Edit Your Review for <a href="{{ url_for('users.publicprofile', uid=seller_id, sortoption=0) }}" type="button" >{{seller_name}}</a></h2>
 
 <form action="" method="post">
   {{ form.hidden_tag() }}
@@ -30,13 +30,6 @@
     {{ form.comment.label }}<br/>
     {{ form.comment(size=32) }}<br/>
     {% for error in form.comment.errors %}
-    <span style="color: red;">[{{ error }}]</span>
-    {% endfor %}
-  </p>
-  <p>
-    {{ form.image.label }}<br/>
-    {{ form.image(size=32) }}<br/>
-    {% for error in form.image.errors %}
     <span style="color: red;">[{{ error }}]</span>
     {% endfor %}
   </p>

@@ -14,7 +14,12 @@ from .models.user import User
 # imports I've added beyond the skeleton
 from .models.product import Product
 from .models.purchase import Purchase
+
 import datetime
+from datetime import datetime
+
+import decimal
+from decimal import ROUND_HALF_UP
 
 
 from flask import Blueprint
@@ -130,7 +135,7 @@ def sortedprofile(sortoption='0'):
         order = "time_purchased DESC"
     
     if current_user.is_authenticated:
-        purchases = Purchase.get_all_by_uid_ordered(current_user.id, datetime.datetime(1980, 9, 14, 0, 0, 0), orderby=order)
+        purchases = Purchase.get_all_by_uid_ordered(current_user.id, datetime(1980, 9, 14, 0, 0, 0), orderby=order)
     else:
         purchases = None
     
@@ -138,7 +143,7 @@ def sortedprofile(sortoption='0'):
 
     # if we are searching product names
     if request.method == 'POST':
-        purchases = Purchase.search_purchases(form.searchValue.data, current_user.id, datetime.datetime(1980, 9, 14, 0, 0, 0))
+        purchases = Purchase.search_purchases(form.searchValue.data, current_user.id, datetime(1980, 9, 14, 0, 0, 0))
         print(form.searchValue.data)
         print(len(purchases))
         return render_template('userprofile.html',
@@ -187,7 +192,25 @@ def publicprofile(uid, sortoption=0):
     if avg is not None:
         review_avg = round(avg, 1)
 
-    
+    has_purchased_from, has_reviewed = False, False
+    current_user_review, current_user_name = None, None
+    if current_user.is_authenticated:
+        purchases_ids = Purchase.get_all_pid_by_uid(current_user.id)
+
+        purchased_from = [Purchase.get_seller_id(pid, current_user.id) for pid in purchases_ids]
+        reviewedSellers = SellerReview.get_reviewed_sellers(current_user.id)
+        current_user_name = User.get_name(current_user.id)
+
+        if int(uid) in set(purchased_from): 
+            has_purchased = True
+        else:
+            has_purchased = False
+        if int(uid) in reviewedSellers:
+            has_reviewed = True
+            current_user_review = SellerReview.get_review_from(uid, current_user.id)
+        else:
+            has_reviewed = False
+
     # render the page by adding information to the publicprofile.html file
     return render_template('publicprofile.html',
                            avail_products=products,
@@ -197,7 +220,68 @@ def publicprofile(uid, sortoption=0):
                            review_avg=review_avg,
                            user=user,
                            sortoption=sortoption,
-                           reviewer_names=reviewer_names)
+                           reviewer_names=reviewer_names,
+                           has_purchased_from=has_purchased_from,
+                           has_reviewed=has_reviewed,
+                           current_user_review=current_user_review,
+                           current_user_name=current_user_name,
+                           has_purchased=has_purchased)
+
+class ReviewForm(FlaskForm):
+    rating = DecimalField(_l('Rating (0-5)', places=1, rounding=decimal.ROUND_HALF_UP, validators=[InputRequired()]))
+    title = StringField('Title', default=None, validators=[InputRequired()])
+    comment = StringField('Comment', default=None, validators=[InputRequired()])
+    submit = SubmitField(_l('Post Review'))
+
+@bp.route('/publicprofile/review/<uid>',methods=["GET", "POST"])
+def reviewSeller(uid): 
+    if current_user.is_authenticated:
+        form = ReviewForm()
+        if form.validate_on_submit():
+            now = datetime.now()    
+            if SellerReview.add_seller_review(uid, 
+                                            current_user.id, 
+                                            form.rating.data, 
+                                            form.title.data, 
+                                            form.comment.data, 
+                                            now.strftime("%b %d, %Y %H:%M:%S")):          
+                return redirect(url_for('users.publicprofile', uid=uid, sortoption=0))
+
+    flash('Please make sure your rating value is between 0 and 5.')
+    return render_template('reviewSeller.html', 
+                            title='Title Goes Here',
+                            form=form, 
+                            seller_id=uid,
+                            seller_name=User.get_name(uid))
+
+@bp.route('/publicprofile/editreview/<uid>',methods=["GET", "POST"])
+def editSellerReview(uid): 
+    if current_user.is_authenticated:
+        form = ReviewForm()
+        if form.validate_on_submit():
+            now = datetime.now()    
+            if SellerReview.edit_seller_review(uid, 
+                                            current_user.id, 
+                                            form.rating.data, 
+                                            form.title.data, 
+                                            form.comment.data, 
+                                            now.strftime("%b %d, %Y %H:%M:%S")):
+                return redirect(url_for('users.publicprofile', uid=uid, sortoption=0))
+
+    flash('Please make sure your rating value is between 0 and 5.')
+    return render_template('editSellerReview.html', 
+                            title='Title Goes Here',
+                            form=form, 
+                            seller_id=uid,
+                            seller_name=User.get_name(uid))
+
+@bp.route('/publicprofile/deletereview/<uid>/<bid>',methods=["POST", "GET"])
+def deleteReview(uid, bid):
+    if SellerReview.deleteReview(uid, bid):
+            print('Your review has been removed')
+            return redirect(url_for('users.publicprofile', uid=uid, sortoption=0))
+    return redirect(url_for('users.publicprofile', uid=uid, sortoption=0))
+    
 
 # make the edit name form
 class EditNameForm(FlaskForm):

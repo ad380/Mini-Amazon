@@ -107,11 +107,17 @@
       event.currentTarget.classList.toggle('on_down')
     }
   }
+
+  $(function() {
+    $('.confirm').click(function() {
+        return window.confirm("Are you sure you want to delete this review?");
+    });
+  });
 </script> 
 
 <body>
   <hr style="border:1px solid #f1f1f1">
-  
+  <div class="float-container">
   <div class="left-section">
     <span class="heading">Seller Reviews ({{review_count}})</span>
   
@@ -160,6 +166,50 @@
     </div>
     {% endfor %}
   
+  </div>
+  <div class="right-section">
+    <div>
+      {% if current_user.is_authenticated and has_reviewed %}
+        <p class="heading">Your Review</p>
+        <span style="padding:0px 0px 0px 10px;"><a type="button" class="btn btn-light" style="display: inline;""
+          href="{{ url_for('users.editSellerReview', uid=user.id) }}">Edit Review</a></span>
+        <!-- <br><br> -->
+  
+  
+        <span><a type="button" class="confirm btn btn-light" style="float: right; display: inline;"
+          href="{{ url_for('users.deleteReview', uid=user.id, bid=current_user_review.buyer_id) }}">Delete Review</a></span>
+        <!-- <br><br> -->
+        <hr style="border:1px dashed #f1f1f1">
+        <div class="review">
+          <span class="heading">
+            <a href="{{ url_for('users.publicprofile', uid=current_user_review.buyer_id, sortoption=0) }}" type="button" 
+              class="btn btn-light">{{current_user_name}}
+            </a>
+          <a style="display: inline; font-size: 18px;">{{current_user_review.date|format_date('standard')}}</a>
+        
+        
+        <p></p>
+  
+        <script>stars({{current_user_review.rating}})</script>
+        <a style="display: inline; font-size: 18px; padding-left: 10px; font-style: b;"><strong>{{current_user_review.title}}</strong></a>
+        <p class="comment">{{current_user_review.comment}}</p>
+        <!-- Check if review has default value "IMAGE"
+              otherwise if there is valid link
+              display image -->
+        {% if current_user_review.image != "IMAGE" %} 
+          <img width="100" src="{{current_user_review.image}}"/>
+        {% endif %}
+         
+        </div>
+  
+  
+  
+    {% elif current_user.is_authenticated and has_purchased %}
+      <p><a href="{{ url_for('users.reviewSeller', uid=user.id, sortoption=0) }}" type="button" class="btn btn-light">Review This Seller</a></p>
+      <!-- <br><br> -->
+    {% endif %}
+    </div>
+    </div>
   </div>
   </body>
 {% endif %}
