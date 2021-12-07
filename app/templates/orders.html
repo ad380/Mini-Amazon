@@ -55,15 +55,7 @@
       <span style="color: red;">[{{ error }}]</span>
       {% endfor %}
     </p>
-    {%if filtered == '0'%} 
-    <p><a href="{{ url_for('inventory.ordersByStatus', status=0) }}" type="button" class="btn btn-light">Clear</a> {{ form.submit() }}</p>
-    {%elif filtered == '1'%} 
-    <p><a href="{{ url_for('inventory.ordersByStatus', status=1) }}" type="button" class="btn btn-light">Clear</a> {{ form.submit() }}</p>
-    {%elif filtered == '2'%} 
-    <p><a href="{{ url_for('inventory.ordersByStatus', status=2) }}" type="button" class="btn btn-light">Clear</a> {{ form.submit() }}</p>
-    {%else%}
     <p><a href="{{ url_for('inventory.orders') }}" type="button" class="btn btn-light">Clear</a> {{ form.submit() }}</p>
-    {%endif%}
   </form>
 </div>
 
