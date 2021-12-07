@@ -51,6 +51,21 @@ OFFSET :offset
         )
         return [Product(*row) for row in rows]
 
+    #this takes a list of product id's and gets those products
+    @staticmethod
+    def get_these_products(pids, offset=0):
+        rows = app.db.execute('''
+SELECT id, seller_id, name, description, category, image,
+price, available_quantity
+FROM Products
+WHERE id IN :pids
+AND available_quantity > 0
+LIMIT 50
+OFFSET :offset
+        ''',
+                            pids=pids,
+                            offset=offset)
+
 #this gets only products sold by a specific seller
     @staticmethod
     def get_all_by_seller(seller_id):
@@ -104,6 +119,21 @@ OFFSET :offset
                             
                             offset=offset)
         return [Product(*row) for row in rows]
+
+#this sorts the products by average rating from highest to lowest
+    @staticmethod
+    def get_by_rating(offset=0):
+        rows = app.db.execute('''
+SELECT AVG(r.rating), r.product_id
+FROM ProductReviews r, Products p
+WHERE r.product_id = p.id 
+GROUP BY r.product_id
+ORDER BY AVG(r.rating) DESC
+LIMIT 50
+OFFSET :offset
+        ''',
+                            offset=offset)
+        return [row[1] for row in rows]
 
 #this filters products by category
     @staticmethod

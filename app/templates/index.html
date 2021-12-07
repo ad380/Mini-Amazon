@@ -13,6 +13,7 @@
     <option value="{{ url_for('index.index') }}">None</option>
     <option value="{{ url_for('index.sortedindex', sortoption=1, page_num=1) }}">Price (ASC)</option>
     <option value="{{ url_for('index.sortedindex', sortoption=2, page_num=1) }}">Price (DESC)</option>
+    <option value="{{ url_for('index.sortedindex', sortoption=3, page_num=1) }}">Rating</option>
   </select> 
   <br><br>
   <select name="category-options" id="category-options" class="drop-down" onchange="location = this.value">

@@ -68,8 +68,14 @@ def sortedindex(sortoption, page_num=1):
         products = Product.get_some(offset=offset)
     elif sortoption == '1':
         products = Product.get_by_price_asc(offset)
-    else:
+    elif sortoption == '2':
         products = Product.get_by_price_desc(offset)
+    else:
+        pids = Product.get_by_rating(offset)
+        products = []
+        for pid in pids:
+            this_product = Product.get(pid)
+            products.append(this_product)
 
     product_ids = [p.id for p in products]
     product_avgs = [round(ProductReview.get_avg(id), 1) for id in product_ids]
@@ -119,7 +125,7 @@ def categorizedindex(category, page_num):
     
     # find the products current user has bought:
     if current_user.is_authenticated:
-        purchases = Purchase.get_all_by_uid_since(
+        purchases = Purchase.get_all_by_uid_ordered(
             current_user.id, datetime.datetime(1980, 9, 14, 0, 0, 0))
     else:
         purchases = None
