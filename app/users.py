@@ -227,6 +227,31 @@ def publicprofile(uid, sortoption=0):
                            current_user_name=current_user_name,
                            has_purchased=has_purchased)
 
+
+# Render reviews for private profile
+@bp.route('/profile/reviews/<type>')
+def privateReviews(type):   
+    uid = current_user.id
+
+    if type == "products":
+        reviews = ProductReview.get_user_reviews(uid)
+        review_ids = [r.product_id for r in reviews]
+        names = [Product.get_names(pid) for pid in review_ids]
+    elif type == "sellers":
+        reviews = SellerReview.get_user_reviews(uid)
+        review_ids = [r.seller_id for r in reviews]
+        names = [User.get_name(id) for id in review_ids]
+    
+    # Capitlize word for type, remove trailing "s"
+    type = type[:-1].capitalize()
+    return render_template('privateReviews.html',
+                            reviews=reviews,
+                            review_ids=review_ids,
+                            names=names,
+                            type=type,)
+
+                
+
 class ReviewForm(FlaskForm):
     rating = DecimalField(_l('Rating (0-5)', places=1, rounding=decimal.ROUND_HALF_UP, validators=[InputRequired()]))
     title = StringField('Title', default=None, validators=[InputRequired()])

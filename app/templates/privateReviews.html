@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<!-- Import css file / star images -->
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/reviews.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  </head>
+
+<!-- script in JS to display stars for each reviewer's rating -->
+<!-- Return list of size 5 representing how many stars
+        should be shown for review
+        -1 = empty, 0 = half, 1 = full -->
+<script>
+function stars(rating){
+    // Star types
+    let filled_star = "<span class=\"fa fa-star checked\"></span>"
+    let empty_star = "<span class=\"fa fa-star-o\"></span>"
+    let half_star = "<i class=\"fa fa-star-half-o\" aria-hidden=\"true\"></i>"
+
+    let dec = rating % 1  // Number after the decimal
+    let full = Math.floor(rating) // Number before decimal
+
+    var stars = [-1, -1, -1, -1, -1]  // Initial stars all to be empty
+    var half = false
+
+    if (0.25 < dec && dec <= 0.75){
+    // When decimal value in this range, we have half star
+    half = true
+    }
+
+    // Update appropiate indices to be 1 for filled
+    for (let i = 0; i < full; i++) {
+    stars[i] = 1
+    }
+
+    if (half == true) {
+    stars[full] = 0
+    } else if (dec > 0.75) {
+    // Round up to next star
+    stars[full] = 1
+    }
+
+    // Write stars
+    for (let i = 0; i < stars.length; i++) {
+    let val = stars[i]
+    if (val == 1) {
+        document.write(filled_star)
+    } else if (val == 0) {
+        document.write(half_star)
+    } else {
+        document.write(empty_star)
+    }
+    }   
+}
+</script>
+
+<div class="float-container">
+    <div class="left-section">
+      <span class="heading">View Your {{type}} Reviews</span>
+      <hr style="border:3px solid #f1f1f1">
+    
+      <!-- Loop to display reach review -->
+      {% for review in reviews%}
+      <div class="review">
+        <span class="heading">
+        
+            {% if type == "Product" %} 
+            <a href="{{ url_for('products.products', pid=review_ids[loop.index-1], sortoption=0) }}" type="button" 
+                class="btn btn-light">{{names[loop.index-1]}}
+            </a>
+            {% elif type == "Seller" %}
+            <a href="{{ url_for('users.publicprofile', uid=review_ids[loop.index-1], sortoption=0) }}" type="button" 
+                class="btn btn-light">{{names[loop.index-1]}}
+            </a>
+            {% endif %}
+        <a style="display: inline; font-size: 18px;">{{review.date|format_date('standard')}}</a>
+    
+        <p></p>
+    
+        <script>stars({{review.rating}})</script>
+        <a style="display: inline; font-size: 18px; padding-left: 10px; font-style: b;"><strong>{{review.title}}</strong></a>
+        <p class="comment">{{review.comment}}</p>
+
+        <!-- Check if review has default value "IMAGE"
+              otherwise if there is valid link
+              display image -->
+        {% if type == "Product" %}    
+        {% if review.image != "IMAGE" %} 
+          <img width="100" src="{{review.image}}"/>
+        {% endif %}
+        {% endif %}
+        <hr style="border:1px dashed #f1f1f1">
+        </div>
+      {% endfor %}
+    
+    </div>
+</div>
+{% endblock %}
