@@ -170,7 +170,7 @@
   <div class="right-section">
     <div>
       {% if current_user.is_authenticated and has_reviewed %}
-        <p class="heading">Your Review</p>
+        <p class="heading">Your Review:</p>
         <span style="padding:0px 0px 0px 10px;"><a type="button" class="btn btn-light" style="display: inline;""
           href="{{ url_for('users.editSellerReview', uid=user.id) }}">Edit Review</a></span>
         <!-- <br><br> -->
