@@ -200,4 +200,49 @@ RETURNING *
                     pid=pid,
                     bid=bid)
         return rows[0][0] if rows else 0
-   
+
+
+    @staticmethod
+    def update_vote(uid, pid, bid, val):
+        # Updates vote of user for current review
+            
+        try:
+            rows = app.db.execute("""
+    UPDATE ProductReviewsUpvotes
+    SET uid = :uid, product_id = :pid, buyer_id = :bid, vote = :val
+    WHERE uid = :uid 
+    AND product_id = :pid
+    AND buyer_id = :bid
+    RETURNING uid, product_id, buyer_id
+    """,
+                    uid=uid,
+                    pid=pid,
+                    bid=bid,
+                    val=val)
+
+            uid, product_id, buyer_id = rows[0][0], rows[0][1], rows[0][2]
+            print(rows)
+            return ProductReview.get_votes_from(uid, product_id, buyer_id)
+        except Exception as e:
+            print(str(e))
+            pass
+
+        try:
+            rows = app.db.execute("""
+    INSERT INTO ProductReviewsUpvotes(uid, product_id, buyer_id, vote)
+    VALUES(:uid, :pid, :bid, :val)
+    RETURNING uid, product_id, buyer_id
+    """,
+                    uid=uid,
+                    pid=pid,
+                    bid=bid,
+                    val=val)
+
+            uid, product_id, buyer_id = rows[0][0], rows[0][1], rows[0][2]
+            print(rows)
+            return ProductReview.get_votes_from(uid, product_id, buyer_id)
+        except Exception as e:
+            print(str(e))
+            return None
+
+    

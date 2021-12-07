@@ -203,3 +203,10 @@ def deleteReview(pid, bid):
             return redirect(url_for('products.products', pid=pid, sortoption=0))
     return redirect(url_for('products.products', pid=pid, sortoption=0))
 
+@bp.route('/products/vote/<uid>/<pid>/<bid>/<val>',methods=["POST", "GET"])
+def updateVote(uid, pid, bid, val):
+    if ProductReview.update_vote(uid, pid, bid, val):
+            print('vote updated')
+            return redirect(url_for('products.products', pid=pid, sortoption=0))
+    return redirect(url_for('products.products', pid=pid, sortoption=0))
+

@@ -110,15 +110,6 @@
     }
   }
 
-  // Updates upvote arrow color 
-  function changeColor(val) {
-    if (val == 1) {
-      event.currentTarget.classList.toggle('on_up')
-    } else if (val == -1) {
-      event.currentTarget.classList.toggle('on_down')
-    }
-  }
-
   $(function() {
     $('.confirm').click(function() {
         return window.confirm("Are you sure you want to delete this review?");
@@ -127,16 +118,30 @@
 
   // Functions for changing color of upvote buttons
   // Also toggles other state if active
-  function like(id) {
+  function like(button_id, update, pid, bid) {
     let gray = '#687074'
-    let idx = parseInt(id)
-    dislikes[idx].style.color = gray;
-
-    if (likes[idx].style.color == 'blue') {  // If already upvoted
-      likes[idx].style.color = gray
-    } else {  // Otherwise upvote
+    let idx = parseInt(button_id)
+    // alert({{current_user.id}})
+    if (dislikes[idx].style.color == 'blue') {  // if currently downvoted
       likes[idx].style.color = 'blue'
+      dislikes[idx].style.color = gray
+    } else if (likes[idx].style.color == 'blue') {  // if currently upvoted
+      likes[idx].style.color = gray
     }
+    else {
+      likes[idx].style.color = 'blue'
+      if (update) {
+      update_vote({{current_user.id}}, pid, bid, "1")
+      }
+    }
+  }
+
+  function update_vote(uid, pid, bid, val) {
+    // let s_uid = uid.toString(
+    // let s_pid = pid.toString()
+    // let s_bid = bid.toString()
+    
+    location.href="{{ url_for('products.updateVote', uid=0, pid=0, bid=267, val=1) }}"
   }
 
   function dislike(id) {
@@ -183,10 +188,10 @@
 
     <i id="{{loop.index-1}}" class="fa fa-thumbs-down vote" onclick="dislike(this.id)"></i>
     <p class="upvotes">{{review_upvotes[loop.index-1]}}</p>
-    <i id="{{loop.index-1}}" class="fa fa-thumbs-up vote" onclick="like(this.id)"></i>
+    <i id="{{loop.index-1}}" class="fa fa-thumbs-up vote" onclick="like(this.id, true, {{pid}}, {{review.buyer_id}})"></i>
 
     {% if user_votes[loop.index-1] == 1 %}
-    <script>like({{loop.index}}-1)</script>
+    <script>like({{loop.index}}-1, false, -1, -1)</script>
     {% elif user_votes[loop.index-1] == -1 %}
     <script>dislike({{loop.index}}-1)</script>
     {% endif %}
