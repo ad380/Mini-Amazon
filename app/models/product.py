@@ -63,7 +63,7 @@ AND available_quantity > 0
 LIMIT 50
 OFFSET :offset
         ''',
-                            pids=pids
+                            pids=pids,
                             offset=offset)
 
 #this gets only products sold by a specific seller
