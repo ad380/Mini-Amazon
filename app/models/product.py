@@ -53,7 +53,7 @@ OFFSET :offset
 
     #this takes a list of product id's and gets those products
     @staticmethod
-    def get_these_products(pids):
+    def get_these_products(pids, offset=0):
         rows = app.db.execute('''
 SELECT id, seller_id, name, description, category, image,
 price, available_quantity
