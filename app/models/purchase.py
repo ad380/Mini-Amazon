@@ -79,7 +79,8 @@ WHERE Purchases.seller_id = :seller_id
 AND fulfilled = :status
 ORDER BY time_purchased DESC
 ''',
-                              seller_id=seller_id)
+                              seller_id=seller_id,
+                              status = status)
         return [Purchase(*row) for row in rows]
 
 #search for buyer name on all purchases of a given seller
