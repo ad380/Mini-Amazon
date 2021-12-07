@@ -21,7 +21,7 @@ class SearchForm(FlaskForm):
 
 
 @bp.route('/<avail_only>', methods=['GET', 'POST'])
-def index(avail_only):
+def index(avail_only=False):
     form = SearchForm()
     # get all available products for sale or only in-stock products:
     if avail_only:
