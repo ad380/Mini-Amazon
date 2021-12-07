@@ -8,13 +8,28 @@
 
 <h2>Order History:</h2>
 <div class="dropdown" style="color: green; text-align: right; margin-bottom: 25px; position:static">
-  
+  {% if filtered == 1%} 
+  <select name="category-options" id="category-options" class="drop-down" onchange="location = this.value">
+    <option selected disabled label="Filter By Status" value="">Filter By Status</option>
+    <option value="{{ url_for('inventory.orders') }}">None</option>
+    <option value="{{ url_for('inventory.ordersByStatus', status=1) }}" selected>Fulfilled</option>
+    <option value="{{ url_for('inventory.ordersByStatus', status=2) }}">Not Fulfilled</option>
+  </select>
+  {% elif filtered == 2%} 
   <select name="category-options" id="category-options" class="drop-down" onchange="location = this.value">
     <option selected disabled label="Filter By Status" value="">Filter By Status</option>
     <option value="{{ url_for('inventory.orders') }}">None</option>
     <option value="{{ url_for('inventory.ordersByStatus', status=1) }}">Fulfilled</option>
+    <option value="{{ url_for('inventory.ordersByStatus', status=2) }}" selected>Not Fulfilled</option>
+  </select>
+  {%else%} 
+  <select name="category-options" id="category-options" class="drop-down" onchange="location = this.value">
+    <option selected disabled label="Filter By Status" value="">Filter By Status</option>
+    <option value="{{ url_for('inventory.orders') }}" selected>None</option>
+    <option value="{{ url_for('inventory.ordersByStatus', status=1) }}">Fulfilled</option>
     <option value="{{ url_for('inventory.ordersByStatus', status=2) }}">Not Fulfilled</option>
   </select>
+  {%endif%}
 
 <form action="{{ url_for('inventory.orders') }}" method="POST">
     {{ form.csrf_token }}

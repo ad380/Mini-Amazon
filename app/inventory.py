@@ -104,7 +104,7 @@ def ordersByStatus(status):
     return render_template('orders.html',
                            sold_products=products,
                            purchase_history=purchases,
-                           users = users, form = form)
+                           users = users, form = form, filtered = status)
 
 #Form for editting purchase status
 class StatusForm(FlaskForm):
