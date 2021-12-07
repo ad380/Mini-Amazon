@@ -193,12 +193,10 @@ def publicprofile(uid, sortoption=0):
         purchases_ids = Purchase.get_all_pid_by_uid(current_user.id)
 
         purchased_from = [Purchase.get_seller_id(pid, current_user.id) for pid in purchases_ids]
-        print(f"p_from = {purchased_from}")
         reviewedSellers = SellerReview.get_reviewed_sellers(current_user.id)
         current_user_name = User.get_name(current_user.id)
 
-        if int(uid) in purchased_from: 
-            print("here")
+        if int(uid) in set(purchased_from): 
             has_purchased = True
         else:
             has_purchased = False
