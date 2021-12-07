@@ -105,6 +105,10 @@ def ordersByStatus(status):
                 # if searching by buyer
                 if(form.searchBy.data == 'Buyer Name'):
                     purchases = Purchase.search_buyer_by_seller_id_status(current_user.id, form.searchValue.data , status='f')
+                    return render_template('orders.html',
+                           sold_products=products,
+                           purchase_history=purchases,
+                           users = users, form = form, filtered = status)
                 # searching by product
                 else:
                     purchases = Purchase.search_product_by_seller_id_status(current_user.id, form.searchValue.data, status='f')
