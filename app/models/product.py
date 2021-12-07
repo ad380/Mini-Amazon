@@ -42,6 +42,21 @@ WHERE available_quantity > 0
 SELECT id, seller_id, name, description, category, image,
 price, available_quantity
 FROM Products
+ORDER BY id
+LIMIT 50
+OFFSET :offset
+''',
+                              offset=offset
+        )
+        return [Product(*row) for row in rows]
+
+    #this gets all products that are currently available 
+    @staticmethod
+    def get_available(offset=0):
+        rows = app.db.execute('''
+SELECT id, seller_id, name, description, category, image,
+price, available_quantity
+FROM Products
 WHERE available_quantity > 0
 ORDER BY id
 LIMIT 50
@@ -95,7 +110,6 @@ FROM Products
 SELECT id, seller_id, name, description, category, image,
 price, available_quantity
 FROM Products
-WHERE available_quantity > 0
 ORDER BY price ASC
 LIMIT 50
 OFFSET :offset
@@ -111,7 +125,6 @@ OFFSET :offset
 SELECT id, seller_id, name, description, category, image,
 price, available_quantity
 FROM Products
-WHERE available_quantity > 0
 ORDER BY price DESC
 LIMIT 50
 OFFSET :offset

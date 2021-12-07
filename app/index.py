@@ -20,15 +20,19 @@ class SearchForm(FlaskForm):
     submit = SubmitField('Search')
 
 
-@bp.route('/', methods=['GET', 'POST'])
-def index():
+@bp.route('/<avail_only>', methods=['GET', 'POST'])
+def index(avail_only):
     form = SearchForm()
-    # get all available products for sale:
-    products = Product.get_some()
+    # get all available products for sale or only in-stock products:
+    if avail_only:
+        products = Product.get_available()
+    else:
+        products = Product.get_some()
+        
     product_ids = [p.id for p in products]
     product_avgs = [round(ProductReview.get_avg(id), 1) for id in product_ids]
-
     sellers = Product.get_sellers()
+
     # find the products current user has bought:
     if current_user.is_authenticated:
         purchases = Purchase.get_all_by_uid_ordered(
@@ -38,8 +42,6 @@ def index():
     # render the page by adding information to the index.html file
     if request.method == 'POST':
         products = Product.search_products(form.searchValue.data)
-        print(form.searchValue.data)
-        print(len(products))
         return render_template('index.html',
                                 avail_products=products,
                                 purchase_history=purchases,
@@ -48,7 +50,8 @@ def index():
                                 sortoption=0,
                                 category=0,
                                 form=form,
-                                product_avgs=product_avgs)
+                                product_avgs=product_avgs,
+                                avail_only=avail_only)
 
     return render_template('index.html',
                            avail_products=products,
@@ -58,7 +61,8 @@ def index():
                            sortoption=0,
                            category=0,
                            form=form,
-                           product_avgs=product_avgs)
+                           product_avgs=product_avgs,
+                           avail_only=avail_only)
 
 @bp.route('/sortedindex/<sortoption>/<page_num>')
 def sortedindex(sortoption, page_num=1):

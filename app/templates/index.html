@@ -10,7 +10,7 @@
 <div class="dropdown" style="color: green; text-align: right; margin-bottom: 25px; position:static">
   <select name="sort-options" id="sort-options" class="drop-down" onchange="location = this.value">
     <option selected disabled label="Sort By" value="">Sort By</option>
-    <option value="{{ url_for('index.index') }}">None</option>
+    <option value="{{ url_for('index.index', avail_only=avail_only) }}">None</option>
     <option value="{{ url_for('index.sortedindex', sortoption=1, page_num=1) }}">Price (ASC)</option>
     <option value="{{ url_for('index.sortedindex', sortoption=2, page_num=1) }}">Price (DESC)</option>
     <option value="{{ url_for('index.sortedindex', sortoption=3, page_num=1) }}">Rating</option>
@@ -18,7 +18,7 @@
   <br><br>
   <select name="category-options" id="category-options" class="drop-down" onchange="location = this.value">
     <option selected disabled label="Filter By Category" value="">Filter By Category</option>
-    <option value="{{ url_for('index.index') }}">None</option>
+    <option value="{{ url_for('index.index', avail_only=avail_only) }}">None</option>
     <option value="{{ url_for('index.categorizedindex', category=1, page_num=1) }}">Clothing</option>
     <option value="{{ url_for('index.categorizedindex', category=2, page_num=1) }}">Food</option>
     <option value="{{ url_for('index.categorizedindex', category=3, page_num=1) }}">Gadgets</option>
@@ -26,7 +26,23 @@
     <option value="{{ url_for('index.categorizedindex', category=5, page_num=1) }}">Misc</option>
   </select> 
 
-  <form action="{{ url_for('index.index') }}" method="POST">
+  <script>
+    function checkBoxClick(){
+      var x  = document.getElementById("checkbox")
+      if (x.checked) {
+        return redirect(url_for('index.index', avail_only=true))
+      }
+      else {
+        return redirect(url_for('index.index', avail_only=false))
+      }
+    }
+  </script>
+
+  <br><br>
+  <label for="checkbox">Show In-Stock Only:</label>
+  <input type="checkbox" id="checkbox" name="checkbox" onchange="checkBoxClick()"><br><br>
+
+  <form action="{{ url_for('index.index', avail_only=avail_only) }}" method="POST">
     {{ form.csrf_token }}
     {{ form.hidden_tag() }}
     <p>
@@ -36,7 +52,7 @@
       <span style="color: red;">[{{ error }}]</span>
       {% endfor %}
     </p>
-    <p><a href="{{ url_for('index.index') }}" type="button" class="btn btn-light">Clear</a> {{ form.submit() }}</p>
+    <p><a href="{{ url_for('index.index', avail_only=avail_only) }}" type="button" class="btn btn-light">Clear</a> {{ form.submit() }}</p>
   </form>
 </div>
 
