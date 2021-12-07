@@ -54,6 +54,69 @@
       }
     }   
   }
+
+  // Method used for selecting correct sort option after page is reloaded
+  function selected_sort(val) {
+    var sortby = "<option disabled label=\"Sort By\" value=\"\" >Sort By</option>"
+    var none = "<option value=\"{{ url_for('index.sortedindex', sortoption=-1, page_num=1) }}\">None</option>"
+    var asc = "<option value=\"{{ url_for('index.sortedindex', sortoption=1, page_num=1) }}\">Price (ASC)</option>"
+    var desc= "<option value=\"{{ url_for('index.sortedindex', sortoption=2, page_num=1) }}\">Price (DESC)</option>"
+    var rating = "<option value=\"{{ url_for('index.sortedindex', sortoption=3, page_num=1) }}\">Rating</option>"
+
+    if (val == "0"){
+      sortby = "<option disabled label=\"Sort By\" value=\"\" selected>Sort By</option>"
+    } else if (val == "-1") {
+      none = "<option value=\"{{ url_for('index.sortedindex', sortoption=-1, page_num=1) }}\" selected>None</option>"
+    } else if (val == "1") {
+      asc = "<option value=\"{{ url_for('index.sortedindex', sortoption=1, page_num=1) }}\" selected>Price (ASC)</option>"
+    } else if (val == "2") {
+      desc= "<option value=\"{{ url_for('index.sortedindex', sortoption=2, page_num=1) }}\" selected>Price (DESC)</option>"
+    } else if (val == "3") {
+      rating = "<option value=\"{{ url_for('index.sortedindex', sortoption=3, page_num=1) }}\" selected>Rating</option>"
+    }
+    
+    document.write(sortby)
+    document.write(none)
+    document.write(asc)
+    document.write(desc)
+    document.write(rating)  
+  }
+
+  // Method used for selecting correct categoryafter page is reloaded
+  function selected_category(val) {
+    var filterby = "<option disabled label=\"Filter By Category\" value=\"\" >Filter By Category</option>"
+    var none = "<option value=\"{{ url_for('index.categorizedindex', category=-1, page_num=1) }}\">None</option>"
+    var clothing = "<option value=\"{{ url_for('index.categorizedindex', category=1, page_num=1) }}\">Clothing</option>"
+    var food = "<option value=\"{{ url_for('index.categorizedindex', category=2, page_num=1) }}\">Food</option>"
+    var gadgets = "<option value=\"{{ url_for('index.categorizedindex', category=3, page_num=1) }}\">Gadgets</option>"
+    var media = "<option value=\"{{ url_for('index.categorizedindex', category=4, page_num=1) }}\">Media</option>"
+    var misc = "<option value=\"{{ url_for('index.categorizedindex', category=5, page_num=1) }}\">Misc</option>"
+
+
+    if (val == "0"){
+      filterby = "<option disabled label=\"Filter By Category\" value=\"\" selected>Filter By Category</option>"
+    } else if (val == "-1") {
+      none ="<option value=\"{{ url_for('index.categorizedindex', category=-1, page_num=1) }}\" selected>None</option>"
+    } else if (val == "1") {
+      clothing = "<option value=\"{{ url_for('index.categorizedindex', category=1, page_num=1) }}\" selected>Clothing</option>"
+    } else if (val == "2") {
+      food = "<option value=\"{{ url_for('index.categorizedindex', category=2, page_num=1) }}\" selected>Food</option>"
+    } else if (val == "3") {
+      gadgets = "<option value=\"{{ url_for('index.categorizedindex', category=3, page_num=1) }}\" selected>Gadgets</option>"
+    } else if (val == "4") {
+      media = "<option value=\"{{ url_for('index.categorizedindex', category=4, page_num=1) }}\" selected>Media</option>"
+    } else if (val == "5") {
+      misc = "<option value=\"{{ url_for('index.categorizedindex', category=5, page_num=1) }}\" selected>Misc</option>"
+    }
+    
+    document.write(filterby)
+    document.write(none)
+    document.write(clothing)
+    document.write(food)
+    document.write(gadgets)  
+    document.write(media)  
+    document.write(misc)  
+  }
 </script>
 
 
@@ -64,21 +127,13 @@
 
 <div class="dropdown" style="color: green; text-align: right; margin-bottom: 25px; position:static">
   <select name="sort-options" id="sort-options" class="drop-down" onchange="location = this.value">
-    <option selected disabled label="Sort By" value="">Sort By</option>
-    <option value="{{ url_for('index.index') }}">None</option>
-    <option value="{{ url_for('index.sortedindex', sortoption=1, page_num=1) }}">Price (ASC)</option>
-    <option value="{{ url_for('index.sortedindex', sortoption=2, page_num=1) }}">Price (DESC)</option>
-    <option value="{{ url_for('index.sortedindex', sortoption=3, page_num=1) }}">Rating</option>
-  </select> 
+    <script>selected_sort({{sortoption}})</script>
+  </select>
   <br><br>
   <select name="category-options" id="category-options" class="drop-down" onchange="location = this.value">
-    <option selected disabled label="Filter By Category" value="">Filter By Category</option>
-    <option value="{{ url_for('index.index') }}">None</option>
-    <option value="{{ url_for('index.categorizedindex', category=1, page_num=1) }}">Clothing</option>
-    <option value="{{ url_for('index.categorizedindex', category=2, page_num=1) }}">Food</option>
-    <option value="{{ url_for('index.categorizedindex', category=3, page_num=1) }}">Gadgets</option>
-    <option value="{{ url_for('index.categorizedindex', category=4, page_num=1) }}">Media</option>
-    <option value="{{ url_for('index.categorizedindex', category=5, page_num=1) }}">Misc</option>
+    <script>selected_category({{category}})</script>
+
+
   </select> 
 
   <form action="{{ url_for('index.index') }}" method="POST">
