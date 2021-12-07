@@ -75,7 +75,7 @@ SELECT Purchases.id, uid, Purchases.seller_id, time_purchased, pid, quantity,
 fulfilled, Products.name, Users.firstname, Users.lastname, Users.address
 FROM Purchases INNER JOIN Products ON Purchases.pid = Products.id
 INNER JOIN Users ON Purchases.uid = Users.id
-WHERE lower(Users.firstname+' '+Users.lastname) LIKE '%' || lower(:searchValue) || '%'
+WHERE lower(CONCAT(Users.firstname,' ',Users.lastname)) LIKE '%' || lower(:searchValue) || '%'
 AND Purchases.seller_id = :seller_id
 ORDER BY time_purchased DESC
 ''',
