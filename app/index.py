@@ -72,8 +72,6 @@ def sortedindex(sortoption, page_num=1):
         products = Product.get_by_price_desc(offset)
     else:
         pids = Product.get_by_rating(offset)
-        print(pids)
-        # products = Product.get_these_products(pids, offset=offset)
         products = []
         for pid in pids:
             this_product = Product.get(pid)
