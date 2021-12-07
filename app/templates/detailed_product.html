@@ -137,11 +137,13 @@
   }
 
   function update_vote(uid, pid, bid, val) {
-    // let s_uid = uid.toString(
-    // let s_pid = pid.toString()
-    // let s_bid = bid.toString()
-    
-    location.href="{{ url_for('products.updateVote', uid=0, pid=0, bid=267, val=1) }}"
+    let s_uid = uid.toString()
+    let s_pid = pid.toString()
+    let s_bid = bid.toString()
+
+    var base_url = window.location.origin
+    base_url += '/products/vote/' + s_uid + '/' + s_pid + '/' + s_bid + '/' + val
+    window.location.replace(base_url);
   }
 
   function dislike(id) {
@@ -158,7 +160,6 @@
 <div class="float-container">
 <div class="left-section">
   <span class="heading">Customer Reviews ({{review_count}})</span>
-  <span class="heading">{{user_votes}}</span>
 
   <!-- Call stars method to show product average reviews -->
   <script>stars({{review_avg}})</script>
@@ -214,7 +215,6 @@
 </div>
 
   <div class="right-section">
-  <!-- <span class="heading">Customer Reviews ({{review_count}})</span> -->
 
   <div>
     {% if current_user.is_authenticated and has_reviewed %}
