@@ -21,7 +21,7 @@
     {{ form.hidden_tag() }}
     <p>
       {{ form.searchValue.label }}<br/>
-      {{ form.searchValue(size=32) } { form.searchBy(size=1) }}<br/>
+      {{ form.searchValue(size=32)}} {{ form.searchBy(size=1)}}<br/>
       {% for error in form.searchValue.errors %}
       <span style="color: red;">[{{ error }}]</span>
       {% endfor %}
