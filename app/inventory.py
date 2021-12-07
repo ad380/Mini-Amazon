@@ -61,7 +61,7 @@ def orders():
     # render the page by adding information to the inventory.html file
     if request.method == 'POST':
         # if searching by buyer
-        if(form.searchBy.value == 'Buyer Name'):
+        if(form.searchBy.data == 'Buyer Name'):
             purchases = Purchase.search_buyer_by_seller_id(current_user.id, form.searchValue.data)
             return render_template('orders.html',
                            sold_products=products,
