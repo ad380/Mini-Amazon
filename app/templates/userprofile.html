@@ -57,10 +57,9 @@
     var desc = "<option value=\"0\">Time Desc</option>"
     var asc = "<option value=\"1\">Time Asc</option>"
     var pur = "<option value=\"2\">Purchase ID</option>"
-    var pro = "<option value=\"3\">Product ID</option>"
-    var sel = "<option value=\"4\">Seller ID</option>"
-    var qua = "<option value=\"5\">Quantity</option>"
-    var ful = "<option value=\"6\">Status</option>"
+    var sel = "<option value=\"3\">Seller Name</option>"
+    var qua = "<option value=\"4\">Quantity</option>"
+    var ful = "<option value=\"5\">Status</option>"
     if (val == "0") {
       desc = "<option value=\"0\" selected>Time Desc</option>"
     } else if (val == "1") {
@@ -68,20 +67,17 @@
     } else if (val == "2") {
       pur = "<option value=\"2\" selected>Purchase ID</option>"
     } else if (val == "3") {
-      pro = "<option value=\"3\" selected>Product ID</option>"
+      sel = "<option value=\"3\" selected>Seller Name</option>"
     } else if (val == "4") {
-      sel = "<option value=\"4\" selected>Seller ID</option>"
+      pro = "<option value=\"4\" selected>Quantity</option>"
     } else if (val == "5") {
-      pro = "<option value=\"5\" selected>Quantity</option>"
-    } else if (val == "6") {
-      sel = "<option value=\"6\" selected>Status</option>"
+      sel = "<option value=\"5\" selected>Status</option>"
     } else {
       desc = "<option value=\"0\" selected>Time Desc</option>"
     }
     document.write(desc)
     document.write(asc)
     document.write(pur)
-    document.write(pro)
     document.write(sel)
     document.write(qua)
     document.write(ful)
@@ -114,8 +110,7 @@
   <thead class="thead-dark">
     <tr>
       <th scope="col">Purchase ID</th>
-      <th scope="col">Product ID</th>
-      <th scope="col">Seller ID</th>
+      <th scope="col">Seller Name</th>
       <th scope="col">Product Name</th>
       <th scope="col">Time Purchased</th>
       <th scope="col">Quantity</th>
@@ -126,9 +121,8 @@
     {% for purchase in purchase_history%}
       <tr>
         <th scope="row">{{purchase.id}}</th>
-        <td><a href="{{ url_for('products.products', pid=purchase.pid, sortoption=0) }}" type="button" class="btn btn-light">{{purchase.pid}}</a></td>
-        <td><a href="{{ url_for('users.publicprofile', uid=purchase.seller_id, sortoption=0) }}" type="button" class="btn btn-light">{{purchase.seller_id}}</a></td>
-        <td>{{purchase.pname}}</td>
+        <td><a href="{{ url_for('users.publicprofile', uid=purchase.seller_id, sortoption=0) }}" type="button" class="btn btn-light">{{purchase.bfname+' '+purchase.blname}}</a></td>
+        <td><a href="{{ url_for('products.products', pid=purchase.pid, sortoption=0) }}" type="button" class="btn btn-light">{{purchase.pname}}</a></td>
         <td>{{purchase.time_purchased}}</td>
         <td>{{purchase.quantity}}</td>
         {% if purchase.fulfilled == 'f'%}

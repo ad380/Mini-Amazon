@@ -118,21 +118,19 @@ def sortedprofile(sortoption='0'):
     # find the products and purchases with the current user as the buyer:
     
     if sortoption == '0':       # sort by date purchased, descending
-        order = "time_purchased DESC"
+        order = "Purchases.time_purchased DESC"
     elif sortoption == '1':     # sort by date purchased, ascending
-        order = "time_purchased"
+        order = "Purchases.time_purchased"
     elif sortoption == '2':     # sort by purchase id
-        order = "id"
-    elif sortoption == '3':     # sort by product id
-        order = "pid"
+        order = "Purchases.id"
+    elif sortoption == '3':     # sort by seller last name
+        order = "Users.lastname"
     elif sortoption == '4':     # sort by seller id
-        order = "seller_id"
+        order = "Purchases.quantity"
     elif sortoption == '5':     # sort by seller id
-        order = "quantity"
-    elif sortoption == '6':     # sort by seller id
-        order = "fulfilled DESC"
+        order = "Purchases.fulfilled DESC"
     else: # if an invalid sortoption is passed, sort by date purchased, descending
-        order = "time_purchased DESC"
+        order = "Purchases.time_purchased DESC"
     
     if current_user.is_authenticated:
         purchases = Purchase.get_all_by_uid_ordered(current_user.id, datetime(1980, 9, 14, 0, 0, 0), orderby=order)
