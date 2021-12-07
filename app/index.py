@@ -76,7 +76,7 @@ def sortedindex(sortoption, page_num=1):
         # products = Product.get_these_products(pids, offset=offset)
         products = []
         for pid in pids:
-            this_product = get(pid)
+            this_product = Product.get(pid)
             products.append(this_product)
 
     product_ids = [p.id for p in products]
