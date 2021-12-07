@@ -64,7 +64,7 @@ def index():
 def sortedindex(sortoption, page_num=1):
     form = SearchForm()
     offset = (int(page_num) - 1) * 100
-    if sortoption == '0':
+    if sortoption == '0' or sortoption == '-1':
         products = Product.get_some(offset=offset)
     elif sortoption == '1':
         products = Product.get_by_price_asc(offset)
@@ -103,7 +103,7 @@ def sortedindex(sortoption, page_num=1):
 def categorizedindex(category, page_num):
     form = SearchForm()
     offset = (int(page_num) - 1) * 50
-    if category == '0':
+    if category == '0' or category == '-1':
         products = Product.get_some(offset=offset)
     elif category == '1':
         products = Product.get_by_category(category='clothing', offset=offset)
