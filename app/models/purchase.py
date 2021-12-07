@@ -69,13 +69,29 @@ ORDER BY time_purchased DESC
 
 #search for buyer name on all purchases of a given seller
     @staticmethod
-    def search_all_by_seller_id(seller_id, searchValue):
+    def search_buyer_by_seller_id(seller_id, searchValue):
         rows = app.db.execute('''
 SELECT Purchases.id, uid, Purchases.seller_id, time_purchased, pid, quantity,
 fulfilled, Products.name, Users.firstname, Users.lastname, Users.address
 FROM Purchases INNER JOIN Products ON Purchases.pid = Products.id
 INNER JOIN Users ON Purchases.uid = Users.id
 WHERE lower(CONCAT(Users.firstname,' ',Users.lastname)) LIKE '%' || lower(:searchValue) || '%'
+AND Purchases.seller_id = :seller_id
+ORDER BY time_purchased DESC
+''',
+                              seller_id=seller_id,
+                              searchValue = searchValue)
+        return [Purchase(*row) for row in rows]
+
+#search for product name on all purchases of a given seller
+    @staticmethod
+    def search_product_by_seller_id(seller_id, searchValue):
+        rows = app.db.execute('''
+SELECT Purchases.id, uid, Purchases.seller_id, time_purchased, pid, quantity,
+fulfilled, Products.name, Users.firstname, Users.lastname, Users.address
+FROM Purchases INNER JOIN Products ON Purchases.pid = Products.id
+INNER JOIN Users ON Purchases.uid = Users.id
+WHERE lower(Products.name) LIKE '%' || lower(:searchValue) || '%'
 AND Purchases.seller_id = :seller_id
 ORDER BY time_purchased DESC
 ''',

@@ -15,6 +15,7 @@ bp = Blueprint('inventory', __name__)
 #form for searching product name
 class SearchForm(FlaskForm):
     searchValue = StringField('', [DataRequired()])
+    searchBy = SelectField(u'Search By', choices = ['Buyer Name','Product Name'])
     submit = SubmitField('Search')
 
 @bp.route('/inventory',methods=["POST", "GET"])
@@ -59,8 +60,17 @@ def orders():
         products = None
     # render the page by adding information to the inventory.html file
     if request.method == 'POST':
-        purchases = Purchase.search_all_by_seller_id(current_user.id, form.searchValue.data)
-        return render_template('orders.html',
+        # if searching by buyer
+        if(form.searchBy.value == 'Buyer Name'):
+            purchases = Purchase.search_buyer_by_seller_id(current_user.id, form.searchValue.data)
+            return render_template('orders.html',
+                           sold_products=products,
+                           purchase_history=purchases,
+                           users = users, form = form)
+        # if searching by product
+        else:
+            purchases = Purchase.search_product_by_seller_id(current_user.id, form.searchValue.data)
+            return render_template('orders.html',
                            sold_products=products,
                            purchase_history=purchases,
                            users = users, form = form)

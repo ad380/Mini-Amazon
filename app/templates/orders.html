@@ -13,7 +13,7 @@
     <option selected disabled label="Filter By Status" value="">Filter By Status</option>
     <option value="{{ url_for('inventory.orders') }}">None</option>
     <option value="{{ url_for('inventory.orders', category=1, page_num=1) }}">Fulfilled</option>
-    <option value="{{ url_for('inventory.orders', category=2, page_num=1) }}">Fulfilled</option>
+    <option value="{{ url_for('inventory.orders', category=2, page_num=1) }}">Not Fulfilled</option>
   </select>
 
 <form action="{{ url_for('inventory.orders') }}" method="POST">
@@ -21,8 +21,11 @@
     {{ form.hidden_tag() }}
     <p>
       {{ form.searchValue.label }}<br/>
-      {{ form.searchValue(size=32) }}<br/>
+      {{ form.searchValue(size=32) } { form.searchBy(size=1) }}<br/>
       {% for error in form.searchValue.errors %}
+      <span style="color: red;">[{{ error }}]</span>
+      {% endfor %}
+      {% for error in form.searchBy.errors %}
       <span style="color: red;">[{{ error }}]</span>
       {% endfor %}
     </p>
