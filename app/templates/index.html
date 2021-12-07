@@ -126,14 +126,12 @@
 
 
 <div class="dropdown" style="color: green; text-align: right; margin-bottom: 25px; position:static">
-  <select name="sort-options" id="sort-options" class="drop-down" onchange="location = this.value">
+  <select name="sort-options" id="sort-options" class="dropdown-main" onchange="location = this.value">
     <script>selected_sort({{sortoption}})</script>
   </select>
   <br><br>
-  <select name="category-options" id="category-options" class="drop-down" onchange="location = this.value">
+  <select name="category-options" id="category-options" class="dropdown-main" onchange="location = this.value">
     <script>selected_category({{category}})</script>
-
-
   </select> 
 
   <form action="{{ url_for('index.index') }}" method="POST">
