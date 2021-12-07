@@ -127,7 +127,7 @@ class ProductReview:
             return None
 
     def add_product_review_rating(pid):
-        # Adds a review to a product's review
+        # Adds default upvote of 0 for new added review
 
         try:
             rows = app.db.execute("""

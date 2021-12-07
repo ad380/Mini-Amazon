@@ -209,21 +209,35 @@ def publicprofile(uid, sortoption=0):
         else:
             has_reviewed = False
 
+    review_keys = [(r.seller_id, r.buyer_id) for r in reviews]
+    review_upvotes = [SellerReview.get_upvotes(seller_id, bid) for seller_id, bid in review_keys]
+    user_votes = [SellerReview.get_votes_from(current_user.id, uid, bid) for bid in reviewer_ids]
+
+    top_reviews = SellerReview.get_top_reviews(uid)
+    top_reviewer_ids = [r.buyer_id for r in top_reviews]
+    top_reviewer_names = [User.get_name(id) for id in top_reviewer_ids]
+
+
     # render the page by adding information to the publicprofile.html file
     return render_template('publicprofile.html',
-                           avail_products=products,
-                           sellers=sellers,
-                           reviews=reviews,
-                           review_count=reviews_count,
-                           review_avg=review_avg,
-                           user=user,
-                           sortoption=sortoption,
-                           reviewer_names=reviewer_names,
-                           has_purchased_from=has_purchased_from,
-                           has_reviewed=has_reviewed,
-                           current_user_review=current_user_review,
-                           current_user_name=current_user_name,
-                           has_purchased=has_purchased)
+                            uid=uid,
+                            avail_products=products,
+                            sellers=sellers,
+                            reviews=reviews,
+                            review_count=reviews_count,
+                            review_avg=review_avg,
+                            user=user,
+                            sortoption=sortoption,
+                            reviewer_names=reviewer_names,
+                            has_purchased_from=has_purchased_from,
+                            has_reviewed=has_reviewed,
+                            current_user_review=current_user_review,
+                            current_user_name=current_user_name,
+                            has_purchased=has_purchased,
+                            review_upvotes=review_upvotes,
+                            user_votes=user_votes,
+                            top_reviews=top_reviews,
+                            top_reviewer_names=top_reviewer_names)
 
 
 # Render reviews for private profile
@@ -267,7 +281,8 @@ def reviewSeller(uid):
                                             form.rating.data, 
                                             form.title.data, 
                                             form.comment.data, 
-                                            now.strftime("%b %d, %Y %H:%M:%S")):          
+                                            now.strftime("%b %d, %Y %H:%M:%S")) and \
+                SellerReview.add_seller_review_rating(uid):          
                 return redirect(url_for('users.publicprofile', uid=uid, sortoption=0))
 
     flash('Please make sure your rating value is between 0 and 5.')
@@ -304,6 +319,14 @@ def deleteReview(uid, bid):
             print('Your review has been removed')
             return redirect(url_for('users.publicprofile', uid=uid, sortoption=0))
     return redirect(url_for('users.publicprofile', uid=uid, sortoption=0))
+
+
+@bp.route('/publicprofile/vote/<uid>/<sid>/<bid>/<val>',methods=["POST", "GET"])
+def updateVote(uid, sid, bid, val):
+    if SellerReview.update_vote(uid, sid, bid, val):
+            return redirect(url_for('users.publicprofile', uid=sid, sortoption=0))
+    return redirect(url_for('users.publicprofile', uid=sid, sortoption=0))
+
     
 
 # make the edit name form
