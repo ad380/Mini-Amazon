@@ -124,7 +124,7 @@ OFFSET :offset
     def get_by_rating(offset=0):
         rows = app.db.execute('''
 SELECT AVG(r.rating), r.product_id
-FROM ProductReview r, Products p
+FROM ProductReviews r, Products p
 WHERE r.product_id = p.id 
 GROUP BY r.product_id
 ORDER BY AVG(r.rating) DESC
