@@ -32,11 +32,11 @@ WHERE Purchases.id = :id
     @staticmethod
     def get_all_by_uid_ordered(uid, since, orderby="time_purchased DESC"):
         rows = app.db.execute(f'''
-SELECT Purchases.id, Purchases.uid, Purchases.seller_id, Purchases.time_purchased, Purchases.pid, Purchases.quantity, Purchases.fulfilled, Products.name
-FROM Purchases INNER JOIN Products ON Purchases.pid = Products.id
+SELECT Purchases.id, Purchases.uid, Purchases.seller_id, Purchases.time_purchased, Purchases.pid, Purchases.quantity, Purchases.fulfilled, Products.name, Users.firstname, Users.lastname
+FROM Purchases INNER JOIN Products ON Purchases.pid = Products.id INNER JOIN Users ON Purchases.seller_id = Users.id
 WHERE Purchases.uid = :uid
 AND Purchases.time_purchased >= :since
-ORDER BY Purchases.{orderby}
+ORDER BY {orderby}
 ''',
                               uid=uid,
                               since=since)
@@ -141,8 +141,8 @@ RETURNING *
     @staticmethod
     def search_purchases(searchValue, uid, since):
         rows = app.db.execute('''
-SELECT Purchases.id, Purchases.uid, Purchases.seller_id, Purchases.time_purchased, Purchases.pid, Purchases.quantity, Purchases.fulfilled, Products.name
-FROM Purchases INNER JOIN Products ON Purchases.pid = Products.id
+SELECT Purchases.id, Purchases.uid, Purchases.seller_id, Purchases.time_purchased, Purchases.pid, Purchases.quantity, Purchases.fulfilled, Products.name, Users.firstname, Users.lastname
+FROM Purchases INNER JOIN Products ON Purchases.pid = Products.id INNER JOIN Users ON Purchases.seller_id = Users.id
 WHERE lower(Products.name) LIKE '%' || lower(:searchValue) || '%'
 AND Purchases.uid = :uid
 AND Purchases.time_purchased >= :since
