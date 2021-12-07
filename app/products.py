@@ -123,7 +123,8 @@ def reviewProduct(pid):
                                             form.title.data, 
                                             form.comment.data, 
                                             now.strftime("%b %d, %Y %H:%M:%S"), 
-                                            form.image.data):
+                                            form.image.data) and \
+                ProductReview.add_product_review_rating(pid):
                 print("got here")
                 
                 return redirect(url_for('products.products', pid=pid, sortoption=0))

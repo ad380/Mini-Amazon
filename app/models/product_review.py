@@ -126,6 +126,24 @@ class ProductReview:
             print(str(e))
             return None
 
+    def add_product_review_rating(pid):
+        # Adds a review to a product's review
+
+        try:
+            rows = app.db.execute("""
+    INSERT INTO ProductReviewsUpvotes(uid, product_id, buyer_id, vote)
+    VALUES(0, :pid, 0, 0)
+    RETURNING product_id, buyer_id
+    """,
+                    pid=pid,
+                    )
+
+            product_id, buyer_id = rows[0][0], rows[0][1]
+            return ProductReview.get_review(product_id, buyer_id)
+        except Exception as e:
+            print(str(e))
+            return None
+
     @staticmethod
     def edit_product_review(pid, bid, rating=None, title=None, comment=None, date=None, image=None):
         # Edit current user's review for product pid
@@ -174,7 +192,7 @@ class ProductReview:
     def deleteReview(pid, bid):
         try:
             rows = app.db.execute('''
-DELETE FROM ProductReviews
+DELETE FROM ProductReviews CASCADE
 WHERE product_id = :pid
 AND buyer_id = :bid
 RETURNING *
@@ -182,8 +200,8 @@ RETURNING *
                               pid=pid,
                               bid=bid)
             return rows
-        except Exception:
-            print("couldn't delete product")
+        except Exception as e:
+            print(f"couldn't delete product: {e}")
             return None
 
     @staticmethod

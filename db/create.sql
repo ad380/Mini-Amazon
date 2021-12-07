@@ -73,5 +73,5 @@ product_id INTEGER NOT NULL REFERENCES Products(id),
 buyer_id INTEGER NOT NULL REFERENCES Users(id),
 vote INTEGER NOT NULL CHECK(vote in (-1, 0, 1)),
 PRIMARY KEY (uid, product_id, buyer_id),
-FOREIGN KEY (product_id, buyer_id) REFERENCES  ProductReviews(product_id, buyer_id)
+FOREIGN KEY (product_id, buyer_id) REFERENCES  ProductReviews(product_id, buyer_id) ON DELETE CASCADE
 );
