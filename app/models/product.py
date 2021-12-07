@@ -53,7 +53,7 @@ OFFSET :offset
 
     #this takes a list of product id's and gets those products
     @staticmethod
-    def get_these_products(pids=None, offset=0):
+    def get_these_products(pids, offset=0):
         rows = app.db.execute('''
 SELECT id, seller_id, name, description, category, image,
 price, available_quantity
@@ -63,6 +63,7 @@ AND available_quantity > 0
 LIMIT 50
 OFFSET :offset
         ''',
+                            pids=pids
                             offset=offset)
 
 #this gets only products sold by a specific seller
