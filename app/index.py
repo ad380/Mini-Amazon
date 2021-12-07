@@ -73,7 +73,11 @@ def sortedindex(sortoption, page_num=1):
     else:
         pids = Product.get_by_rating(offset)
         print(pids)
-        products = Product.get_these_products(pids, offset=offset)
+        # products = Product.get_these_products(pids, offset=offset)
+        products = []
+        for pid in pids:
+            this_product = get(pid)
+            products.append(this_product)
 
     product_ids = [p.id for p in products]
     product_avgs = [round(ProductReview.get_avg(id), 1) for id in product_ids]
