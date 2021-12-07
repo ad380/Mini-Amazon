@@ -124,6 +124,22 @@
         return window.confirm("Are you sure you want to delete this review?");
     });
   });
+
+  // Functions for changing color of upvote buttons
+  // Also toggles other state if active
+  function like(id) {
+    let gray = '#687074'
+    let idx = parseInt(id)
+    likes[idx].style.color = likes[idx].style.color === 'blue' ? gray : 'blue';
+    dislikes[idx].style.color = gray;
+  }
+
+  function dislike(id) {
+    let gray = '#687074'
+    let idx = parseInt(id)
+    likes[idx].style.color = gray;
+    dislikes[idx].style.color = dislikes[idx].style.color === 'blue' ? gray : 'blue';
+  }
 </script>
 
 <body>
@@ -152,25 +168,20 @@
         class="btn btn-light">{{reviewer_names[loop.index-1]}}
       </a>
     <a style="display: inline; font-size: 18px;">{{review.date|format_date('standard')}}</a>
-    
-    <!-- <span style="align-items: right;">test</span> -->
-    <vote>
-    <span class="vote up" onclick="changeColor(1);">
-      <svg width="36" height="36" id="vote">
-        <path d="M2 26h32L18 10z" fill="currentColor"></path>
-      </svg>
-    </span>
-    <p style="text-align: right; padding-right: 36px; font-size: 24px;">{{review_upvotes[loop.index-1]}}</p>
-    
-    <span class="vote down" onclick="changeColor(-1);">
-      <svg width="36" height="36">
-        <path d="M2 10h32L18 26 2 10z" fill="currentColor"></path>
-      </svg>
-    </span>
-    </vote>
+
+    <!-- Like/dislikes -->
+    <script>
+      var likes = document.getElementsByClassName('fa-thumbs-up');
+      var dislikes = document.getElementsByClassName('fa-thumbs-down');
+    </script>
+
+    <i id="{{loop.index-1}}" class="fa fa-thumbs-down vote" onclick="dislike(this.id)"></i>
+    <p class="upvotes">{{review_upvotes[loop.index-1]}}</p>
+    <i id="{{loop.index-1}}" class="fa fa-thumbs-up vote" onclick="like(this.id)"></i>
 
     <p></p>
 
+    <!-- Display star ratings for review -->
     <script>stars({{review.rating}})</script>
     <a style="display: inline; font-size: 18px; padding-left: 10px; font-style: b;"><strong>{{review.title}}</strong></a>
     <p class="comment">{{review.comment}}</p>
