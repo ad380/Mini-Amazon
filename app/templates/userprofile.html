@@ -150,60 +150,6 @@
 
 <br><br>
 
-<!-- view product ratings this user has given -->
-
-<h2><a type="button" class="btn btn-light" style="display: inline;""
-  href="{{ url_for('users.privateReviews', type='products') }}">Your product ratings/reviews:</a></h2>
-<table class='table table-hover table-bordered container'>
-  <thead class="thead-dark">
-    <tr>
-      <th scope="col">Product ID</th>
-      <th scope="col">Product Name</th>
-      <th scope="col">Rating</th>
-      <th scope="col">Review</th>
-      <th scope="col">Time Purchased</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for r in prod_reviews%}
-      <tr>
-        <td>{{r.product_id}}</td>
-        <td>{{prod_names[loop.index-1]}}</td>
-        <td>{{r.rating}}</td>
-        <td>{{r.comment}}</td>
-        <td>{{r.date}}</td>
-      </tr>
-    {% endfor %}
-  </tbody>
-</table>
-
-<br><br>
-
-<!-- view ratings this user has given other sellers -->
-
-<h2>Your seller ratings/reviews:</h2>
-<table class='table table-hover table-bordered container'>
-  <thead class="thead-dark">
-    <tr>
-      <th scope="col">Seller ID</th>
-      <th scope="col">Seller Name</th>
-      <th scope="col">Rating</th>
-      <th scope="col">Review</th>
-      <th scope="col">Date of Review</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for r in seller_reviews%}
-      <tr>
-        <td><a href="{{ url_for('users.publicprofile', uid=r.seller_id, sortoption=0) }}" type="button" class="btn btn-light">{{r.seller_id}}</a></td>
-        <td>{{seller_names[loop.index-1]}}</td>
-        <td>{{r.rating}}</td>
-        <td>{{r.comment}}</td>
-        <td>{{r.date}}</td>
-      </tr>
-    {% endfor %}
-  </tbody>
-</table>
 
 {% endif %}
 
