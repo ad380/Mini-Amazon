@@ -58,7 +58,7 @@ OFFSET :offset
 SELECT id, seller_id, name, description, category, image,
 price, available_quantity
 FROM Products
-WHERE id = :pids
+WHERE id IN :pids
 AND available_quantity > 0
 LIMIT 50
 OFFSET :offset
