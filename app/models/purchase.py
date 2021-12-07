@@ -174,5 +174,4 @@ WHERE uid = :uid
     ''',
                     uid=uid,
                     pid=pid)
-        print(f" row = {rows[0]}")
         return rows[0][0] if rows is not None else -1

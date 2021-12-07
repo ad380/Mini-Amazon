@@ -274,6 +274,13 @@ def editSellerReview(uid):
                             form=form, 
                             seller_id=uid,
                             seller_name=User.get_name(uid))
+
+@bp.route('/publicprofile/deletereview/<uid>/<bid>',methods=["POST", "GET"])
+def deleteReview(uid, bid):
+    if SellerReview.deleteReview(uid, bid):
+            print('Your review has been removed')
+            return redirect(url_for('users.publicprofile', uid=uid, sortoption=0))
+    return redirect(url_for('users.publicprofile', uid=uid, sortoption=0))
     
 
 # make the edit name form

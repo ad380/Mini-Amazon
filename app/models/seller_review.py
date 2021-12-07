@@ -147,7 +147,7 @@ class SellerReview:
     def deleteReview(sid, bid):
         try:
             rows = app.db.execute('''
-DELETE FROM ProductReviews
+DELETE FROM SellerReviews
 WHERE seller_id = :sid
 AND buyer_id = :bid
 RETURNING *
