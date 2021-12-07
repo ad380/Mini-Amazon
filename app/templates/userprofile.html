@@ -39,10 +39,10 @@
 
 <br><br>
 <div><a type="button" style="display: inline;""
-  href="{{ url_for('users.privateReviews', type='products') }}">Your Product Reviews:</a></div>
+  href="{{ url_for('users.privateReviews', type='products') }}">View Your Product Reviews</a></div>
 
 <div><a type="button" style="display: inline;""
-  href="{{ url_for('users.privateReviews', type='sellers') }}">Your Seller Reviews:</a></div>
+  href="{{ url_for('users.privateReviews', type='sellers') }}">View Your Seller Reviews</a></div>
 
 {% if current_user.id not in sellers %}
 <br><br>
