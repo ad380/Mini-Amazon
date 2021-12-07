@@ -74,6 +74,7 @@ SELECT id, seller_id, name, description, category, image,
 price, available_quantity
 FROM Products
 WHERE seller_id = :seller_id
+ORDER BY available_quantity ASC
 ''',
                               seller_id=seller_id)
         return [Product(*row) for row in rows]
@@ -239,6 +240,7 @@ price, available_quantity
 FROM Products
 WHERE lower(name) LIKE '%' || lower(:searchValue) || '%'
 AND seller_id = :seller_id
+ORDER BY available_quantity ASC
 ''', 
                             searchValue=searchValue,
                               seller_id = seller_id)

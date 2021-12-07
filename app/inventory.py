@@ -126,7 +126,7 @@ def editStatus(pid):
     if form.validate_on_submit():
         if Purchase.editStatus(pid, form.newStatus.data):
             print('Congratualtions, your purchase status has been updated')
-            return redirect(url_for('inventory.index'))
+            return redirect(url_for('inventory.orders'))
     #render page by adding information to editstatus.html
     return render_template('editstatus.html', title='Edit Purchase Status',
                            form=form, purchase = Purchase.get(pid))
