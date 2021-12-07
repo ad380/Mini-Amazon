@@ -130,8 +130,13 @@
   function like(id) {
     let gray = '#687074'
     let idx = parseInt(id)
-    likes[idx].style.color = likes[idx].style.color === 'blue' ? gray : 'blue';
     dislikes[idx].style.color = gray;
+
+    if (likes[idx].style.color == 'blue') {  // If already upvoted
+      likes[idx].style.color = gray
+    } else {  // Otherwise upvote
+      likes[idx].style.color = 'blue'
+    }
   }
 
   function dislike(id) {
@@ -148,6 +153,7 @@
 <div class="float-container">
 <div class="left-section">
   <span class="heading">Customer Reviews ({{review_count}})</span>
+  <span class="heading">{{user_votes}}</span>
 
   <!-- Call stars method to show product average reviews -->
   <script>stars({{review_avg}})</script>
@@ -179,6 +185,11 @@
     <p class="upvotes">{{review_upvotes[loop.index-1]}}</p>
     <i id="{{loop.index-1}}" class="fa fa-thumbs-up vote" onclick="like(this.id)"></i>
 
+    {% if user_votes[loop.index-1] == 1 %}
+    <script>like({{loop.index}}-1)</script>
+    {% elif user_votes[loop.index-1] == -1 %}
+    <script>dislike({{loop.index}}-1)</script>
+    {% endif %}
     <p></p>
 
     <!-- Display star ratings for review -->

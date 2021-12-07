@@ -185,3 +185,19 @@ RETURNING *
         except Exception:
             print("couldn't delete product")
             return None
+
+    @staticmethod
+    def get_votes_from(uid, pid, bid):
+        # Find all votes for given review based on current user
+        rows = app.db.execute('''
+    SELECT vote
+    FROM ProductReviewsUpvotes
+    WHERE uid = :uid
+    AND product_id = :pid
+    AND buyer_id = :bid
+    ''',
+                    uid=uid,
+                    pid=pid,
+                    bid=bid)
+        return rows[0][0] if rows else 0
+   
