@@ -14,7 +14,12 @@ from .models.user import User
 # imports I've added beyond the skeleton
 from .models.product import Product
 from .models.purchase import Purchase
+
 import datetime
+from datetime import datetime
+
+import decimal
+from decimal import ROUND_HALF_UP
 
 
 from flask import Blueprint
@@ -130,7 +135,7 @@ def sortedprofile(sortoption='0'):
         order = "time_purchased DESC"
     
     if current_user.is_authenticated:
-        purchases = Purchase.get_all_by_uid_ordered(current_user.id, datetime.datetime(1980, 9, 14, 0, 0, 0), orderby=order)
+        purchases = Purchase.get_all_by_uid_ordered(current_user.id, datetime(1980, 9, 14, 0, 0, 0), orderby=order)
     else:
         purchases = None
     
@@ -138,7 +143,7 @@ def sortedprofile(sortoption='0'):
 
     # if we are searching product names
     if request.method == 'POST':
-        purchases = Purchase.search_purchases(form.searchValue.data, current_user.id, datetime.datetime(1980, 9, 14, 0, 0, 0))
+        purchases = Purchase.search_purchases(form.searchValue.data, current_user.id, datetime(1980, 9, 14, 0, 0, 0))
         print(form.searchValue.data)
         print(len(purchases))
         return render_template('userprofile.html',
@@ -221,6 +226,55 @@ def publicprofile(uid, sortoption=0):
                            current_user_review=current_user_review,
                            current_user_name=current_user_name,
                            has_purchased=has_purchased)
+
+class ReviewForm(FlaskForm):
+    rating = DecimalField(_l('Rating (0-5)', places=1, rounding=decimal.ROUND_HALF_UP, validators=[InputRequired()]))
+    title = StringField('Title', default=None, validators=[InputRequired()])
+    comment = StringField('Comment', default=None, validators=[InputRequired()])
+    submit = SubmitField(_l('Post Review'))
+
+@bp.route('/publicprofile/review/<uid>',methods=["GET", "POST"])
+def reviewSeller(uid): 
+    if current_user.is_authenticated:
+        form = ReviewForm()
+        if form.validate_on_submit():
+            now = datetime.now()    
+            if SellerReview.add_seller_review(uid, 
+                                            current_user.id, 
+                                            form.rating.data, 
+                                            form.title.data, 
+                                            form.comment.data, 
+                                            now.strftime("%b %d, %Y %H:%M:%S")):          
+                return redirect(url_for('users.publicprofile', uid=uid, sortoption=0))
+
+    flash('Please make sure your rating value is between 0 and 5.')
+    return render_template('reviewSeller.html', 
+                            title='Title Goes Here',
+                            form=form, 
+                            seller_id=uid,
+                            seller_name=User.get_name(uid))
+
+@bp.route('/publicprofile/editreview/<uid>',methods=["GET", "POST"])
+def editSellerReview(uid): 
+    if current_user.is_authenticated:
+        form = ReviewForm()
+        if form.validate_on_submit():
+            now = datetime.now()    
+            if SellerReview.edit_seller_review(uid, 
+                                            current_user.id, 
+                                            form.rating.data, 
+                                            form.title.data, 
+                                            form.comment.data, 
+                                            now.strftime("%b %d, %Y %H:%M:%S")):
+                return redirect(url_for('users.publicprofile', uid=uid, sortoption=0))
+
+    flash('Please make sure your rating value is between 0 and 5.')
+    return render_template('editSellerReview.html', 
+                            title='Title Goes Here',
+                            form=form, 
+                            seller_id=uid,
+                            seller_name=User.get_name(uid))
+    
 
 # make the edit name form
 class EditNameForm(FlaskForm):

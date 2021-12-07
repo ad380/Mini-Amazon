@@ -82,3 +82,79 @@ class SellerReview:
                     sid=sid,
                     bid=bid)
         return [SellerReview(*row) for row in rows][0]
+
+    @staticmethod
+    def get_review(sid, bid):
+        rows = app.db.execute('''
+    SELECT seller_id, buyer_id
+    FROM SellerReviews
+    WHERE seller_id = :sid
+    AND buyer_id = :bid
+    ''',
+                    sid=sid,
+                    bid=bid)
+        return rows[0][0] if rows[0][0] is not None else None
+
+    @staticmethod
+    def add_seller_review(sid, bid, rating=None, title=None, comment=None, date=None):
+        # Adds a review for a seller
+            
+        try:
+            rows = app.db.execute("""
+    INSERT INTO SellerReviews(seller_id, buyer_id, rating, title, comment, date)
+    VALUES(:sid, :bid, :rating, :title, :comment, :date)
+    RETURNING seller_id, buyer_id
+    """,
+                    sid=sid,
+                    bid=bid,
+                    rating=rating,
+                    title=title,
+                    comment=comment,
+                    date=date)
+
+            seller_id, buyer_id = rows[0][0], rows[0][1]
+            return SellerReview.get_review(seller_id, buyer_id)
+        except Exception as e:
+            print(str(e))
+            return None
+
+    @staticmethod
+    def edit_seller_review(sid, bid, rating=None, title=None, comment=None, date=None):
+        # Edit current user's review for seller
+        try:
+            rows = app.db.execute("""
+    UPDATE SellerReviews
+    SET seller_id = :sid, buyer_id = :bid, rating = :rating, 
+        title = :title, comment = :comment, date = :date
+    WHERE seller_id = :sid
+    AND buyer_id = :bid
+    RETURNING seller_id, buyer_id
+    """,
+                    sid=sid,
+                    bid=bid,
+                    rating=rating,
+                    title=title,
+                    comment=comment,
+                    date=date)
+
+            seller_id, buyer_id = rows[0][0], rows[0][1]
+            return SellerReview.get_review(seller_id, buyer_id)
+        except Exception as e:
+            print(str(e))
+            return None
+
+    @staticmethod
+    def deleteReview(sid, bid):
+        try:
+            rows = app.db.execute('''
+DELETE FROM ProductReviews
+WHERE seller_id = :sid
+AND buyer_id = :bid
+RETURNING *
+''',
+                              sid=sid,
+                              bid=bid)
+            return rows
+        except Exception as e:
+            print(f"couldn't delete product {e}")
+            return None

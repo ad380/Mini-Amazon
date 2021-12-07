@@ -166,7 +166,7 @@
       {% if current_user.is_authenticated and has_reviewed %}
         <p class="heading">Your Review</p>
         <span style="padding:0px 0px 0px 10px;"><a type="button" class="btn btn-light" style="display: inline;""
-          href="{{ url_for('products.editProductReview', pid=pid) }}">Edit Review</a></span>
+          href="{{ url_for('users.editSellerReview', uid=user.id) }}">Edit Review</a></span>
         <!-- <br><br> -->
   
   
@@ -199,7 +199,7 @@
   
   
     {% elif current_user.is_authenticated and has_purchased %}
-      <p><a href="{{ url_for('products.reviewProduct', pid=pid) }}" type="button" class="btn btn-light">Review This Product</a></p>
+      <p><a href="{{ url_for('users.reviewSeller', uid=user.id, sortoption=0) }}" type="button" class="btn btn-light">Review This Seller</a></p>
       <!-- <br><br> -->
     {% endif %}
     </div>
