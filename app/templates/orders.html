@@ -39,7 +39,7 @@
   {%endif%}
 
 {%if not filtered%}
-<form action="{{ url_for('inventory.orders') }}" method="POST">
+<form action="{{ url_for('inventory.orders') }}" method="POST"> 
 {%else%}
 <form action="{{ url_for('inventory.ordersByStatus', status=filtered) }}" method="POST">
 {%endif%}
