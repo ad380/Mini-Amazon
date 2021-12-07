@@ -113,7 +113,8 @@ AND fulfilled = :status
 ORDER BY time_purchased DESC
 ''',
                               seller_id=seller_id,
-                              searchValue = searchValue)
+                              searchValue = searchValue,
+                              status = status)
         return [Purchase(*row) for row in rows]
 
 #search for product name on all purchases of a given seller
@@ -146,7 +147,8 @@ AND fulfilled = :status
 ORDER BY time_purchased DESC
 ''',
                               seller_id=seller_id,
-                              searchValue = searchValue)
+                              searchValue = searchValue,
+                              status = status)
         return [Purchase(*row) for row in rows]
 
 
