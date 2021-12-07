@@ -126,6 +126,24 @@ class ProductReview:
             print(str(e))
             return None
 
+    def add_product_review_rating(pid):
+        # Adds default upvote of 0 for new added review
+
+        try:
+            rows = app.db.execute("""
+    INSERT INTO ProductReviewsUpvotes(uid, product_id, buyer_id, vote)
+    VALUES(0, :pid, 0, 0)
+    RETURNING product_id, buyer_id
+    """,
+                    pid=pid,
+                    )
+
+            product_id, buyer_id = rows[0][0], rows[0][1]
+            return ProductReview.get_review(product_id, buyer_id)
+        except Exception as e:
+            print(str(e))
+            return None
+
     @staticmethod
     def edit_product_review(pid, bid, rating=None, title=None, comment=None, date=None, image=None):
         # Edit current user's review for product pid
@@ -174,7 +192,7 @@ class ProductReview:
     def deleteReview(pid, bid):
         try:
             rows = app.db.execute('''
-DELETE FROM ProductReviews
+DELETE FROM ProductReviews CASCADE
 WHERE product_id = :pid
 AND buyer_id = :bid
 RETURNING *
@@ -182,6 +200,79 @@ RETURNING *
                               pid=pid,
                               bid=bid)
             return rows
-        except Exception:
-            print("couldn't delete product")
+        except Exception as e:
+            print(f"couldn't delete product: {e}")
             return None
+
+    @staticmethod
+    def get_votes_from(uid, pid, bid):
+        # Find all votes for given review based on current user
+        rows = app.db.execute('''
+    SELECT vote
+    FROM ProductReviewsUpvotes
+    WHERE uid = :uid
+    AND product_id = :pid
+    AND buyer_id = :bid
+    ''',
+                    uid=uid,
+                    pid=pid,
+                    bid=bid)
+        return rows[0][0] if rows else 0
+
+
+    @staticmethod
+    def update_vote(uid, pid, bid, val):
+        # Updates vote of user for current review
+            
+        try:
+            rows = app.db.execute("""
+    UPDATE ProductReviewsUpvotes
+    SET uid = :uid, product_id = :pid, buyer_id = :bid, vote = :val
+    WHERE uid = :uid 
+    AND product_id = :pid
+    AND buyer_id = :bid
+    RETURNING uid, product_id, buyer_id
+    """,
+                    uid=uid,
+                    pid=pid,
+                    bid=bid,
+                    val=val)
+
+            uid, product_id, buyer_id = rows[0][0], rows[0][1], rows[0][2]
+            print(rows)
+            return ProductReview.get_votes_from(uid, product_id, buyer_id)
+        except Exception as e:
+            print(str(e))
+            pass
+
+        try:
+            rows = app.db.execute("""
+    INSERT INTO ProductReviewsUpvotes(uid, product_id, buyer_id, vote)
+    VALUES(:uid, :pid, :bid, :val)
+    RETURNING uid, product_id, buyer_id
+    """,
+                    uid=uid,
+                    pid=pid,
+                    bid=bid,
+                    val=val)
+
+            uid, product_id, buyer_id = rows[0][0], rows[0][1], rows[0][2]
+            return ProductReview.get_votes_from(uid, product_id, buyer_id)
+        except Exception as e:
+            print(str(e))
+            return None
+
+    @staticmethod
+    def get_top_reviews(product_id):
+        # Returns list of ProductReview objects for given product
+        rows = app.db.execute(f'''
+    SELECT buyer_id
+    FROM ProductReviewsUpvotes
+    WHERE product_id = :product_id
+    GROUP BY buyer_id
+    ORDER BY sum(vote) DESC
+    ''',
+                    product_id=product_id)
+
+        
+        return [ProductReview.get_review_from(product_id, bid[0]) for bid in rows]

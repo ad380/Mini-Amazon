@@ -56,6 +56,15 @@ CREATE TABLE SellerReviews
  PRIMARY KEY(seller_id, buyer_id)
 );
 
+CREATE TABLE SellerReviewsUpvotes
+(uid INTEGER NOT NULL REFERENCES Users(id),
+seller_id INTEGER NOT NULL REFERENCES Users(id),
+buyer_id INTEGER NOT NULL REFERENCES Users(id),
+vote INTEGER NOT NULL CHECK(vote in (-1, 0, 1)),
+PRIMARY KEY (uid, seller_id, buyer_id),
+FOREIGN KEY (seller_id, buyer_id) REFERENCES  SellerReviews(seller_id, buyer_id) ON DELETE CASCADE
+);
+
 CREATE TABLE ProductReviews
 (product_id INTEGER NOT NULL REFERENCES Products(id),
  buyer_id INTEGER NOT NULL REFERENCES Users(id),
@@ -73,5 +82,5 @@ product_id INTEGER NOT NULL REFERENCES Products(id),
 buyer_id INTEGER NOT NULL REFERENCES Users(id),
 vote INTEGER NOT NULL CHECK(vote in (-1, 0, 1)),
 PRIMARY KEY (uid, product_id, buyer_id),
-FOREIGN KEY (product_id, buyer_id) REFERENCES  ProductReviews(product_id, buyer_id)
+FOREIGN KEY (product_id, buyer_id) REFERENCES  ProductReviews(product_id, buyer_id) ON DELETE CASCADE
 );

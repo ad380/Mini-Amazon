@@ -43,6 +43,12 @@ def products(pid, sortoption=0):
     review_keys = [(r.product_id, r.buyer_id) for r in reviews]
     review_upvotes = [ProductReview.get_upvotes(pid, bid) for pid, bid in review_keys]
 
+    user_votes = [ProductReview.get_votes_from(current_user.id, pid, bid) for bid in reviewer_ids]
+
+    top_reviews = ProductReview.get_top_reviews(pid)
+    top_reviewer_ids = [r.buyer_id for r in top_reviews]
+    top_reviewer_names = [User.get_name(id) for id in top_reviewer_ids]
+
     has_purchased = False
     has_reviewed = False
     current_user_review = None
@@ -62,6 +68,8 @@ def products(pid, sortoption=0):
         else:
             has_reviewed = False
 
+    
+
     return render_template('detailed_product.html', 
                             pid=pid,
                             prod_desc=product.description,
@@ -80,7 +88,10 @@ def products(pid, sortoption=0):
                             has_purchased=has_purchased,
                             has_reviewed=has_reviewed,
                             current_user_review=current_user_review,
-                            current_user_name=current_user_name)
+                            current_user_name=current_user_name,
+                            user_votes=user_votes,
+                            top_reviews=top_reviews,
+                            top_reviewer_names=top_reviewer_names)
 
 class ProductForm(FlaskForm):
     categories = ['food','clothing','gadgets','media','misc']
@@ -112,7 +123,8 @@ def reviewProduct(pid):
                                             form.title.data, 
                                             form.comment.data, 
                                             now.strftime("%b %d, %Y %H:%M:%S"), 
-                                            form.image.data):
+                                            form.image.data) and \
+                ProductReview.add_product_review_rating(pid):
                 print("got here")
                 
                 return redirect(url_for('products.products', pid=pid, sortoption=0))
@@ -195,6 +207,13 @@ def deleteProduct(pid):
 def deleteReview(pid, bid):
     if ProductReview.deleteReview(pid, bid):
             print('Your review has been removed')
+            return redirect(url_for('products.products', pid=pid, sortoption=0))
+    return redirect(url_for('products.products', pid=pid, sortoption=0))
+
+@bp.route('/products/vote/<uid>/<pid>/<bid>/<val>',methods=["POST", "GET"])
+def updateVote(uid, pid, bid, val):
+    if ProductReview.update_vote(uid, pid, bid, val):
+            print('vote updated')
             return redirect(url_for('products.products', pid=pid, sortoption=0))
     return redirect(url_for('products.products', pid=pid, sortoption=0))
 

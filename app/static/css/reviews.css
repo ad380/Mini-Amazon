@@ -65,35 +65,22 @@ body {
 
 .vote {
     display: inline;
-    /* position: absolute; */
     float:right;
     display: flex;
     cursor: pointer;
     color: #687074;
-    padding: 0px 25px 0px 0px;
-    /* right: 96px; */
-    /* width:50%; */
-
+    padding: 10px 5px 0px 5px;
     outline: none !important;
     background-color: transparent;
     background-repeat: no-repeat;
     border: none;
-    cursor: pointer;
     overflow: hidden;
-    
 }
-
-.vote.on_up {
-color: #f48024
-}
-.vote.on_down {
-    color: #2c44a4
-}
-
-.upvote {
+.upvotes {
     display: inline;
-    position: absolute;
-    
-
+    float:right;
+    display: flex;
+    cursor: pointer;
+    padding: 5px 5px 0px 5px;
 }
 

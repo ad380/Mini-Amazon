@@ -110,20 +110,73 @@
     }
   }
 
-  // Updates upvote arrow color 
-  function changeColor(val) {
-    if (val == 1) {
-      event.currentTarget.classList.toggle('on_up')
-    } else if (val == -1) {
-      event.currentTarget.classList.toggle('on_down')
-    }
-  }
-
   $(function() {
     $('.confirm').click(function() {
         return window.confirm("Are you sure you want to delete this review?");
     });
   });
+
+  // Functions for changing color of upvote buttons
+  // Also toggles other state if active
+  function like(button_id, update, pid, bid) {
+    let gray = '#687074'
+    let idx = parseInt(button_id)
+    
+    if (dislikes[idx].style.color == 'blue') {  // if currently downvoted
+      likes[idx].style.color = 'blue'
+      dislikes[idx].style.color = gray
+      if (update) {
+      update_vote({{current_user.id}}, pid, bid, "1")
+      }
+    } else if (likes[idx].style.color == 'blue') {  // if currently upvoted
+      likes[idx].style.color = gray
+      if (update) {
+      update_vote({{current_user.id}}, pid, bid, "0")
+      }
+    }
+    else {
+      likes[idx].style.color = 'blue'
+      if (update) {
+      update_vote({{current_user.id}}, pid, bid, "1")
+      }
+    }
+  }
+
+  function dislike(button_id, update, pid, bid) {
+    let gray = '#687074'
+    let idx = parseInt(button_id)
+
+    if (likes[idx].style.color == 'blue') {  // if currently likes
+      dislikes[idx].style.color = 'blue'
+      likes[idx].style.color = gray
+      if (update) {
+      update_vote({{current_user.id}}, pid, bid, "-1")
+      }
+    } else if (dislikes[idx].style.color == 'blue') {  // if currently dislikes
+      dislikes[idx].style.color = gray
+      if (update) {
+      update_vote({{current_user.id}}, pid, bid, "0")
+      }
+    }
+    else {
+      dislikes[idx].style.color = 'blue'
+      if (update) {
+      update_vote({{current_user.id}}, pid, bid, "-1")
+      }
+    }
+  }
+
+  function update_vote(uid, pid, bid, val) {
+    let s_uid = uid.toString()
+    let s_pid = pid.toString()
+    let s_bid = bid.toString()
+
+    var base_url = window.location.origin
+    base_url += '/products/vote/' + s_uid + '/' + s_pid + '/' + s_bid + '/' + val
+    window.location.replace(base_url);
+  }
+
+  
 </script>
 
 <body>
@@ -131,6 +184,7 @@
 
 <div class="float-container">
 <div class="left-section">
+  {% if review_count > 0 %}
   <span class="heading">Customer Reviews ({{review_count}})</span>
 
   <!-- Call stars method to show product average reviews -->
@@ -152,25 +206,27 @@
         class="btn btn-light">{{reviewer_names[loop.index-1]}}
       </a>
     <a style="display: inline; font-size: 18px;">{{review.date|format_date('standard')}}</a>
-    
-    <!-- <span style="align-items: right;">test</span> -->
-    <vote>
-    <span class="vote up" onclick="changeColor(1);">
-      <svg width="36" height="36" id="vote">
-        <path d="M2 26h32L18 10z" fill="currentColor"></path>
-      </svg>
-    </span>
-    <p style="text-align: right; padding-right: 36px; font-size: 24px;">{{review_upvotes[loop.index-1]}}</p>
-    
-    <span class="vote down" onclick="changeColor(-1);">
-      <svg width="36" height="36">
-        <path d="M2 10h32L18 26 2 10z" fill="currentColor"></path>
-      </svg>
-    </span>
-    </vote>
 
+    <!-- Like/dislikes lists-->
+    <script>
+      var likes = document.getElementsByClassName('fa-thumbs-up');
+      var dislikes = document.getElementsByClassName('fa-thumbs-down');
+    </script>
+
+    <!-- Display like/displikes -->
+    <i id="{{loop.index-1}}" class="fa fa-thumbs-down vote" onclick="dislike(this.id, true, {{pid}}, {{review.buyer_id}})"></i>
+    <p class="upvotes">{{review_upvotes[loop.index-1]}}</p>
+    <i id="{{loop.index-1}}" class="fa fa-thumbs-up vote" onclick="like(this.id, true, {{pid}}, {{review.buyer_id}})"></i>
+
+    <!-- Turn on likes and dislikes based on past upvotes -->
+    {% if user_votes[loop.index-1] == 1 %}
+    <script>like({{loop.index}}-1, false, -1, -1)</script>
+    {% elif user_votes[loop.index-1] == -1 %}
+    <script>dislike({{loop.index}}-1, false, -1, -1)</script>
+    {% endif %}
     <p></p>
 
+    <!-- Display star ratings for review -->
     <script>stars({{review.rating}})</script>
     <a style="display: inline; font-size: 18px; padding-left: 10px; font-style: b;"><strong>{{review.title}}</strong></a>
     <p class="comment">{{review.comment}}</p>
@@ -187,8 +243,8 @@
 </div>
 
   <div class="right-section">
-  <!-- <span class="heading">Customer Reviews ({{review_count}})</span> -->
 
+  <!-- Show your recent reviews or option to leave review -->
   <div>
     {% if current_user.is_authenticated and has_reviewed %}
       <p class="heading">Your Review:</p>
@@ -220,16 +276,57 @@
       {% if current_user_review.image != "IMAGE" %} 
         <img width="100" src="{{current_user_review.image}}"/>
       {% endif %}
-       
+      <hr style="border:3px solid #f1f1f1">
       </div>
 
 
 
-  {% elif current_user.is_authenticated and has_purchased %}
-    <p><a href="{{ url_for('products.reviewProduct', pid=pid) }}" type="button" class="btn btn-light">Review This Product</a></p>
-    <!-- <br><br> -->
-  {% endif %}
+    {% elif current_user.is_authenticated and has_purchased %}
+      <p><a href="{{ url_for('products.reviewProduct', pid=pid) }}" type="button" class="btn btn-light">Review This Product</a></p>
+      <!-- <br><br> -->
+      <hr style="border:3px solid #f1f1f1">
+    {% endif %}
+    {% else %}
+    <span class="heading">There are no reviews for this product yet.</span>
+
+    {% endif %}
   </div>
+
+
+  <!-- Show highest rated reviews -->
+  <div>
+    {% if top_reviews %}
+    <span class="heading">Top Reviews:</span>
+    {% for review in top_reviews[:3]%}
+      <div class="review">
+        <span class="heading">
+          <a href="{{ url_for('users.publicprofile', uid=review.buyer_id, sortoption=0) }}" type="button" 
+            class="btn btn-light">{{top_reviewer_names[loop.index-1]}}
+          </a>
+        <a style="display: inline; font-size: 18px;">{{review.date|format_date('standard')}}</a>
+
+        <!-- Like/dislikes lists-->
+        <script>
+          var likes = document.getElementsByClassName('fa-thumbs-up');
+          var dislikes = document.getElementsByClassName('fa-thumbs-down');
+        </script>
+
+        <!-- Display star ratings for review -->
+        <script>stars({{review.rating}})</script>
+        <a style="display: inline; font-size: 18px; padding-left: 10px; font-style: b;"><strong>{{review.title}}</strong></a>
+        <p class="comment">{{review.comment}}</p>
+        <!-- Check if review has default value "IMAGE"
+              otherwise if there is valid link
+              display image -->
+        {% if review.image != "IMAGE" %} 
+          <img width="100" src="{{review.image}}"/>
+        {% endif %}
+        <hr style="border:1px dashed #f1f1f1">
+        </div>
+    {% endfor %}
+    {% endif %}
+  </div>  
+  
   </div>
 
 </div>

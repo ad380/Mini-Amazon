@@ -117,7 +117,7 @@ def get_random_purchases_ratings():
             id, uid, seller_id, time_purchased, pid, \
                 quantity, fulfilled = purchase
             if fulfilled == 'f':
-                review_ratio = .8 # review_ratio % of purchases actually contain a review
+                review_ratio = .7 # review_ratio % of purchases actually contain a review
                 if random.random() <= review_ratio:
                     # rating = random.choice(RATING_VALS)
                     
@@ -142,7 +142,7 @@ def gen_product_reviews():
             title = fake.sentence(nb_words=4)[:-1].title()
             comment = fake.paragraph(nb_sentences=6, variable_nb_sentences=True)
             date = fake.date_time()
-            writer.writerow([product_id, buyer_id, rating, title, comment[:512], date, 0])
+            writer.writerow([product_id, buyer_id, rating, title, comment[:512], date, "IMAGE"])
     return
 
 def get_random_seller_ratings():
@@ -156,7 +156,7 @@ def get_random_seller_ratings():
             # First check if purchase fulfilled
             id, uid, seller_id, time_purchased, pid, quantity, fulfilled = purchase
             if fulfilled == 'f':
-                review_ratio = .7 # review_ratio % of purchases actually contain a review
+                review_ratio = .25 # review_ratio % of purchases actually contain a review
                 if random.random() <= review_ratio:
                     # rating = random.choice(RATING_VALS)
 
@@ -231,10 +231,10 @@ def update_reviews_images(type):
         image_ratio = .2 # image % of reviews actually contain a an
         if random.random() <= image_ratio:
             # review.append(gen_random_image())
-            review[7] = gen_random_image()
+            review[6] = gen_random_image()
         else:
             # review.append("IMAGE")
-            review[7] = "IMAGE"
+            review[6] = "IMAGE"
         if i % 100 == 0:
                 print(f'{i}', end=' ', flush=True)
 
@@ -243,14 +243,64 @@ def update_reviews_images(type):
     writer.writerows(reviews)
     return  
 
+def product_upvotes():
+    ratings = dict()
+    __location__ = os.path.realpath(
+    os.path.join(os.getcwd(), os.path.dirname(__file__)))
+    f = open(os.path.join(__location__, 'data/ProductReviews.csv'))
+    with f as csvfile:
+        reviews = csv.reader(csvfile)
+        for review in reviews:
+            product_id, buyer_id, rating, title, comment, date, image = review
+            
+            ratings[(0, product_id, buyer_id)] = 0
+    return ratings
+
+def gen_product_rev_upvotes():
+    upvotes = product_upvotes()
+
+    with open('ProductReviewsUpvotes.csv', 'w') as f:
+        writer = get_csv_writer(f)
+        for r in upvotes.keys():
+            uid, product_id, buyer_id, = r
+            
+            writer.writerow([uid, product_id, buyer_id, 0])
+    return
+
+def seller_upvotes():
+    ratings = dict()
+    __location__ = os.path.realpath(
+    os.path.join(os.getcwd(), os.path.dirname(__file__)))
+    f = open(os.path.join(__location__, 'data/SellerReviews.csv'))
+    with f as csvfile:
+        reviews = csv.reader(csvfile)
+        for review in reviews:
+            seller_id, buyer_id, rating, title, comment, date = review
+            
+            ratings[(0, seller_id, buyer_id)] = 0
+    return ratings
+
+def gen_seller_rev_upvotes():
+    upvotes = seller_upvotes()
+
+    with open('SellerReviewsUpvotes.csv', 'w') as f:
+        writer = get_csv_writer(f)
+        for r in upvotes.keys():
+            uid, seller_id, buyer_id, = r
+            
+            writer.writerow([uid, seller_id, buyer_id, 0])
+    return
+
 # gen_users(num_users)
 # available_pids = gen_products(num_products)
 # gen_purchases(num_purchases, available_pids)
 # gen_product_reviews()
-gen_seller_reviews()
+# gen_seller_reviews()
 # print(random.choice(RATINGS))
 # get_random_seller_ratings()
 # print(gen_random_image())
 # update_product_images()
 # update_reviews_images("Product")
 # update_reviews_images("Seller")
+# gen_product_rev_upvotes()
+gen_seller_rev_upvotes()
