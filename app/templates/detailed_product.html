@@ -184,6 +184,7 @@
 
 <div class="float-container">
 <div class="left-section">
+  {% if review_count > 0 %}
   <span class="heading">Customer Reviews ({{review_count}})</span>
 
   <!-- Call stars method to show product average reviews -->
@@ -285,11 +286,16 @@
       <!-- <br><br> -->
       <hr style="border:3px solid #f1f1f1">
     {% endif %}
+    {% else %}
+    <span class="heading">There are no reviews for this product yet.</span>
+
+    {% endif %}
   </div>
 
 
   <!-- Show highest rated reviews -->
   <div>
+    {% if top_reviews %}
     <span class="heading">Top Reviews:</span>
     {% for review in top_reviews[:3]%}
       <div class="review">
@@ -318,6 +324,7 @@
         <hr style="border:1px dashed #f1f1f1">
         </div>
     {% endfor %}
+    {% endif %}
   </div>  
   
   </div>
