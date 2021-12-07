@@ -59,3 +59,26 @@ class SellerReview:
     ''',
                     uid=uid)
         return [SellerReview(*row) for row in rows]
+
+    @staticmethod
+    def get_reviewed_sellers(uid):
+        # Returns list of seller_id's of products reviewed by user
+        rows = app.db.execute('''
+    SELECT seller_id
+    FROM SellerReviews
+    WHERE buyer_id = :uid
+    ''',
+                    uid=uid)
+        return [row[0] for row in rows] if rows is not None else []
+
+    @staticmethod
+    def get_review_from(sid, bid):
+        rows = app.db.execute('''
+    SELECT *
+    FROM SellerReviews
+    WHERE seller_id = :sid
+    AND buyer_id = :bid
+    ''',
+                    sid=sid,
+                    bid=bid)
+        return [SellerReview(*row) for row in rows][0]

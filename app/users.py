@@ -187,7 +187,27 @@ def publicprofile(uid, sortoption=0):
     if avg is not None:
         review_avg = round(avg, 1)
 
-    
+    has_purchased_from, has_reviewed = False, False
+    current_user_review, current_user_name = None, None
+    if current_user.is_authenticated:
+        purchases_ids = Purchase.get_all_pid_by_uid(current_user.id)
+
+        purchased_from = [Purchase.get_seller_id(pid, current_user.id) for pid in purchases_ids]
+        print(f"p_from = {purchased_from}")
+        reviewedSellers = SellerReview.get_reviewed_sellers(current_user.id)
+        current_user_name = User.get_name(current_user.id)
+
+        if int(uid) in purchased_from: 
+            print("here")
+            has_purchased = True
+        else:
+            has_purchased = False
+        if int(uid) in reviewedSellers:
+            has_reviewed = True
+            current_user_review = SellerReview.get_review_from(uid, current_user.id)
+        else:
+            has_reviewed = False
+
     # render the page by adding information to the publicprofile.html file
     return render_template('publicprofile.html',
                            avail_products=products,
@@ -197,7 +217,12 @@ def publicprofile(uid, sortoption=0):
                            review_avg=review_avg,
                            user=user,
                            sortoption=sortoption,
-                           reviewer_names=reviewer_names)
+                           reviewer_names=reviewer_names,
+                           has_purchased_from=has_purchased_from,
+                           has_reviewed=has_reviewed,
+                           current_user_review=current_user_review,
+                           current_user_name=current_user_name,
+                           has_purchased=has_purchased)
 
 # make the edit name form
 class EditNameForm(FlaskForm):

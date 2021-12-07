@@ -152,3 +152,27 @@ ORDER BY Purchases.time_purchased DESC
                             uid=uid,
                             since=since)
         return [Purchase(*row) for row in rows]
+
+    @staticmethod
+    def get_all_seller_ids_by_uid(uid, seller_id):
+        rows = app.db.execute('''
+SELECT seller_id
+FROM Purchases
+WHERE uid = :uid
+        ''',
+                            uid=uid)
+        return [row[0] for row in rows]
+
+    @staticmethod
+    def get_seller_id(pid, uid):
+        # Returns list of seller_id's of sellers reviewed by user
+        rows = app.db.execute('''
+    SELECT seller_id
+    FROM Purchases
+    WHERE uid = :uid
+    AND pid = :pid
+    ''',
+                    uid=uid,
+                    pid=pid)
+        print(f" row = {rows[0]}")
+        return rows[0][0] if rows is not None else -1
