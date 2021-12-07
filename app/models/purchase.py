@@ -67,6 +67,21 @@ ORDER BY time_purchased DESC
                               seller_id=seller_id)
         return [Purchase(*row) for row in rows]
 
+#returns all purchases of a given seller
+    @staticmethod
+    def get_all_by_seller_id_status(seller_id,status):
+        rows = app.db.execute('''
+SELECT Purchases.id, uid, Purchases.seller_id, time_purchased, pid, quantity,
+fulfilled, Products.name, Users.firstname, Users.lastname, Users.address
+FROM Purchases INNER JOIN Products ON Purchases.pid = Products.id
+INNER JOIN Users ON Purchases.uid = Users.id
+WHERE Purchases.seller_id = :seller_id
+AND fulfilled = :status
+ORDER BY time_purchased DESC
+''',
+                              seller_id=seller_id)
+        return [Purchase(*row) for row in rows]
+
 #search for buyer name on all purchases of a given seller
     @staticmethod
     def search_buyer_by_seller_id(seller_id, searchValue):

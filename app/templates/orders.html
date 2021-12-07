@@ -12,8 +12,8 @@
   <select name="category-options" id="category-options" class="drop-down" onchange="location = this.value">
     <option selected disabled label="Filter By Status" value="">Filter By Status</option>
     <option value="{{ url_for('inventory.orders') }}">None</option>
-    <option value="{{ url_for('inventory.orders', category=1, page_num=1) }}">Fulfilled</option>
-    <option value="{{ url_for('inventory.orders', category=2, page_num=1) }}">Not Fulfilled</option>
+    <option value="{{ url_for('inventory.ordersByStatus', status=1) }}">Fulfilled</option>
+    <option value="{{ url_for('inventory.ordersByStatus', status=2) }}">Not Fulfilled</option>
   </select>
 
 <form action="{{ url_for('inventory.orders') }}" method="POST">

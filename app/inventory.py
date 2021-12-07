@@ -22,7 +22,7 @@ class SearchForm(FlaskForm):
 def index():
     form = SearchForm()
     # get all available products for sale:
-    products = Product.get_some()
+    products = Product.get_all()
     users = User.get_info()
     # find the products and purchases with the current user as the seller:
     if current_user.is_authenticated:
@@ -74,6 +74,33 @@ def orders():
                            sold_products=products,
                            purchase_history=purchases,
                            users = users, form = form)
+    return render_template('orders.html',
+                           sold_products=products,
+                           purchase_history=purchases,
+                           users = users, form = form)
+
+# Order history page filtered by status
+@bp.route('/categorizedorders/<status>', methods = ["POST","GET"])
+def ordersByStatus(status):
+    form = SearchForm()
+    # get all available products for sale:
+    products = Product.get_all()
+    users = User.get_info()
+    
+    # find the products and purchases with the current user as the seller:
+    if current_user.is_authenticated:
+        #filter by status
+        if status == '0':
+            purchases = Purchase.get_all_by_seller_id(current_user.id)
+        elif status == '1':
+            purchases = Purchase.get_all_by_seller_id_status(current_user.id, status='f')
+        elif status == '2':
+            purchases = Purchase.get_all_by_seller_id_status(current_user.id, status='nf')
+        else:
+            purchases = Purchase.get_all_by_seller_id(current_user.id)
+    else:
+        purchases = None
+    # render the page by adding information to the index.html file
     return render_template('orders.html',
                            sold_products=products,
                            purchase_history=purchases,
