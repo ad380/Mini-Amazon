@@ -66,18 +66,18 @@ def orders():
             return render_template('orders.html',
                            sold_products=products,
                            purchase_history=purchases,
-                           users = users, form = form)
+                           users = users, form = form, filtered = None)
         # if searching by product
         else:
             purchases = Purchase.search_product_by_seller_id(current_user.id, form.searchValue.data)
             return render_template('orders.html',
                            sold_products=products,
                            purchase_history=purchases,
-                           users = users, form = form)
+                           users = users, form = form, filtered = None)
     return render_template('orders.html',
                            sold_products=products,
                            purchase_history=purchases,
-                           users = users, form = form)
+                           users = users, form = form, filtered = None)
 
 # Order history page filtered by status
 @bp.route('/categorizedorders/<status>', methods = ["POST","GET"])

@@ -11,28 +11,28 @@
   {%if filtered == 0%} 
   <select name="category-options" id="category-options" class="drop-down" onchange="location = this.value">
     <option disabled label="Filter By Status" value="">Filter By Status</option>
-    <option value="{{ url_for('inventory.orders') }}" selected>None</option>
+    <option selected value="{{ url_for('inventory.ordersByStatus', status=0) }}">None</option>
     <option value="{{ url_for('inventory.ordersByStatus', status=1) }}">Fulfilled</option>
     <option value="{{ url_for('inventory.ordersByStatus', status=2) }}">Not Fulfilled</option>
   </select>
   {% elif filtered == 1%} 
   <select name="category-options" id="category-options" class="drop-down" onchange="location = this.value">
     <option disabled label="Filter By Status" value="">Filter By Status</option>
-    <option value="{{ url_for('inventory.orders') }}">None</option>
-    <option value="{{ url_for('inventory.ordersByStatus', status=1) }}" selected>Fulfilled</option>
+    <option value="{{ url_for('inventory.ordersByStatus', status=0') }}">None</option>
+    <option selected value="{{ url_for('inventory.ordersByStatus', status=1) }}">Fulfilled</option>
     <option value="{{ url_for('inventory.ordersByStatus', status=2) }}">Not Fulfilled</option>
   </select>
   {% elif filtered == 2%} 
   <select name="category-options" id="category-options" class="drop-down" onchange="location = this.value">
     <option disabled label="Filter By Status" value="">Filter By Status</option>
-    <option value="{{ url_for('inventory.orders') }}">None</option>
+    <option value="{{ url_for('inventory.ordersByStatus', status=0) }}">None</option>
     <option value="{{ url_for('inventory.ordersByStatus', status=1) }}">Fulfilled</option>
-    <option value="{{ url_for('inventory.ordersByStatus', status=2) }}" selected>Not Fulfilled</option>
+    <option selected value="{{ url_for('inventory.ordersByStatus', status=2) }}">Not Fulfilled</option>
   </select>
   {%else%} 
   <select name="category-options" id="category-options" class="drop-down" onchange="location = this.value">
     <option selected disabled label="Filter By Status" value="">Filter By Status</option>
-    <option value="{{ url_for('inventory.orders') }}">None</option>
+    <option value="{{ url_for('inventory.ordersByStatus', status=0) }}">None</option>
     <option value="{{ url_for('inventory.ordersByStatus', status=1) }}">Fulfilled</option>
     <option value="{{ url_for('inventory.ordersByStatus', status=2) }}">Not Fulfilled</option>
   </select>
