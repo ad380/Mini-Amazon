@@ -169,8 +169,7 @@ def sortedprofile(sortoption='0'):
 # make the public user profile
 @bp.route('/publicprofile/<uid>/<sortoption>')
 def publicprofile(uid, sortoption=0):
-    # get all available products for sale:
-    products = Product.get(uid)
+    
     user = User.get(uid)
     sellers = Product.get_sellers()
 
@@ -221,7 +220,6 @@ def publicprofile(uid, sortoption=0):
     # render the page by adding information to the publicprofile.html file
     return render_template('publicprofile.html',
                             uid=uid,
-                            avail_products=products,
                             sellers=sellers,
                             reviews=reviews,
                             review_count=reviews_count,
