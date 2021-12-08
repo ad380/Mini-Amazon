@@ -15,7 +15,7 @@
           data: {
             labels: {{labels | tojson}},
             datasets: [{
-              label: "Number of Orders Fulfilled",
+              label: "Number of Orders by Status",
               data: {{values | tojson}},
               backgroundColor: ['rgb(0, 128, 0)','rgb(170, 1, 20)'],
               hoverOffset: 4
@@ -24,7 +24,7 @@
           options: {
             title: {
               display: true,
-              text: 'Number of Orders Fulfilled'
+              text: 'Number of Orders by Status'
             }
           }
         });
