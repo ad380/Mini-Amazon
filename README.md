@@ -48,14 +48,15 @@ Edgardy Reyes:
 
 Ankitha Durvasula:
 * Moved Seller Inventory into User page
-*Fixed add products submission to generate a new product id and add to the database 
-*Added edit and delete product pages to view product information and either edit the quantity or delete
-*Added edit to order status 
-*Separated inventory page and orders page
-*Added images to tables and add products
-*Added order by quantity for inventory
-*Added sort by product name to inventory
-*Added filter by order status along with search by buyer name and product name to order history
+* Fixed add products submission to generate a new product id and add to the database 
+* Added edit and delete product pages to view product information and either edit the quantity or delete
+* Added edit to order status 
+* Separated inventory page and orders page
+* Added images to tables and add products
+* Added order by quantity for inventory
+* Added sort by product name to inventory
+* Added filter by order status along with search by buyer name and product name to order history
+* Added visualization of order status counts
 
 Kyle Tran:
 * Redid entire UI for reviews
@@ -92,5 +93,3 @@ Run the following commands
 `sudo service postgresql restart`
 
 `bash setup.sh`
-
-
