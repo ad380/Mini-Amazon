@@ -55,9 +55,11 @@ def orders():
     if current_user.is_authenticated:
         purchases = Purchase.get_all_by_seller_id(current_user.id)
         products = Product.get_all_by_seller(current_user.id)
+        status_count = Purchase.count_status(current_user.id)
     else:
         purchases = None
         products = None
+        status_count = None
     # render the page by adding information to the inventory.html file
     if request.method == 'POST':
         # if searching by buyer
@@ -66,18 +68,18 @@ def orders():
             return render_template('orders.html',
                            sold_products=products,
                            purchase_history=purchases,
-                           users = users, form = form, filtered = None)
+                           users = users, form = form, filtered = None, status_count = status_count)
         # if searching by product
         else:
             purchases = Purchase.search_product_by_seller_id(current_user.id, form.searchValue.data)
             return render_template('orders.html',
                            sold_products=products,
                            purchase_history=purchases,
-                           users = users, form = form, filtered = None)
+                           users = users, form = form, filtered = None, status_count = status_count)
     return render_template('orders.html',
                            sold_products=products,
                            purchase_history=purchases,
-                           users = users, form = form, filtered = None)
+                           users = users, form = form, filtered = None, status_count = status_count)
 
 # Order history page filtered by status
 @bp.route('/categorizedorders/<status>', methods = ["POST","GET"])

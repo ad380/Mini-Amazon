@@ -1,12 +1,30 @@
 {% extends "base.html" %}
 
 {% block content %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+<canvas id="myChart" width="400" height="400"></canvas>
+
 <p></p>
 <p><a href="{{ url_for('inventory.index') }}" type="button" class="btn btn-secondary">Back</a></p>
 
 <br>
 
 <h2>Order History:</h2>
+<div id="container" style="width: 100%; height: 100%"></div>
+    <script>
+        anychart.onDocumentReady(function() {
+
+        var chart = anychart.bar();
+        chart.data(status_count);
+ 
+        chart.title("Number of Orders by Status");
+ 
+        // draw
+        chart.container("container");
+        chart.draw();
+      });
+    </script>
+
 <div class="dropdown" style="color: green; text-align: right; margin-bottom: 25px; position:static">
   {%if filtered == '0'%} 
   <select name="category-options" id="category-options" class="drop-down" onchange="location = this.value">
