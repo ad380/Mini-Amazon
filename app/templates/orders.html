@@ -7,8 +7,7 @@
 <br>
 
 <h2>Order History:</h2>
-<div id="container" style="width: 50%; height: 50%"></div>
-<canvas id="pie-chart" width="300" height="200"></canvas>
+<canvas id="pie-chart" width="100" height="50"></canvas>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.3.0/Chart.js"></script>
 <script>
     new Chart(document.getElementById("pie-chart"), {
@@ -17,7 +16,7 @@
             labels: {{labels | tojson}},
             datasets: [{
               label: "Count of Orders by Status",
-              backgroundColor: {{["#46BFBD","#12B879 "] | tojson}},
+              backgroundColor: {{["#12B879 ","#F7464A"] | tojson}},
             data: {{values | tojson}}
             }]
           },
