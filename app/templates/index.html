@@ -134,6 +134,8 @@
     <script>selected_category({{category}})</script>
   </select> 
 
+  <br><br>
+
   <form action="{{ url_for('index.index') }}" method="POST">
     {{ form.csrf_token }}
     {{ form.hidden_tag() }}
