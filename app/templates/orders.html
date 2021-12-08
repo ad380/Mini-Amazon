@@ -13,11 +13,10 @@
     new Chart(document.getElementById("pie-chart"), {
          type: 'pie',
           data: {
-            labels: {{labels}},
+            labels: {{labels | tojson}},
             datasets: [{
               label: "Number of Orders Fulfilled",
-              data: {{values}},
-              backgroundColor: ["#12B879 ","#F7464A"],
+              data: {{values | tojson}},
               hoverOffset: 4
             }]
           },
