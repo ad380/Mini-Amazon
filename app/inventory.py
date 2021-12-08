@@ -55,9 +55,19 @@ def orders():
     if current_user.is_authenticated:
         purchases = Purchase.get_all_by_seller_id(current_user.id)
         products = Product.get_all_by_seller(current_user.id)
+
+        status_count = Purchase.count_status(current_user.id)
+        labels = ['Fulfilled', 'Not Fulfilled']
+        values = []
+        for t in status_count:
+            l, v = t
+            values.append(v)
+        
     else:
         purchases = None
         products = None
+        labels = None
+        values = None
     # render the page by adding information to the inventory.html file
     if request.method == 'POST':
         # if searching by buyer
@@ -66,18 +76,18 @@ def orders():
             return render_template('orders.html',
                            sold_products=products,
                            purchase_history=purchases,
-                           users = users, form = form, filtered = None)
+                           users = users, form = form, filtered = None, labels = labels, values = values)
         # if searching by product
         else:
             purchases = Purchase.search_product_by_seller_id(current_user.id, form.searchValue.data)
             return render_template('orders.html',
                            sold_products=products,
                            purchase_history=purchases,
-                           users = users, form = form, filtered = None)
+                           users = users, form = form, filtered = None, labels = labels, values = values)
     return render_template('orders.html',
                            sold_products=products,
                            purchase_history=purchases,
-                           users = users, form = form, filtered = None)
+                           users = users, form = form, filtered = None, labels = labels, values = values)
 
 # Order history page filtered by status
 @bp.route('/categorizedorders/<status>', methods = ["POST","GET"])
@@ -89,6 +99,14 @@ def ordersByStatus(status):
     
     # find the products and purchases with the current user as the seller:
     if current_user.is_authenticated:
+        
+        status_count = Purchase.count_status(current_user.id)
+        labels = ['Fulfilled', 'Not Fulfilled']
+        values = []
+        for t in status_count:
+            l, v = t
+            values.append(v)
+        
         #filter by status
         if status == '0':
             if request.method == 'POST':
@@ -132,11 +150,13 @@ def ordersByStatus(status):
                 purchases = Purchase.get_all_by_seller_id(current_user.id)
     else:
         purchases = None
+        labels = None
+        values = None
     # render the page by adding information to the index.html file
     return render_template('orders.html',
                            sold_products=products,
                            purchase_history=purchases,
-                           users = users, form = form, filtered = status)
+                           users = users, form = form, filtered = status, labels = labels, values = values)
 
 #Form for editting purchase status
 class StatusForm(FlaskForm):

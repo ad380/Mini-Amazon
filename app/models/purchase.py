@@ -211,3 +211,15 @@ WHERE uid = :uid
                     uid=uid,
                     pid=pid)
         return rows[0][0] if rows is not None else -1
+
+#returns all purchases of a given seller
+    @staticmethod
+    def count_status(seller_id):
+        rows = app.db.execute('''
+SELECT fulfilled, COUNT(id)
+FROM Purchases 
+WHERE seller_id = :seller_id
+GROUP BY fulfilled
+''',
+                              seller_id=seller_id)
+        return rows

@@ -7,6 +7,29 @@
 <br>
 
 <h2>Order History:</h2>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.3.0/Chart.js"></script>
+<canvas id="pie-chart" width="500" height="100"></canvas>
+<script>
+    new Chart(document.getElementById("pie-chart"), {
+         type: 'pie',
+          data: {
+            labels: {{labels | tojson}},
+            datasets: [{
+              label: "Number of Orders Fulfilled",
+              backgroundColor: {{["#12B879 ","#F7464A"] | tojson}},
+              data: {{values | tojson}}
+            }]
+          },
+          options: {
+            title: {
+              display: true,
+              text: 'Number of Orders Fulfilled'
+            }
+          }
+        });
+</script>
+
+
 <div class="dropdown" style="color: green; text-align: right; margin-bottom: 25px; position:static">
   {%if filtered == '0'%} 
   <select name="category-options" id="category-options" class="drop-down" onchange="location = this.value">
