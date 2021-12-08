@@ -7,8 +7,9 @@
 <br>
 
 <h2>Order History:</h2>
-<canvas id="pie-chart" width="30" height="20"></canvas>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.3.0/Chart.js"></script>
+<div>
+<canvas id="pie-chart" width="30" height="20"></canvas>
 <script>
     new Chart(document.getElementById("pie-chart"), {
          type: 'pie',
@@ -25,9 +26,11 @@
               display: true,
               text: 'Count of Orders by Status'
             }
+            responsive: false
           }
         });
 </script>
+</div>
 
 <div class="dropdown" style="color: green; text-align: right; margin-bottom: 25px; position:static">
   {%if filtered == '0'%} 
