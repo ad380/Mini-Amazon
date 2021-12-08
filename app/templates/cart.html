@@ -1,7 +1,28 @@
 {% extends "base.html" %}
 {% block content %}
 
-<h2>Your cart is empty</h2>
+
+
+
+<table class='table table-hover table-bordered container'>
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">Product Name</th>
+        <th scope="col">Quantity</th>
+        <th scope="col">Price</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for product in user_cart %}
+        <tr>
+          <td><a href="{{ url_for('products.products', pid=product.id, sortoption=0) }}" type="button" class="btn btn-light">{{product.name}}</a></td>
+          <td>{{product.quantity}}</td>
+          <td>{{product.price * product.quantity}}</td>
+          <td><img width="100" src="{{product.image}}"/></td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
 
 {% endblock %}
 
