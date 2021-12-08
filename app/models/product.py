@@ -35,7 +35,7 @@ WHERE available_quantity > 0
                               )
         return [Product(*row) for row in rows]
 
-    #this gets 100 products with the given offset for pagination
+    #this gets 50 products with the given offset for pagination
     @staticmethod
     def get_some(offset=0):
         rows = app.db.execute('''
