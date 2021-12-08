@@ -62,7 +62,6 @@ def orders():
         for t in status_count:
             l, v = t
             values.append(v)
-        print(values)
         
     else:
         purchases = None
