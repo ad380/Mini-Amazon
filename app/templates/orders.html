@@ -16,8 +16,8 @@
             labels: {{labels | tojson}},
             datasets: [{
               label: "Count of Orders by Status",
-              backgroundColor: {{colors | tojson}},
-            data: {{["#F7464A", "#46BFBD"] | tojson}}
+              backgroundColor: {{["#F7464A", "#46BFBD"] | tojson}},
+            data: {{values | tojson}}
             }]
           },
           options: {
