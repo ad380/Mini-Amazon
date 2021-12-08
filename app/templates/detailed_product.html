@@ -34,7 +34,13 @@
 </table>
 
 <!-- Add to cart button -->
-<p style="text-align: center"><a href="{{ url_for('cart.carts') }}" type="button" class="btn btn-light">Add To Cart</a></p>
+<form style="text-align: center" action="{{ url_for('cart.add_to_cart') }}" method="post">
+  <input type="hidden" name="pid" value="{{pid}}">
+  <input type="image" name="submit"
+    src="https://www.paypalobjects.com/en_US/i/btn/btn_cart_LG.gif"
+    alt="Add to Cart">
+</form>
+<!-- type="submit" class="btn btn-light">Add To Cart</form> -->
 
 <!-- Import css file / star images -->
 <head>

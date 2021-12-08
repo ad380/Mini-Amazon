@@ -1,30 +1,75 @@
-from flask import render_template, redirect, url_for, flash, request, session
-from flask_login import current_user
-from flask import Blueprint
+from flask import render_template, redirect, url_for, flash, request, Blueprint, session
+from flask import current_app as app
+from werkzeug.urls import url_parse
+from flask_login import login_user, logout_user, current_user
+from flask_wtf import FlaskForm
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, DecimalField
+from wtforms.validators import ValidationError, DataRequired, Email, EqualTo, InputRequired
+from flask_babel import _, lazy_gettext as _l
+
+from app.models.product_review import ProductReview
+from app.models.seller_review import SellerReview
+
+from .models.user import User
+
+# imports I've added beyond the skeleton
+from .models.product import Product
+from .models.purchase import Purchase
+import datetime
 import psycopg2
 import psycopg2.extras
 import os
 
 bp = Blueprint('cart', __name__)
 
-# @bp.route('/cart')
-# def cart():
-#     return render_template('cart.html', title='Cart')
-
-DB_HOST = "localhost"
-DB_NAME = os.environ.get('DB_NAME')
-DB_USER = os.environ.get('DB_USER')
-DB_PASS = os.environ.get('DB_PASSWORD')
- 
-conn = psycopg2.connect(dbname=DB_NAME, user=DB_USER, password=DB_PASS, host=DB_HOST)
- 
-@bp.route('/cart')
+@bp.route('/cart', methods=['GET'])
 def carts():
-    cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+    user = current_user.id
+    rows = app.db.execute("""
+    SELECT * FROM Cart
+    INNER JOIN Products ON Products.id=Cart.product_id
+    WHERE buyer_id = :user
+    """, user=user)
+    
+    return render_template('cart.html', title='Cart', user_cart=rows)
+
+@bp.route('/cart', methods=['GET', 'POST'])
+def add_to_cart():
+    def add_to_db():
+        print('gg')
+        try:
+            buyer_id = current_user.id
+            pid = request.form['pid']
+            quantity = 1
+            rows = app.db.execute("""
+    INSERT INTO Cart(buyer_id, product_id, quantity)
+    VALUES(:buyer_id, :pid, :quantity)
+    RETURNING product_id
+    """,
+                                    buyer_id = buyer_id,
+                                    pid = pid,
+                                    quantity = quantity)
+            return Product.get(pid)
+        except Exception:
+            print("Couldn't add product to cart")
+            return None
+    new_prod = add_to_db()
+    return redirect(url_for('cart.carts'))    
+
+# DB_HOST = "localhost"
+# DB_NAME = os.environ.get('DB_NAME')
+# DB_USER = os.environ.get('DB_USER')
+# DB_PASS = os.environ.get('DB_PASSWORD')
  
-    cursor.execute("SELECT * FROM PRODUCTS")
-    rows = cursor.fetchall()
-    return render_template('cart.html', products=rows)
+# conn = psycopg2.connect(dbname=DB_NAME, user=DB_USER, password=DB_PASS, host=DB_HOST)
+ 
+# @bp.route('/cart')
+# def carts():
+#     cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+ 
+#     cursor.execute("SELECT * FROM PRODUCTS")
+#     rows = cursor.fetchall()
+#     return render_template('cart.html', products=rows)
 
 # @bp.route('/cart/add', methods=['POST'])
 # def add_product_to_cart():
