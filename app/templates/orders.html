@@ -10,8 +10,8 @@
 <canvas id="pie-chart" width="300" height="200"></canvas>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.3.0/Chart.js"></script>
 <script>
-    new Chart(document.getElementById("pie-chart"), {
-         type: 'pie',
+    new Chart(document.getElementById("bar-chart"), {
+         type: 'bar',
           data: {
             labels: {{labels | tojson}},
             datasets: [{
