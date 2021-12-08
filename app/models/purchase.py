@@ -222,5 +222,4 @@ WHERE seller_id = :seller_id
 GROUP BY fulfilled
 ''',
                               seller_id=seller_id)
-        print(rows)
-        return rows[0][0] if rows is not None else -1
+        return rows
