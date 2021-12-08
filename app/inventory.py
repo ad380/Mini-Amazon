@@ -103,10 +103,13 @@ def ordersByStatus(status):
         status_count = Purchase.count_status(current_user.id)
         labels = ['Fulfilled', 'Not Fulfilled']
         values = []
+        total = 0
         for t in status_count:
             l, v = t
-            values.append(v)
-        
+            total += v
+        for t in status_count:
+            l, v = t
+            values.append(v/total)
         #filter by status
         if status == '0':
             if request.method == 'POST':
