@@ -8,7 +8,7 @@
 
 <h2>Order History:</h2>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.3.0/Chart.js"></script>
-<canvas id="bar-chart" width="500" height="100"></canvas>
+<canvas id="bar-chart" width="500" height="200"></canvas>
 <script>
     new Chart(document.getElementById("bar-chart"), {
          type: 'bar',
@@ -21,6 +21,7 @@
             }]
           },
           options: {
+            legend: { display: false }
             title: {
               display: true,
               text: 'Count of Orders by Status'
