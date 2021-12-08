@@ -8,7 +8,6 @@ from flask_babel import _, lazy_gettext as _l
 from .models.product import Product
 from .models.purchase import Purchase
 from .models.user import User
-import pygal
 
 from flask import Blueprint
 bp = Blueprint('inventory', __name__)
@@ -57,15 +56,18 @@ def orders():
         purchases = Purchase.get_all_by_seller_id(current_user.id)
         products = Product.get_all_by_seller(current_user.id)
 
-        bar_chart = pygal.Bar(height = 300)
-        bar_chart.title = 'Count of Orders by Status'  # title of bar chart
         status_count = Purchase.count_status(current_user.id)
-        bar_chart.add(status_count)  # add data
-        chart = bar_chart.render_data_uri()
+        labels = ['Fulfilled', 'Not Fulfilled']
+        values = []
+        for t in status_count:
+            l, v = t
+            values.append(v)
+        
     else:
         purchases = None
         products = None
-        chart = None
+        labels = None
+        values = None
     # render the page by adding information to the inventory.html file
     if request.method == 'POST':
         # if searching by buyer
@@ -74,18 +76,18 @@ def orders():
             return render_template('orders.html',
                            sold_products=products,
                            purchase_history=purchases,
-                           users = users, form = form, filtered = None, chart=chart)
+                           users = users, form = form, filtered = None, labels = labels, values = values)
         # if searching by product
         else:
             purchases = Purchase.search_product_by_seller_id(current_user.id, form.searchValue.data)
             return render_template('orders.html',
                            sold_products=products,
                            purchase_history=purchases,
-                           users = users, form = form, filtered = None, chart=chart)
+                           users = users, form = form, filtered = None, labels = labels, values = values)
     return render_template('orders.html',
                            sold_products=products,
                            purchase_history=purchases,
-                           users = users, form = form, filtered = None, chart=chart)
+                           users = users, form = form, filtered = None, labels = labels, values = values)
 
 # Order history page filtered by status
 @bp.route('/categorizedorders/<status>', methods = ["POST","GET"])
@@ -97,11 +99,13 @@ def ordersByStatus(status):
     
     # find the products and purchases with the current user as the seller:
     if current_user.is_authenticated:
-        bar_chart = pygal.Bar(height = 300)
-        bar_chart.title = 'Count of Orders by Status'  # title of bar chart
+        
         status_count = Purchase.count_status(current_user.id)
-        bar_chart.add(status_count)  # add data
-        chart = bar_chart.render_data_uri()
+        labels = ['Fulfilled', 'Not Fulfilled']
+        values = []
+        for t in status_count:
+            l, v = t
+            values.append(v)
         
         #filter by status
         if status == '0':
@@ -146,12 +150,13 @@ def ordersByStatus(status):
                 purchases = Purchase.get_all_by_seller_id(current_user.id)
     else:
         purchases = None
-        chart = None
+        labels = None
+        values = None
     # render the page by adding information to the index.html file
     return render_template('orders.html',
                            sold_products=products,
                            purchase_history=purchases,
-                           users = users, form = form, filtered = status, chart = chart)
+                           users = users, form = form, filtered = status, labels = labels, values = values)
 
 #Form for editting purchase status
 class StatusForm(FlaskForm):

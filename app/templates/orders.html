@@ -7,8 +7,26 @@
 <br>
 
 <h2>Order History:</h2>
-<meta charset="utf-8">
-<div><embed src={{chart|safe}} /></div>
+<canvas id="pie-chart" width="600" height="400"></canvas>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.3.0/Chart.js"></script>
+<script>
+    new Chart(document.getElementById("pie-chart"), {
+         type: 'pie',
+          data: {
+            labels: {{labels | tojson}},
+            datasets: [{
+              label: "Count of Orders by Status",
+            data: {{values | tojson}}
+            }]
+          },
+          options: {
+            title: {
+              display: true,
+              text: 'Count of Orders by Status'
+            }
+          }
+        });
+</script>
 
 <div class="dropdown" style="color: green; text-align: right; margin-bottom: 25px; position:static">
   {%if filtered == '0'%} 
