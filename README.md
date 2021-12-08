@@ -9,31 +9,66 @@ Edgardy Reyes - Carts Guru: responsible for Cart / Order
 Ankitha Durvasula - Sellers Guru: responsible for Inventory / Order Fulfillment
 
 Kyle Tran - Social Guru: responsible for Feedback / Messaging
+## Grading Option:
+Tess Noonan - Team
 
-## What Everyone Has Done Since Milestone 2:
+Nicki Lee - Team
+
+Edgardy Reyes - Individual
+
+Ankitha Durvasula - Team
+
+Kyle Tran - Team
+## What Everyone Has Done Since Milestone 3:
 Tess Noonan:
-* Added address field to registering a new user
-* Added a private user profile page
-* Added ability to edit a user’s information
-* Added the ability to randomly generate a large number of users
+* Changed editing user information from one form for everything to editing one item (i.e. name) at a time
+* Added password verification when editing user information (for security)
+* Modified columns in the private user profile’s recent purchases
+* Added ability to sort a user’s past purchases (in a drop down menu)
+* Created public user profiles
+* Added links to public user profiles from products and purchases tables
+* I commented my code so if a new person picked it up, they’d be able to understand it
+* Incorporated the Kyle’s seller reviews to user profiles
+* Worked with Ankitha to add functionality for a non-seller to become a seller by adding a product (linked from user profile)
+* Added product name search bar to recent user purchases
 
 Nicki Lee:
-* Added detailed products page
-* Added ability to sort products by ascending/descending price or seller id
+* Implemented search by product name feature
+* Changed sorting and filtering from individual buttons to drop down menus 
+* Made a Review Product form for reviewing previously purchased products
+* Implemented Review Product checking so that users may only review products once signed-in, may only review products they have purchased, and can only leave one review per product
+* Added the category section to the detailed product page of each product
+* Adding sort by average rating to index page
 
 Edgardy Reyes:
-* Added cart button
-* Added ability to add a product to the cart
-* Added cart view with subtotal
+* Reimplemented cart functionality
+* Reimplemented add to cart button on detailed product page
+* Instead of using sessions, adding to cart just adds a product_id buyer_id pair to the cart table and then queries the cart table to show all the products associated with the current user id, so that cart items are persistent for each user
+* Implemented submit order button, which updates the cart, purchases, product, and user tables to reflect new changes in balance, quantities, order history, etc.
 
 Ankitha Durvasula:
-* Added sellers only page with: Seller Inventory; Ability to add products; Order History
-* Updated database design to remove seller’s table and instead find sellers from products
+* Moved Seller Inventory into User page
+*Fixed add products submission to generate a new product id and add to the database 
+*Added edit and delete product pages to view product information and either edit the quantity or delete
+*Added edit to order status 
+*Separated inventory page and orders page
+*Added images to tables and add products
+*Added order by quantity for inventory
+*Added sort by product name to inventory
+*Added filter by order status along with search by buyer name and product name to order history
 
 Kyle Tran:
-* Updated gen.py and generated data for users, products, purchases, and product reviews
-* added product reviews (+ count / avg) to each detailed product page
-* added user product reviews to their private user profile
+* Redid entire UI for reviews
+* Made summary ratings sections for reviews with average and number of ratings
+* Added ability to convert a raw rating score into stars
+* Made drop down button to sort reviews by rating and most recent
+* Added ability to add, edit, and delete reviews for products/sellers
+* Made it so you can submit image to review
+* Made pages for user to list their ratings/reviews that they authored
+* developed upvote functionality for ratings/reviews, also display the top reviews
+* Generated large testing database with realistic data
+
+
 
 
 
@@ -53,6 +88,9 @@ Our code files are as follows:
 * Loads csv data into tables
 ## How to load new generated data
 Run the following commands
+
 `sudo service postgresql restart`
+
 `bash setup.sh`
+
 
