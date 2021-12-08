@@ -63,7 +63,7 @@ def index():
 @bp.route('/sortedindex/<sortoption>/<page_num>')
 def sortedindex(sortoption, page_num=1):
     form = SearchForm()
-    offset = (int(page_num) - 1) * 100
+    offset = (int(page_num) - 1) * 50
     if sortoption == '0' or sortoption == '-1':
         products = Product.get_some(offset=offset)
     elif sortoption == '1':
