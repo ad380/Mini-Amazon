@@ -105,7 +105,7 @@ def ordersByStatus(status):
         values = []
         for t in status_count:
             l, v = t
-            values.append((v/100))
+            values.append(v)
         
         #filter by status
         if status == '0':
