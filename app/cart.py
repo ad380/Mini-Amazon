@@ -15,6 +15,7 @@ from .models.user import User
 # imports I've added beyond the skeleton
 from .models.product import Product
 from .models.purchase import Purchase
+from .models.cart import Cart
 import datetime
 import psycopg2
 import psycopg2.extras
@@ -25,36 +26,30 @@ bp = Blueprint('cart', __name__)
 @bp.route('/cart', methods=['GET'])
 def carts():
     user = current_user.id
-    rows = app.db.execute("""
-    SELECT * FROM Cart
-    INNER JOIN Products ON Products.id=Cart.product_id
-    WHERE buyer_id = :user
-    """, user=user)
+    items = Cart.get(user)
     
-    return render_template('cart.html', title='Cart', user_cart=rows)
+    return render_template('cart.html', title='Cart', user_cart=items)
 
 @bp.route('/cart', methods=['GET', 'POST'])
 def add_to_cart():
-    def add_to_db():
-        print('gg')
-        try:
-            buyer_id = current_user.id
-            pid = request.form['pid']
-            quantity = 1
-            rows = app.db.execute("""
-    INSERT INTO Cart(buyer_id, product_id, quantity)
-    VALUES(:buyer_id, :pid, :quantity)
-    RETURNING product_id
-    """,
-                                    buyer_id = buyer_id,
-                                    pid = pid,
-                                    quantity = quantity)
-            return Product.get(pid)
-        except Exception:
-            print("Couldn't add product to cart")
-            return None
-    new_prod = add_to_db()
+    buyer_id = current_user.id
+    pid = request.form['pid']
+
+    quantity = 1
+    new_prod = Cart.add_to_cart(buyer_id, pid, quantity)
     return redirect(url_for('cart.carts'))    
+
+@bp.route('/submitted', methods=['GET', 'POST'])
+def submit_order(order):
+    #grab all items in users cart and:
+    ###delete users cart
+    ###send items to purchases
+    ###decrement balance from buyer and increment for seller
+    ###decrement quantities for each product's available_quantity
+    items = Cart.get(user)
+
+    return render_template('submitted.html', title='Order Submitted', user_cart=items)
+
 
 # DB_HOST = "localhost"
 # DB_NAME = os.environ.get('DB_NAME')
