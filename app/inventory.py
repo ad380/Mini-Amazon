@@ -56,7 +56,6 @@ def orders():
         purchases = Purchase.get_all_by_seller_id(current_user.id)
         products = Product.get_all_by_seller(current_user.id)
         status_count = Purchase.count_status(current_user.id)
-        print(status_count)
     else:
         purchases = None
         products = None
