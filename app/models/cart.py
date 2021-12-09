@@ -76,19 +76,16 @@ class Cart:
     @staticmethod
     def payment(buyer_id, total_price):
         try:
-            rows = app.db.execute("""
+            app.db.execute("""
             UPDATE Users
             SET balance=balance - :total_price
             WHERE id = :buyer_id
-            RETURNING *
             """,
                                   total_price=total_price,
                                   buyer_id=buyer_id
                                   )
-            return rows
         except Exception:
             print("You don't have enough funds")
-            return None
 
     @staticmethod
     def deposit(order):
@@ -140,7 +137,6 @@ class Cart:
         for o in order:
             purchase_id += 1
             try:
-                print(purchase_id)
                 app.db.execute("""
                 INSERT INTO Purchases(id, uid, seller_id, time_purchased, pid, quantity, fulfilled)
                 VALUES(:id, :uid, :seller_id, :time_purchased, :pid, :quantity, :fulfilled)
@@ -153,5 +149,4 @@ class Cart:
                             quantity = o.quantity,
                             fulfilled = 'nf')
             except Exception as e:
-                print(e)
                 print('Could not add products to purchases')
