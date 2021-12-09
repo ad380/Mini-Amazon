@@ -9,157 +9,55 @@
       <tr>
         <th scope="col">Product Name</th>
         <th scope="col">Quantity</th>
-        <th scope="col">Price</th>
+        <th scope="col">Unit Price</th>
+        <th scope="col">Total Price</th>
+        <th scope="col">Image</th>
+        <th scope="col">Remove Items</th>
       </tr>
     </thead>
     <tbody>
       {% for product in user_cart %}
         <tr>
-          <td><a href="{{ url_for('products.products', pid=product.id, sortoption=0) }}" type="button" class="btn btn-light">{{product.name}}</a></td>
-          <td><form>{{product.quantity}}</form></td>
+          <td><a href="{{ url_for('products.products', pid=product.product_id, sortoption=0) }}" type="button" class="btn btn-light">{{product.name}}</a></td>
+          <td>
+              <form action="{{url_for('cart.inc_quantity')}}" method="post">
+                  <input type="hidden" name="pid" value="{{product.product_id}}">
+                  <input type="hidden" name="quantity" value="{{product.quantity}}">
+                  <input style="display:block; margin-left:150px;"  width="25" type="image" name="add" src="https://cdn-icons-png.flaticon.com/512/117/117885.png">
+              </form> 
+              <br>
+                <div style="display:block; margin-left:160px">{{product.quantity}}</div>
+              <br>
+              <form action="{{url_for('cart.dec_quantity')}}" method="post">
+                <input type="hidden" name="pid" value="{{product.product_id}}">
+                <input type="hidden" name="quantity" value="{{product.quantity}}">
+                <input style="display:block; margin-left:150px;" width="27" type="image" name="add" src="https://static.thenounproject.com/png/261368-200.png">
+            </form>
+            </td>
+          <td>{{product.price}}</td>
           <td>{{product.price * product.quantity}}</td>
-          <td><img width="100" src="{{product.image}}"/></td>
+          <td><img style="display:block; margin-left:auto; margin-right: auto;" width="130" src="{{product.image}}"/></td>
+          <td><form action="{{url_for('cart.remove_item')}}" method="post">
+              <input type="hidden" name="pid" value="{{product.product_id}}">
+              <input style="display:block; margin-left:auto; margin-right:auto; margin-top:auto" width="60" type="image" name="remove" src="https://cdn-icons-png.flaticon.com/512/3096/3096673.png">
+          </form>
+        </td>
         </tr>
-        <h2>{{total_price}}</h2>
       {% endfor %}
     </tbody>
   </table>
 
-  <form style="text-align: center" action="{{ url_for('cart.submit_order', order=user_cart) }}" method="post">
-    <input type="hidden" name="pid" value="{{pid}}">
+  <br></br>
+
+  <h1>Total: {{total_price}}</h1>
+
+  <br></br>
+
+  <form style="text-align: center" action="{{ url_for('cart.submit_order')}}" method="post">
+    <input type="hidden" name="total" value="{{total_price}}">
     <input width="300" type="image" name="submit"
       src="https://www.seekpng.com/png/full/397-3970101_place-order-button-png.png"
       alt="Place order">
   </form>
 
 {% endblock %}
-
-<!-- <head>
-<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-</head>
-<body>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> 
-<div class="container">
-    <div class="row">
-  <p><h2>Shopping Cart using Python Flask PostgreSQL</h2></p>
-   <div class="col-sm-12">
-  {% if 'cart_item' in session %}
-   <p><a id="btnEmpty" href="{{ url_for('.empty_cart') }}" class="btn btn-danger">Empty Cart</a></p>
-            <table class="table table-hover">
-                <thead>
-                    <tr>
-                        <th>Product</th>
-                        <th>Quantity</th>
-                        <th class="text-center">Unit Price</th>
-                        <th class="text-center">Price</th>
-                        <th> </th>
-                    </tr>
-                </thead>
-                <tbody>
-    {% for key, val in session['cart_item'].items() %}
-        {% set quantity = session['cart_item'][key]['quantity'] %}
-        {% set price = session['cart_item'][key]['price'] %}
-        {% set item_price = session['cart_item'][key]['total_price'] %} 
-                    <tr>
-                        <td class="col-sm-8 col-md-6">
-                        <div class="media">
-                            <a class="thumbnail pull-left" href="#"> <img class="media-object" src="/static/images/{{ session['cart_item'][key]['image'] }}" style="width: 72px; height: 72px;"> </a>
-                            <div class="media-body" style="padding-left:10px;">
-                                <h4 class="media-heading"> <a href="#">{{ session['cart_item'][key]['name'] }}</a></h4>
-                                <h5 class="media-heading"> by <a href="#">Brand name</a></h5>
-                                <span>Status: </span><span class="text-success"><strong>In Stock</strong></span>
-                            </div>
-                        </div></td>
-                        <td class="col-sm-1 col-md-1" style="text-align: center">
-                        <input type="email" class="form-control" value="{{ quantity }}">
-                        </td>
-                        <td class="col-sm-1 col-md-1 text-center"><strong>${{ price }} </strong></td>
-                        <td class="col-sm-1 col-md-1 text-center"><strong>${{ item_price }} </strong></td>
-                        <td class="col-sm-1 col-md-1">
-                        <a href="{{ url_for('.delete_product', code=session['cart_item'][key]['code']) }}" class="btn btn-danger">
-                            <span class="glyphicon glyphicon-remove"></span> Remove
-                        </a></td>
-                    </tr>
-    {% endfor %}
-                    <tr>
-                        <td colspan="4"><h5>Total Quantity</h5></td>
-                        <td class="text-right"><h5><strong>{{ session['all_total_quantity'] }}</strong></h5></td>
-                    </tr>
-                    <tr>
-                        <td colspan="3"><h3>Total</h3></td>
-                        <td colspan="2" class="text-right"><h3><strong>$ {{ session['all_total_price'] }}</strong></h3></td>
-                    </tr>
-                    <tr>
-                        <td colspan="4">
-                        <button type="button" class="btn btn-default">
-                            <span class="glyphicon glyphicon-shopping-cart"></span> Continue Shopping
-                        </button></td>
-                        <td>
-                        <button type="button" class="btn btn-success">
-                            Checkout <span class="glyphicon glyphicon-play"></span>
-                        </button></td>
-                    </tr>
-                </tbody>
-            </table>
-  {% else: %}
-   <div class="no-records">Your Cart is Empty</div>
-  {% endif %}
-        </div>
-    </div>
-</div>
-                
-<section class="our-publication pt-100 pb-70">
-            <div class="container">
-                <div class="section-header">
-                    <i class="fa fa-book"></i>
-                    <h2>Our Product</h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod  labore et dolore magna aliqua.</p>
-                </div>
-                  
-                <div class="row">
-    {% for product in products %}
-                    <div class="col-sm-6 col-lg-3"> 
-      <form method="post" action="/add">
-                        <div class="single-publication">
-                            <figure style="width:263px;">
-                                <a href="#">
-                                    <img src="/static/images/{{ product.image }}">
-                                </a>
-                                <ul>
-                                    <li><a href="#" title="Add to Favorite"><i class="fa fa-heart"></i></a></li>
-                                    <li><a href="#" title="Add to Compare"><i class="fa fa-refresh"></i></a></li>
-                                    <li><a href="#" title="Quick View"><i class="fa fa-search"></i></a></li>
-                                </ul>
-                            </figure>
-  
-                            <div class="publication-content">
-                                <span class="category">{{ product.category }}</span>
-                                <h3><a href="#">{{ product.name }}</a></h3>
-                                <ul>
-                                    <li><i class="icofont-star"></i></li>
-                                    <li><i class="icofont-star"></i></li>
-                                    <li><i class="icofont-star"></i></li>
-                                    <li><i class="icofont-star"></i></li>
-                                    <li><i class="icofont-star"></i></li>
-                                </ul>
-                                <h4 class="price">$ {{ product.price }}</h4>
-                            </div>
-  
-                            <div class="add-to-cart">
-        <input type="hidden" name="code" value="{{ product.code }}"/>
-        <input type="text" class="product-quantity" name="quantity" value="1" size="2" />
-        <input type="submit" value="Add to Cart" class="default-btn" />
-                            </div>
-                        </div>
-      </form>
-                    </div>
-                {% endfor %}    
-                      
-                </div>
-            </div>
-        </section>
-</style>  
-</body>
-</html> -->
