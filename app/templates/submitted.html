@@ -1,6 +1,39 @@
 {% extends "base.html" %}
 {% block content %}
 
-<h1>Order Submitted</h1>
+<h1>Order Submitted Successfully!</h1>
+<br></br>
+<h3>Order Summary:</h3>
+<table class='table table-hover table-bordered container'>
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">Product Name</th>
+        <th scope="col">Quantity</th>
+        <th scope="col">Unit Price</th>
+        <th scope="col">Total Price</th>
+        <th scope="col">Image</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for product in user_cart %}
+        <tr>
+          <td><a href="{{ url_for('products.products', pid=product.product_id, sortoption=0) }}" type="button" class="btn btn-light">{{product.name}}</a></td>
+          <td>
+                <div style="display:block; margin-left:160px">{{product.quantity}}</div>
+            </td>
+          <td>{{product.price}}</td>
+          <td>{{product.price * product.quantity}}</td>
+          <td><img style="display:block; margin-left:auto; margin-right: auto;" width="130" src="{{product.image}}"/></td>
+        </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <br></br>
+
+  <h1>Order Total: {{total_price}}</h1>
+
+  <br></br>
 
 {% endblock %}
